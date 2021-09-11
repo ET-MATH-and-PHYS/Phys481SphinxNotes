@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Phys481SphinxNotes's documentation!
-==============================================
+Welcome to Elijah Thompson's Phys481 Class Notes!
+=================================================
 
 This html contains a collection of course notes related to materials discussed in 481, including important portions of the course materials pulled from the D2L page.
 
