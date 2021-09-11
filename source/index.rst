@@ -6,12 +6,31 @@
 Welcome to Phys481SphinxNotes's documentation!
 ==============================================
 
+This html contains a collection of course notes related to materials discussed in 481, including important portions of the course materials pulled from the D2L page.
+
+The :ref:`Lecture Notes <notes>` consist of notes ordered by topic which go through the important points covered in the course. Further, the :ref:`Tasks <tasks>` section covers the different assignment tasks performed during each lecture period.
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
 
    LectureNotes
+   Tasks
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Jupyter Notebooks:
+
+   /JupyterNotes/phys481_week00_example_report_template
+   /JupyterNotes/phys481_week01_cat_shuffle-notes
+
+.. toctree::
+   :maxdepth: 2
+   :caption: D2L Contents:
+
+   RockStar
+   SphinxDocs
+
 
 
 
