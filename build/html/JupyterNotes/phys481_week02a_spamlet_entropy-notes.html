@@ -1,0 +1,1130 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Bernoulli, entropy and spamlet &mdash; Phys481SphinxNotes 1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Rockstar Programming and Teamwork" href="../RockStar.html" />
+    <link rel="prev" title="Shuffling Arnold’s Cat" href="phys481_week01_cat_shuffle-notes.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Phys481SphinxNotes
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../LectureNotes.html"><strong>Phys 481 Lecture Notes</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tasks.html"><strong>Daily Tasks</strong></a></li>
+</ul>
+<p class="caption"><span class="caption-text">Jupyter Notebooks:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="phys481_week00_example_report_template.html">Example notebook report template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week01_cat_shuffle-notes.html">Shuffling Arnold’s Cat</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Bernoulli, entropy and spamlet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Probability">Probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#numpy.random">numpy.random</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Discussion">Discussion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#(in)consistent-calling-conventions">(in)consistent calling conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Entropy-and-Information">Entropy and Information</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Shannon-entropy">Shannon entropy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Bernoulli-process">Bernoulli process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Efficient-encoding">Efficient encoding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Gibbs-entropy-formula">Gibbs entropy formula</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Monkey-Shakespeare">Monkey Shakespeare</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Question-#1:-what-is-the-entropy-of-“simplified-Hamlet”-(Spamlet)-in-bits-per-character?">Question #1: what is the entropy of “simplified Hamlet” (Spamlet) in bits per character?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Question-#2:-what-is-the-probability-that-a-monkey-typing-167774-characters-with-a-uniform-random-selection-of-27-keys-would-produce-Spamlet?-In-other-words,-how-many-different-sequences-with-167774-characters-are-there?">Question #2: what is the probability that a monkey typing 167774 characters with a uniform random selection of 27-keys would produce Spamlet? In other words, how many different sequences with 167774 characters are there?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Question-#3:-how-does-the-probability-change-if-the-chance-of-hitting-any-given-key-was-not-1/27,-but-the-same-as-the-actual-distribution-of-Spamlet?">Question #3: how does the probability change if the chance of hitting any given key was not 1/27, but the same as the actual distribution of Spamlet?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Question-#4:-determine-the-joint-probability-of-each-2-key-sequence-eg.-‘aa’,-‘ab’,-‘ac’-from-Spamlet.-How-does-the-probability-of-producing-Spamlet-change-if-the-monkey-hits-keys-according-to-this-distribution?">Question #4: determine the joint probability of each 2-key sequence eg. ‘aa’, ‘ab’, ‘ac’ from Spamlet. How does the probability of producing Spamlet change if the monkey hits keys according to this distribution?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Question-#5:-calculate-the-entropy-of-2-key-sequences-for-Spamlet,-and-then-for-entire-words.">Question #5: calculate the entropy of 2-key sequences for Spamlet, and then for entire words.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Optional-Question-#6:-write-a-program-to-generate-sequences-of-text-that-sound-somewhat-like-Shakespeare.-See-for-inspiration-http://www.elsewhere.org/journal/pomo/">Optional Question #6: write a program to generate sequences of text that sound somewhat like Shakespeare. See for inspiration http://www.elsewhere.org/journal/pomo/</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">D2L Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../RockStar.html"><strong>Rockstar Programming and Teamwork</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SphinxDocs.html"><strong>Sphinx Documentation</strong></a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Phys481SphinxNotes</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+<div class="git-ribbon">
+  <a href="http://github.com/SwissDataScienceCenter" rel="me">Join us on GitHub</a>
+</div>
+
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Bernoulli, entropy and spamlet</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/JupyterNotes/phys481_week02a_spamlet_entropy-notes.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<div class="section" id="Bernoulli,-entropy-and-spamlet">
+<h1>Bernoulli, entropy and spamlet<a class="headerlink" href="#Bernoulli,-entropy-and-spamlet" title="Permalink to this headline">¶</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># load modules for math and plotting</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="c1"># seaborn plots look a bit nicer than default matplotlib</span>
+<span class="c1">#</span>
+<span class="c1">#import seaborn as sns</span>
+<span class="c1">#sns.set(palette=&quot;bright&quot;)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Probability">
+<h2>Probability<a class="headerlink" href="#Probability" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line">A random Bernoulli (binary) process has only two possible outcomes; these are often labelled as True,False or 0, 1. One well-known example of such a process is flipping a coin to obtain either heads (H) or tails (T). The probability of getting a given outcome <span class="math notranslate nohighlight">\(i\)</span> is usually represented as <span class="math notranslate nohighlight">\(p_i\)</span>.</div>
+<div class="line">By definition, the total probability of all possible outcomes must always add up to one</div>
+</div>
+<div class="math notranslate nohighlight">
+\[\sum p_i = p_H + p_T = 1\]</div>
+<p>In other words: only one outcome can occur, and one outcome must occur.</p>
+<p>For a perfectly “fair” coin the probabilities are equal</p>
+<div class="math notranslate nohighlight">
+\[p_H = p_T = 0.5\]</div>
+<p>In classical probability theory, these events can be simple or compound. If there are <span class="math notranslate nohighlight">\(\Omega\)</span> possible outcomes for a simple event, then <span class="math notranslate nohighlight">\(p_i=1/\Omega\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. For example, if you flip a (fair) coin once (<span class="math notranslate nohighlight">\(\Omega = 2\)</span>), then the probability of obtaining heads or tails is <span class="math notranslate nohighlight">\(1/2\)</span>. If you flip four coins (or one coin 4 times), then <span class="math notranslate nohighlight">\(\Omega=2^4\)</span> because the outcome probabilities for each flip are totally independent of other outcomes. We say that the system
+has no memory, and most physical systems are like this.</p>
+<p>In statistical mechanics, the outcome of a possibly compound event like this is called a microstate. The ergodic hypothesis states that given a sufficiently long time, all microstates will be observed and all points in event space will be accessed. This is the (unproven!) foundation of statistical mechanics.</p>
+</div>
+<div class="section" id="numpy.random">
+<h2>numpy.random<a class="headerlink" href="#numpy.random" title="Permalink to this headline">¶</a></h2>
+<p>Many useful tools for generating random numbers are located in the “numpy.random” module. We start by considering the <code class="docutils literal notranslate"><span class="pre">rand</span></code> function which provides samples from a uniform distribution</p>
+<blockquote><p>Create an array of the given shape and populate it with random samples from a uniform distribution over <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1)</span></code></p>
+</blockquote><p>This module can be loaded independently</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import numpy.random as nprand
+</pre></div>
+</div>
+<p>or accessed as part of numpy.</p>
+<p>For example, we can generate 9 random numbers that should be distributed uniformly between 0 (inclusive) and 1.0 (exclusive).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Create an array of the given shape and populate it with</span>
+<span class="c1">#random samples from a uniform distribution over [0, 1).</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([0.0384657 , 0.7899211 , 0.23178687, 0.44411009, 0.07126211,
+       0.64630625, 0.97677999, 0.95698297, 0.06512445])
+</pre></div></div>
+</div>
+<p>Other distributions (ie. binomial, Gaussian) can be simulated by starting with a uniform distribution and applying an appropriate transformation of variables. The numpy.random module also includes convenient routines for obtaining random numbers from many useful distributions. Although the Bernoulli distribution is not provided explicitly, there are several methods which can be used to produce binary random numbers.</p>
+<p>One approach is to generate floating point uniform random values and map numbers greater than 0.5 onto <code class="docutils literal notranslate"><span class="pre">1</span></code> and less than 0.5 onto <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">coinflip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="c1"># loop over each element one after another</span>
+<span class="c1">#</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">coinflip</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="n">item</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="p">)</span>
+
+<span class="c1"># list comprehension is a more compact way to loop</span>
+<span class="c1">#</span>
+<span class="nb">print</span><span class="p">(</span> <span class="p">[</span><span class="n">item</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">coinflip</span><span class="p">],</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="p">)</span>
+
+<span class="c1"># numpy</span>
+<span class="c1">#</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">coinflip</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True, True, True, False, True, False, True, False, True,
+
+[True, True, True, False, True, False, True, False, True]
+
+[ True  True  True False  True False  True False  True]
+</pre></div></div>
+</div>
+<p>The third approach will produce a numpy <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> which can have one or more elements all with the same type of <code class="docutils literal notranslate"><span class="pre">boolean</span></code>. The <code class="docutils literal notranslate"><span class="pre">__sizeof__</span></code> method can be used to determine the amount of memory (in bytes) required to store each element. Although we might expect that a boolean value could be represented using a single bit, there is considerable overhead required to store a python object.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;type: &#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;element type: &#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+type:  &lt;class &#39;numpy.ndarray&#39;&gt;
+element type:  &lt;class &#39;numpy.bool_&#39;&gt;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;element size: &#39;</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">__sizeof__</span><span class="p">()</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;element attributes: &#39;</span><span class="p">,</span>  <span class="nb">dir</span><span class="p">(</span><span class="n">a</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span> <span class="nb">dir</span><span class="p">(</span><span class="n">a</span><span class="p">)[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+element size:  25
+element attributes:  [&#39;T&#39;, &#39;__abs__&#39;, &#39;__add__&#39;, &#39;__and__&#39;] ... [&#39;trace&#39;, &#39;transpose&#39;, &#39;var&#39;, &#39;view&#39;]
+</pre></div></div>
+</div>
+<div class="section" id="Discussion">
+<h3>Discussion<a class="headerlink" href="#Discussion" title="Permalink to this headline">¶</a></h3>
+<p>Should we instead use a slightly different comparison operator?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">0.5</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[False False  True  True  True  True False  True  True]
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="(in)consistent-calling-conventions">
+<h3>(in)consistent calling conventions<a class="headerlink" href="#(in)consistent-calling-conventions" title="Permalink to this headline">¶</a></h3>
+<p>Another option is to use the “randint” function. Remember that information about python modules and functions can be found in several different ways eg.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>help(numpy.randint)
+?(numpy.randint)
+dir(numpy.randint)
+
+    Help on package numpy.random in numpy:
+
+    NAME
+        numpy.random
+
+    DESCRIPTION
+        ========================
+        Random Number Generation
+        ========================
+</pre></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Return random integers from `low` (inclusive) to `high` (exclusive).</span>
+
+<span class="c1"># Calling &quot;randint&quot; with low=0 and high=1 does not produce a random</span>
+<span class="c1"># sequence of 1&#39;s and 0&#39;s.</span>
+<span class="c1">#</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">9</span> <span class="p">),</span> <span class="s1">&#39;&lt;==== only zeros&#39;</span> <span class="p">)</span>
+
+<span class="c1"># Instead, the function is written to follow the python convention</span>
+<span class="c1"># where the upper limit is excluded.</span>
+<span class="c1">#</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">9</span> <span class="p">)</span> <span class="p">)</span>
+
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">9</span> <span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[0 0 0 0 0 0 0 0 0] &lt;==== only zeros
+[1 0 0 0 0 0 0 1 0]
+[1 1 0 1 0 0 0 0 0]
+</pre></div></div>
+</div>
+<p>I think a case could be made that this calling convention violates the “Principle of Least Astonishment”</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://en.wikipedia.org/wiki/Principle_of_least_astonishment
+</pre></div>
+</div>
+<p>which is basically that a system should behave in a manner consistent with how users are likely to expect it to behave; that is, users should not be astonished at the way it interprets input or provides output.</p>
+<p>On the other hand, one could also argue that the exclusive upper bound is very pythonic (ie. commonly used in python). Also note that other languages also use the exclusive upper bound ie.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://stackoverflow.com/questions/363681/how-do-i-generate-random-integers-within-a-specific-range-in-java?rq=1
+</pre></div>
+</div>
+<p>In Java 1.7 or later, the standard way to do this is:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import java.util.concurrent.ThreadLocalRandom;
+
+    // nextInt is normally exclusive of the top value,
+    // so add 1 to make it inclusive
+    int randomNum = ThreadLocalRandom.current().nextInt(min, max + 1);
+</pre></div>
+</div>
+<p>Conclusion: ensure that your expectations are consistent with how your tools actually work.</p>
+<p>Note: There is currently a <code class="docutils literal notranslate"><span class="pre">numpy.random.random_integers</span></code> function that behaves the other way. Sadly, it appears to be deprecated and may not be supported in future versions of numpy.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Return random integers of type np.int from the “discrete uniform” distribution in the closed interval [low, high]</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_integers</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">9</span> <span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[1 0 0 0 0 1 1 1 1]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+C:\Users\bjackel\Miniconda3\lib\site-packages\ipykernel_launcher.py:2: DeprecationWarning: This function is deprecated. Please call randint(0, 1 + 1) instead
+
+</pre></div></div>
+</div>
+<p>Perhaps the best alternative is provided by <code class="docutils literal notranslate"><span class="pre">numpy.random.choice</span></code> which has a clear calling convention and can be used for more general applications.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;maybe&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[0 0 0 1 1 0 0 0 0]
+[&#39;maybe&#39; &#39;maybe&#39; &#39;yes&#39; &#39;maybe&#39; &#39;maybe&#39; &#39;no&#39; &#39;maybe&#39; &#39;no&#39; &#39;maybe&#39;]
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Entropy-and-Information">
+<h2>Entropy and Information<a class="headerlink" href="#Entropy-and-Information" title="Permalink to this headline">¶</a></h2>
+<p>A sequence of numbers might be thought of as random if each successive observation is “surprising” or communicates additional information beyond what was provided by the previous ones.</p>
+<p>For example, after seeing the first few symbols (values) in this sequence</p>
+<div class="math notranslate nohighlight">
+\[\{0,0,0,0,0,0,0,0 \ldots\}\]</div>
+<p>we can make a pretty good guess about the next value, but for this sequence</p>
+<div class="math notranslate nohighlight">
+\[\{0,1,0,0,1,1,0,1 \ldots\}\]</div>
+<p>it is not obvious what the next few values are likely to be.</p>
+<p><img alt="cf2ebe4c48f144919f47ef0d74ad9fea" src="https://assets.amuniversal.com/321a39e06d6401301d80001dd8b71c47" /></p>
+<div class="section" id="Shannon-entropy">
+<h3>Shannon entropy<a class="headerlink" href="#Shannon-entropy" title="Permalink to this headline">¶</a></h3>
+<p>A quantitative definition of entropy introduced by Shannon[1948]</p>
+<div class="math notranslate nohighlight">
+\[H = -\sum_{i=1}^n p_i \; log{p_i}\]</div>
+<p>has a familiar physical analog in statistical mechanics and allows us to determine the maximum amount of information that can be transmitted over a noisy digital communication channel.</p>
+<p>The logarithm is often taken with base 2</p>
+<div class="math notranslate nohighlight">
+\[H = -\sum_{i=1}^n p_i \; log_2{p_i} = -\frac{1}{\ln 2} \,\sum_{i=1}^n p_i \; \ln{p_i}\]</div>
+<p>to produce a result in terms of bits per symbol. Some properties of the entropy are</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(H(p_1,\ldots,p_N)\)</span> is a concave function of the <span class="math notranslate nohighlight">\(p_i\)</span>.</p></li>
+<li><p>for a given <span class="math notranslate nohighlight">\(N\)</span>, the uniform distribution <span class="math notranslate nohighlight">\(p_i=1/N\)</span> has the maximum entropy <span class="math notranslate nohighlight">\(H\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(H(p_1,\ldots,p_N)\)</span> is zero if and only if one of the <span class="math notranslate nohighlight">\(p_i=1\)</span>. In other words, if there is only one possible outcome then no new information is provided by observing that event.</p></li>
+</ol>
+<p>We can easily prove that the Shannon entropy is a maximum when all the probabilities are equal, <span class="math notranslate nohighlight">\(p_i=1/N\)</span>, corresponding to the classical limit of simple events.</p>
+<p><span class="math">\begin{eqnarray}
+\frac{\partial}{\partial p_j}H&=&\frac{\partial}{\partial p_j}\left[-\sum_ip_i\ln(p_i)\right]\\
+&=&\frac{\partial}{\partial p_j}\left[p_1\ln(p_1)+\ldots+p_j\ln(p_j)+\ldots+(1-p_1-\ldots-p_j-\ldots-p_{N-1})\ln(1-p_1-\ldots-p_j-\ldots-p_{N-1})\right],
+\end{eqnarray}</span></p>
+<p>where the second line uses the fact that the <span class="math notranslate nohighlight">\(p_i\)</span>s are not independent (for example <span class="math notranslate nohighlight">\(p_1+p_2=1\)</span>). So</p>
+<p><span class="math">\begin{eqnarray}
+\frac{\partial}{\partial p_j}H&=&\left[\ln(p_j)+1-\ln(1-p_1-\ldots-p_j-\ldots-p_{N-1})-1\right].\\
+\end{eqnarray}</span></p>
+<p>Setting this to zero gives</p>
+<div class="math notranslate nohighlight">
+\[p_j=1-p_1-\ldots-p_j-\ldots-p_{N-1},\]</div>
+<p>but because the right hand side is the probability for any other outcome, <span class="math notranslate nohighlight">\(p_j=p_i=1/N\)</span> for all <span class="math notranslate nohighlight">\(i,j\)</span>, so all the probabilities are equal. The maximum entropy is therefore</p>
+<div class="math notranslate nohighlight">
+\[H_{\rm max}=\frac{N}{N}\ln\left(\frac{1}{N}\right)=\ln(N).\]</div>
+<p>And we’re back to where we started, under the assumption that <span class="math notranslate nohighlight">\(\Omega=N\)</span> for simple events.</p>
+</div>
+<div class="section" id="Bernoulli-process">
+<h3>Bernoulli process<a class="headerlink" href="#Bernoulli-process" title="Permalink to this headline">¶</a></h3>
+<p>A Bernoulli (binary) process has two discrete outcomes (eg. true and false) that occur with probability <span class="math notranslate nohighlight">\(p\)</span> and <span class="math notranslate nohighlight">\(q=1-p\)</span>. The entropy of this process</p>
+<div class="math notranslate nohighlight">
+\[H(p) = -p\,\log(p) - q\,\log(q) = -p\,\log(p) - (1-p)\,\log(1-p)\]</div>
+<p>has a maximum of 1 bit per outcome</p>
+<div class="math notranslate nohighlight">
+\[{{\partial H(p)}\over{\partial p}} = -\left[ \log p + {p \over p} - \log[1-p] - {{1-p}\over{1-p}} \right]
+= -\log p + \log(1-p) = 0\]</div>
+<div class="math notranslate nohighlight">
+\[\exp\left(\log p\right) = \exp\left(\log(1-p)\right)  \qquad\Rightarrow\qquad p=1-p\]</div>
+<p>at <span class="math notranslate nohighlight">\(p=q=0.5\)</span> where the outcome of this system is least predictable. As shown in the following example the entropy is zero at the endpoints <span class="math notranslate nohighlight">\(p=q=0\)</span> where the outcome is totally predictable.</p>
+</div>
+<div class="section" id="Efficient-encoding">
+<h3>Efficient encoding<a class="headerlink" href="#Efficient-encoding" title="Permalink to this headline">¶</a></h3>
+<p>Shannon derived an expression for entropy a completely different way. Suppose that we have a radio antenna that broadcasts digital signals encoded in the bitstrings <span class="math notranslate nohighlight">\(X_1,\;X_2,\;\ldots X_m\)</span>, where for example <span class="math notranslate nohighlight">\(X_1=0110010111\ldots\)</span>. The question Shannon posed is: what are the resources required to represent all of these bitstrings? An alternative way of asking the question is: how much memory is required to store all of the bitstrings? Shannon found that the quantity <span class="math notranslate nohighlight">\(H(X)\)</span>,
+now called the Shannon entropy, gives the mean number of bits per string required. This expression is also referred to as Shannon’s lossless coding theorem.</p>
+<p>Consider a concrete example. Suppose that the antenna broadcasts the four numbers 0, 1, 2, and 3, all with probablity 1/4. Then you could store all four digits efficiently using the binary representation 00, 01, 10, and 11. This requires two bits, which should also coincide with Shannon entropy:</p>
+<div class="math notranslate nohighlight">
+\[H(0,1,2,3)=-\frac{1}{4}\log_2\left(\frac{1}{4}\right)*4=\log_2(4)=2\log_2(2)=2,\]</div>
+<p>as expected.</p>
+<p>Now instead suppose that the four numbers are broadcast with probabilities <span class="math notranslate nohighlight">\(1/2\)</span>, <span class="math notranslate nohighlight">\(1/4\)</span>, <span class="math notranslate nohighlight">\(1/8\)</span>, and <span class="math notranslate nohighlight">\(1/8\)</span>, respectively. Can we be more efficient with the encoding of the four numbers , to minimize (on average) the total number of bits we need to transmit / store? The Shannon entropy suggests that we only need an average bitstring length of</p>
+<div class="math notranslate nohighlight">
+\[H(0,1,2,3)=-\frac{1}{2}\log_2\left(\frac{1}{2}\right)-\frac{1}{4}\log_2\left(\frac{1}{4}\right)-(2)\frac{1}{8}\log_2\left(\frac{1}{8}\right)=\frac{1}{2}+\frac{2}{4}+\frac{6}{8}=\frac{14}{8}=1\frac{3}{4}\]</div>
+<p>bits, which is less than 2.</p>
+</div>
+<div class="section" id="Gibbs-entropy-formula">
+<h3>Gibbs entropy formula<a class="headerlink" href="#Gibbs-entropy-formula" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://en.wikipedia.org/wiki/Entropy_(statistical_thermodynamics)
+</pre></div>
+</div>
+<p>The macroscopic state of a system is characterized by a distribution on the microstates. The entropy of this distribution is given by the Gibbs entropy formula, named after J. Willard Gibbs. For a classical system (i.e., a collection of classical particles) with a discrete set of microstates, if <span class="math notranslate nohighlight">\(E_{i}\)</span> is the energy of microstate i, and <span class="math notranslate nohighlight">\(p_i\)</span> is the probability that it occurs during the system’s fluctuations, then the entropy of the system is</p>
+<div class="math notranslate nohighlight">
+\[S=-k_{{\text{B}}}\,\sum _{i}p_{i}\ln \,p_{i}\]</div>
+<p>This S is almost universally called simply the entropy. It can also be called the statistical entropy or the thermodynamic entropy without changing the meaning.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="c1">#import seaborn as sns</span>
+<span class="c1">#sns.set() #&quot;bright&quot;)</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">)</span>
+<span class="n">H</span> <span class="o">=</span> <span class="o">-</span><span class="n">p</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">H</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">2.0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;probability&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Entropy  [bits]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Bernoulli process&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+&lt;ipython-input-38-1bbd82c9c517&gt;:8: RuntimeWarning: divide by zero encountered in log
+  H = -p*np.log(p) - (1-p)*np.log(1-p)
+&lt;ipython-input-38-1bbd82c9c517&gt;:8: RuntimeWarning: invalid value encountered in multiply
+  H = -p*np.log(p) - (1-p)*np.log(1-p)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week02a_spamlet_entropy-notes_26_1.png" src="../_images/JupyterNotes_phys481_week02a_spamlet_entropy-notes_26_1.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Monkey-Shakespeare">
+<h2>Monkey Shakespeare<a class="headerlink" href="#Monkey-Shakespeare" title="Permalink to this headline">¶</a></h2>
+<p><img alt="febf9ee4463d4ea18331aebd2e64d845" src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Chimpanzee_seated_at_typewriter.jpg" /></p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Infinite_monkey_theorem">https://en.wikipedia.org/wiki/Infinite_monkey_theorem</a></p>
+<p>The infinite monkey theorem states that a monkey hitting keys at random on a typewriter keyboard for an infinite amount of time will almost surely type any given text, such as the complete works of William Shakespeare. In fact the monkey would almost surely type every possible finite text an infinite number of times. However, the probability of a universe full of monkeys typing a complete work such as Shakespeare’s Hamlet is so tiny that the chance of it occurring during a period of time
+hundreds of thousands of orders of magnitude longer than the age of the universe is extremely low (but technically not zero).</p>
+<p>In this context, “almost surely” is a mathematical term with a precise meaning, and the “monkey” is not an actual monkey, but a metaphor for an abstract device that produces an endless random sequence of letters and symbols. One of the earliest instances of the use of the “monkey metaphor” is that of French mathematician Émile Borel in 1913,[1] but the first instance may be even earlier.</p>
+<p>Variants of the theorem include multiple and even infinitely many typists, and the target text varies between an entire library and a single sentence. Jorge Luis Borges traced the history of this idea from Aristotle’s On Generation and Corruption and Cicero’s De natura deorum (On the Nature of the Gods), through Blaise Pascal and Jonathan Swift, up to modern statements with their iconic simians and typewriters. In the early 20th century, Borel and Arthur Eddington used the theorem to illustrate
+the timescales implicit in the foundations of statistical mechanics.</p>
+<p><img alt="86670d9248d24444b027729c389a899b" src="http://minnov8.com/site/wp-content/uploads/2013/11/monkey-cartoon.jpg" /></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Start with the classic quote,</span>
+<span class="c1">#</span>
+<span class="n">full_quote</span> <span class="o">=</span> <span class="s1">&#39;To be, or not to be? That is the question—&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Full quote: &#39;</span><span class="p">,</span> <span class="n">full_quote</span><span class="p">)</span>
+
+<span class="c1"># Simplify by stripping punctuation and converting to lower case.</span>
+<span class="c1">#</span>
+<span class="n">charlist</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">full_quote</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">or</span> <span class="n">c</span><span class="o">==</span><span class="s1">&#39; &#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Simplified quote: &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">charlist</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Length of simplified quote: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">charlist</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="c1"># Get a list of the unique characters along with &quot;lookup&quot; index</span>
+<span class="c1"># where each element points to the corresponding unique character.</span>
+<span class="c1">#</span>
+<span class="n">uchars</span><span class="p">,</span> <span class="n">uindx</span><span class="p">,</span> <span class="n">ucounts</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">charlist</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unique characters: &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="n">uchars</span> <span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of unique characters: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">uchars</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="n">nchars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">charlist</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of &#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nchars</span><span class="p">),</span> <span class="s1">&#39; character combinations of 27 possibilities: &#39;</span><span class="p">,</span> <span class="mi">27</span><span class="o">**</span><span class="n">nchars</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Probability of typing &quot;to be...&quot; at random: &#39;</span><span class="p">,</span> <span class="mi">27</span><span class="o">**-</span><span class="n">nchars</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Full quote:  To be, or not to be? That is the question—
+Simplified quote:  to be or not to be that is the question
+Length of simplified quote:  39
+Unique characters:   abehinoqrstu
+Number of unique characters:  13
+Number of  39  character combinations of 27 possibilities:  66555937033867822607895549241096482953017615834735226163
+Probability of typing &#34;to be...&#34; at random:  1.5024955617274797e-56
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">What is the entropy (in bits per symbol) for a uniform 27-key typewriter?</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">p27</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="mf">27.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">27</span><span class="p">)</span>
+<span class="n">entropy</span> <span class="o">=</span>  <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">p27</span><span class="p">)</span> <span class="o">*</span> <span class="n">p27</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Entropy of uniform channel [bits per key]&#39;</span><span class="p">,</span> <span class="n">entropy</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Entropy of uniform channel [bits per key] 4.754887502163469
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># So how long will it take a monkey to type Hamlet?</span>
+
+<span class="c1"># Don&#39;t pull the same file every time!  Make a local copy to reduce</span>
+<span class="c1"># traffic and be able to keep working if network not available or</span>
+<span class="c1"># file is moved.</span>
+<span class="c1">#</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="n">url</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;http://www.gutenberg.org/files/1524/1524-0.txt&#39;</span>
+<span class="n">bytedata</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span> <span class="n">url</span> <span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="c1"># Get a local copy with browser or &quot;wget&quot; command.</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Note that the file contains a preamble about the text (metadata).</span>
+<span class="c1"># A more careful analysis might remove all this, but for simplicity</span>
+<span class="c1"># we will ignore this detail.</span>
+<span class="c1">#</span>
+<span class="c1">#bytedata[0:9].decode(&#39;ascii&#39;)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">bytedata</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">99</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+Project Gutenberg EBook of Hamlet, by William Shakespeare
+
+This eBook is for the use of anyo
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">#import urllib.request</span>
+<span class="c1">##url = r&#39;http://www.gutenberg.org/cache/epub/1524/pg1524.txt&#39;</span>
+<span class="c1">#url = r&#39;http://www.gutenberg.org/files/1524/1524-0.txt&#39;</span>
+<span class="c1">#with urllib.request.urlopen( url ) as response:</span>
+<span class="c1">#   data = response.read()</span>
+
+<span class="c1">#print(html) #html.decode()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Change bytes to characters</span>
+<span class="c1"># +ignore the first 4 &quot;magic&quot; bytes (file type)</span>
+<span class="c1"># +ignore everything except a-z and spaces</span>
+<span class="c1"># +change all letters to lower case</span>
+<span class="c1">#</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">bytedata</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span> <span class="c1">#&#39;utf-8&#39;)</span>
+<span class="n">charlist</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">or</span> <span class="n">c</span><span class="o">==</span><span class="s1">&#39; &#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Length of simplified Hamlet: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">charlist</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="c1"># This is one way to count how many times each letter occurs.</span>
+<span class="c1"># Using numpy might be faster, but this is easy to understand.</span>
+<span class="c1">#</span>
+<span class="n">catalog</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">charlist</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">catalog</span><span class="p">:</span>
+        <span class="n">catalog</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1">#increment</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">catalog</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># initialize</span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="n">catalog</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Length of simplified Hamlet:  181732
+{&#39;p&#39;: 2462, &#39;r&#39;: 9139, &#39;o&#39;: 12856, &#39;j&#39;: 200, &#39;e&#39;: 17565, &#39;c&#39;: 3409, &#39;t&#39;: 14066, &#39; &#39;: 31720, &#39;g&#39;: 2849, &#39;u&#39;: 4983, &#39;n&#39;: 9739, &#39;b&#39;: 2110, &#39;k&#39;: 1415, &#39;f&#39;: 3124, &#39;h&#39;: 9245, &#39;a&#39;: 11324, &#39;m&#39;: 4644, &#39;l&#39;: 6862, &#39;y&#39;: 3554, &#39;w&#39;: 3425, &#39;i&#39;: 10005, &#39;s&#39;: 9450, &#39;d&#39;: 5674, &#39;v&#39;: 1347, &#39;x&#39;: 206, &#39;æ&#39;: 1, &#39;q&#39;: 230, &#39;z&#39;: 127, &#39;à&#39;: 1}
+</pre></div></div>
+</div>
+<div class="section" id="Question-#1:-what-is-the-entropy-of-“simplified-Hamlet”-(Spamlet)-in-bits-per-character?">
+<h3>Question #1: what is the entropy of “simplified Hamlet” (Spamlet) in bits per character?<a class="headerlink" href="#Question-#1:-what-is-the-entropy-of-“simplified-Hamlet”-(Spamlet)-in-bits-per-character?" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="Question-#2:-what-is-the-probability-that-a-monkey-typing-167774-characters-with-a-uniform-random-selection-of-27-keys-would-produce-Spamlet?-In-other-words,-how-many-different-sequences-with-167774-characters-are-there?">
+<h3>Question #2: what is the probability that a monkey typing 167774 characters with a uniform random selection of 27-keys would produce Spamlet? In other words, how many different sequences with 167774 characters are there?<a class="headerlink" href="#Question-#2:-what-is-the-probability-that-a-monkey-typing-167774-characters-with-a-uniform-random-selection-of-27-keys-would-produce-Spamlet?-In-other-words,-how-many-different-sequences-with-167774-characters-are-there?" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="Question-#3:-how-does-the-probability-change-if-the-chance-of-hitting-any-given-key-was-not-1/27,-but-the-same-as-the-actual-distribution-of-Spamlet?">
+<h3>Question #3: how does the probability change if the chance of hitting any given key was not 1/27, but the same as the actual distribution of Spamlet?<a class="headerlink" href="#Question-#3:-how-does-the-probability-change-if-the-chance-of-hitting-any-given-key-was-not-1/27,-but-the-same-as-the-actual-distribution-of-Spamlet?" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="Question-#4:-determine-the-joint-probability-of-each-2-key-sequence-eg.-‘aa’,-‘ab’,-‘ac’-from-Spamlet.-How-does-the-probability-of-producing-Spamlet-change-if-the-monkey-hits-keys-according-to-this-distribution?">
+<h3>Question #4: determine the joint probability of each 2-key sequence eg. ‘aa’, ‘ab’, ‘ac’ from Spamlet. How does the probability of producing Spamlet change if the monkey hits keys according to this distribution?<a class="headerlink" href="#Question-#4:-determine-the-joint-probability-of-each-2-key-sequence-eg.-‘aa’,-‘ab’,-‘ac’-from-Spamlet.-How-does-the-probability-of-producing-Spamlet-change-if-the-monkey-hits-keys-according-to-this-distribution?" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="Question-#5:-calculate-the-entropy-of-2-key-sequences-for-Spamlet,-and-then-for-entire-words.">
+<h3>Question #5: calculate the entropy of 2-key sequences for Spamlet, and then for entire words.<a class="headerlink" href="#Question-#5:-calculate-the-entropy-of-2-key-sequences-for-Spamlet,-and-then-for-entire-words." title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="Optional-Question-#6:-write-a-program-to-generate-sequences-of-text-that-sound-somewhat-like-Shakespeare.-See-for-inspiration-http://www.elsewhere.org/journal/pomo/">
+<h3>Optional Question #6: write a program to generate sequences of text that sound somewhat like Shakespeare. See for inspiration <a class="reference external" href="http://www.elsewhere.org/journal/pomo/">http://www.elsewhere.org/journal/pomo/</a><a class="headerlink" href="#Optional-Question-#6:-write-a-program-to-generate-sequences-of-text-that-sound-somewhat-like-Shakespeare.-See-for-inspiration-http://www.elsewhere.org/journal/pomo/" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">random_seed</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">random_seed</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+
+<span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-15-a2d0cdb4e143&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>random_seed <span class="ansi-yellow-intense-fg ansi-bold">=</span> numpy<span class="ansi-yellow-intense-fg ansi-bold">.</span>random<span class="ansi-yellow-intense-fg ansi-bold">.</span>seed<span class="ansi-yellow-intense-fg ansi-bold">(</span>seed<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">      2</span> print<span class="ansi-yellow-intense-fg ansi-bold">(</span> random_seed <span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">      3</span> print<span class="ansi-yellow-intense-fg ansi-bold">(</span> numpy<span class="ansi-yellow-intense-fg ansi-bold">.</span>random<span class="ansi-yellow-intense-fg ansi-bold">.</span>choice<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-cyan-intense-fg ansi-bold">0</span><span class="ansi-yellow-intense-fg ansi-bold">,</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> size<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-cyan-intense-fg ansi-bold">9</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> p<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-cyan-intense-fg ansi-bold">0.5</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-cyan-intense-fg ansi-bold">0.5</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">      4</span> print<span class="ansi-yellow-intense-fg ansi-bold">(</span> numpy<span class="ansi-yellow-intense-fg ansi-bold">.</span>random<span class="ansi-yellow-intense-fg ansi-bold">.</span>choice<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-cyan-intense-fg ansi-bold">0</span><span class="ansi-yellow-intense-fg ansi-bold">,</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> size<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-cyan-intense-fg ansi-bold">9</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> p<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-cyan-intense-fg ansi-bold">0.5</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-cyan-intense-fg ansi-bold">0.5</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">      5</span>
+
+<span class="ansi-red-intense-fg ansi-bold">NameError</span>: name &#39;numpy&#39; is not defined
+</pre></div></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../RockStar.html" class="btn btn-neutral float-right" title="Rockstar Programming and Teamwork" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="phys481_week01_cat_shuffle-notes.html" class="btn btn-neutral float-left" title="Shuffling Arnold’s Cat" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Elijah Thompson.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -49,7 +49,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Daily Tasks" href="Tasks.html" />
-    <link rel="prev" title="Welcome to Phys481SphinxNotes’s documentation!" href="index.html" /> 
+    <link rel="prev" title="Welcome to Elijah Thompson’s Phys481 Class Notes!" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -98,6 +98,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>Phys 481 Lecture Notes</strong></a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#assignment-1-and-the-cat-map-september-7th"><strong>Assignment 1 and the Cat Map (September 7th)</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#sphinx-setup-september-9th"><strong>Sphinx Setup (September 9th)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#shannon-entropy-and-spamlet-assignment-september-14th"><strong>Shannon Entropy and Spamlet Assignment (September 14th)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#numbers-in-python-september-16th"><strong>Numbers in Python (September 16th)</strong></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Tasks.html"><strong>Daily Tasks</strong></a></li>
@@ -106,6 +108,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week00_example_report_template.html">Example notebook report template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week01_cat_shuffle-notes.html">Shuffling Arnold’s Cat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week02a_spamlet_entropy-notes.html">Bernoulli, entropy and spamlet</a></li>
 </ul>
 <p class="caption"><span class="caption-text">D2L Contents:</span></p>
 <ul>
@@ -198,6 +201,26 @@
 <div class="section" id="sphinx-setup-september-9th">
 <h2><strong>Sphinx Setup (September 9th)</strong><a class="headerlink" href="#sphinx-setup-september-9th" title="Permalink to this headline">¶</a></h2>
 <p>During this lecture sphinx was introduced and set up, so the primary information for this lecture day is found in <a class="reference internal" href="SphinxDocs.html#sphinxdoc"><span class="std std-ref">Sphinx Documentation</span></a>.</p>
+</div>
+<div class="section" id="shannon-entropy-and-spamlet-assignment-september-14th">
+<h2><strong>Shannon Entropy and Spamlet Assignment (September 14th)</strong><a class="headerlink" href="#shannon-entropy-and-spamlet-assignment-september-14th" title="Permalink to this headline">¶</a></h2>
+<p>In basic probability theory, a random Bernoulli process consists of two outcomes, with probabilities <span class="math notranslate nohighlight">\(p\)</span> and <span class="math notranslate nohighlight">\(1-p\)</span>. In general, the sum of the probabilities of all possible outcomes for any experiment must be 1. The special case of a simple event in probability theory is that in which there are <span class="math notranslate nohighlight">\(\Omega\)</span> outcomes, each of which has probability <span class="math notranslate nohighlight">\(1/\Omega\)</span>.</p>
+<p>Another important topic in computation theory is <strong>Entropy</strong> and <em>information</em>. Entropy can be thought of as a measure of the “surprise” factor of events associated with some data (for example a sequence). Shannon entropy quantifies this by defining entropy to the expected information content of a signal, calculated by</p>
+<div class="math notranslate nohighlight">
+\[H = -\sum_{i=1}^np_i\log p_i\]</div>
+<p>Often base 2 is used for the logarithm, giving the units of bits per symbol</p>
+<div class="math notranslate nohighlight">
+\[H = -\sum_{i=1}^np_i\log_2 p_i = -\frac{1}{\ln 2}\sum_{i=1}^np_i\ln p_i\]</div>
+<p>The entropy function has the following properties:
+#. <span class="math notranslate nohighlight">\(H(p_1,...,p_N)\)</span> is a concave function of <span class="math notranslate nohighlight">\(p_i\)</span>.
+#. for a given <span class="math notranslate nohighlight">\(N\)</span>, the uniform distribution <span class="math notranslate nohighlight">\(p_i = 1/N\)</span> has the maximum entropy <span class="math notranslate nohighlight">\(H\)</span>
+#. <span class="math notranslate nohighlight">\(H(p_1,...,p_N)\)</span> is zero if and only if one of the <span class="math notranslate nohighlight">\(p_i\)</span> is one (which is to say there is only one possible outcome)</p>
+</div>
+<div class="section" id="numbers-in-python-september-16th">
+<h2><strong>Numbers in Python (September 16th)</strong><a class="headerlink" href="#numbers-in-python-september-16th" title="Permalink to this headline">¶</a></h2>
+<p>Due to issues of rounding and computer representation of floating point numbers, equality should never be used to compare floating points and instaed the magnitude of the difference should be compared against some tolerance; for example <span class="math notranslate nohighlight">\(1E-6\)</span> (single precision) or <span class="math notranslate nohighlight">\(1E-15\)</span> (double precision).</p>
+<p>For conversions to different bases in python, we have the functions int(), bin(), oct(), and hex(). We can also use the format() function to change between bases, in particular using “{:#}” before other formatting terms. For example, {:#d} gives decimal, {:#b} gives binary, {:#o} gives octal, and {:#x} is hexidecimal.</p>
+<p>For integer representation, a byte consists of 8 bits, and <span class="math notranslate nohighlight">\(n\)</span> bytes can contain any number from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(2^{8\cdot n}\)</span>. To denote the sign we add a sign bit out from, with <span class="math notranslate nohighlight">\(0\)</span> indicating <span class="math notranslate nohighlight">\(+\)</span> and <span class="math notranslate nohighlight">\(1\)</span> for <span class="math notranslate nohighlight">\(-\)</span>. We can also use scientific notation, using some of the bits for the exponent, and some for the mantissa. Single precision floating points use 32 bits: 1 for the sign, 8 for the exponent, and 23 for the mantissa (+1 which is implicit).</p>
 <div class="figure align-right">
 <a class="reference internal image-reference" href="_images/Logo.png"><img alt="_images/Logo.png" src="_images/Logo.png" style="width: 87.3px; height: 90.0px;" /></a>
 </div>
@@ -211,7 +234,7 @@
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="Tasks.html" class="btn btn-neutral float-right" title="Daily Tasks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Phys481SphinxNotes’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Elijah Thompson’s Phys481 Class Notes!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

@@ -23,6 +23,8 @@ The :ref:`Lecture Notes <notes>` consist of notes ordered by topic which go thro
 
    /JupyterNotes/phys481_week00_example_report_template
    /JupyterNotes/phys481_week01_cat_shuffle-notes
+   /JupyterNotes/phys481_week02a_spamlet_entropy-notes
+   /JupyterNotes/phys481_week02b_integer,float-notes
 
 .. toctree::
    :maxdepth: 2
@@ -40,3 +42,12 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+
+.. figure:: /Images/Logo.png
+   :align: right
+   :scale: 30 %
+  
+
+

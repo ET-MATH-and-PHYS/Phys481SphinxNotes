@@ -99,11 +99,15 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week00_example_report_template.html">Example notebook report template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week01_cat_shuffle-notes.html">Shuffling Arnold’s Cat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week02a_spamlet_entropy-notes.html">Bernoulli, entropy and spamlet</a></li>
 </ul>
 <p class="caption"><span class="caption-text">D2L Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="RockStar.html"><strong>Rockstar Programming and Teamwork</strong></a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>Sphinx Documentation</strong></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>Sphinx Documentation</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -177,6 +181,50 @@
             
   <div class="section" id="sphinx-documentation">
 <span id="sphinxdoc"></span><h1><strong>Sphinx Documentation</strong><a class="headerlink" href="#sphinx-documentation" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://www.sphinx-doc.org/en/master/">http://www.sphinx-doc.org/en/master/</a></p>
+<p>Sphinx is a tool that makes it easy to create intelligent and beautiful documentation.</p>
+<p>It was originally created for the Python documentation, and it has excellent facilities for the documentation of software projects in a range of languages.  Useful features include</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Multiple output formats: HTML (including Windows HTML Help), LaTeX (for printable PDF versions), ePub, Texinfo, manual pages, plain text</p></li>
+<li><p>Extensive cross-references: semantic markup and automatic links for functions, classes, citations, glossary terms and similar pieces of information</p></li>
+<li><p>Hierarchical structure: easy definition of a document tree, with automatic links to siblings, parents and children</p></li>
+<li><p>Automatic indices: general index as well as a language-specific module indices</p></li>
+<li><p>Code handling: automatic highlighting using the Pygments highlighter</p></li>
+<li><p>Extensions: automatic testing of code snippets, inclusion of docstrings from Python modules (API docs), and more</p></li>
+<li><p>Contributed extensions: more than 50 extensions contributed by users in a second repository; most of them installable from PyPI</p></li>
+</ul>
+</div></blockquote>
+<p>Sphinx uses reStructuredText as its markup language, and many of its strengths come from the power and straightforwardness of reStructuredText and its parsing and translating suite, the Docutils.</p>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Each sphinx document will be managed using the following four files</p>
+<blockquote>
+<div><p>conf.py               # document configuration</p>
+<p>index.rst             # top level document index</p>
+<p>make.bat              # windows command file</p>
+<p>Makefile              # unix command file</p>
+</div></blockquote>
+<p>Content may also be provided in ‘.rst’ (markup) format.  The ‘nbsphinx’ extension</p>
+<blockquote>
+<div><p><a class="reference external" href="https://nbsphinx.readthedocs.io/en/0.4.2/">https://nbsphinx.readthedocs.io/en/0.4.2/</a></p>
+</div></blockquote>
+<p>is used to automatically include Jupyter notebooks inside Sphinx documents.</p>
+<p>Sphinx can generate a wide range of document types; these are located under the “_build” directory.
+The ‘_static’ and ‘_templates’ subdirectories can be useful for developing more complex documents.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>_build</dt><dd><p>epub
+html
+latex
+singlehtml</p>
+</dd>
+</dl>
+<p>_static</p>
+<p>_templates</p>
+</div></blockquote>
+<p>Document dependencies and auto-generation is managed under Linux with the classic “make” tool.  A LaTeX installation is also required in order to generate PDF.</p>
+</div>
 </div>
 
 

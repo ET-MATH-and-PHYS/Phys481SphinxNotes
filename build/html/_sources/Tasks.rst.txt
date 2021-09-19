@@ -20,9 +20,13 @@ All team members finished their remaining tasks, and formatting of the report wa
 **September 14th (Lecture 3)**
 ------------------------------
 
+Members began reading through the document for assignment 2, as well as bouncing ideas around for different ways to solve the given questions.
+
 
 **September 16th (Lecture 4)**
 ------------------------------
+
+Got clarifications for questions on assignment 2, and most group members finished all questions except for question 6.
 
 
 **September 21th (Lecture 5)**

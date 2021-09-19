@@ -47,7 +47,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Sphinx Documentation" href="SphinxDocs.html" />
-    <link rel="prev" title="Shuffling Arnold’s Cat" href="JupyterNotes/phys481_week01_cat_shuffle-notes.html" /> 
+    <link rel="prev" title="Bernoulli, entropy and spamlet" href="JupyterNotes/phys481_week02a_spamlet_entropy-notes.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -100,6 +100,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week00_example_report_template.html">Example notebook report template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week01_cat_shuffle-notes.html">Shuffling Arnold’s Cat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week02a_spamlet_entropy-notes.html">Bernoulli, entropy and spamlet</a></li>
 </ul>
 <p class="caption"><span class="caption-text">D2L Contents:</span></p>
 <ul class="current">
@@ -184,9 +185,30 @@
 <h1><strong>Rockstar Programming and Teamwork</strong><a class="headerlink" href="#rockstar-programming-and-teamwork" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="myth-of-the-rockstar-programmer">
 <h2><strong>Myth of the “Rockstar” Programmer</strong><a class="headerlink" href="#myth-of-the-rockstar-programmer" title="Permalink to this headline">¶</a></h2>
+<p>There exist many stories about the troubles which come with working with a “rock star” programmer, such as:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.freecodecamp.org/news/we-fired-our-top-talent-best-decision-we-ever-made-4c0a99728fde">https://www.freecodecamp.org/news/we-fired-our-top-talent-best-decision-we-ever-made-4c0a99728fde</a></p></li>
+<li><p><a class="reference external" href="https://insights.dice.com/2018/08/23/5-reasons-avoid-hiring-rockstar-developers">https://insights.dice.com/2018/08/23/5-reasons-avoid-hiring-rockstar-developers</a></p></li>
+<li><p><a class="reference external" href="https://hackernoon.com/the-myth-of-a-rockstar-developer-e6564bd51b5c">https://hackernoon.com/the-myth-of-a-rockstar-developer-e6564bd51b5c</a></p></li>
+<li><p><a class="reference external" href="https://www.hanselman.com/blog/the-myth-of-the-rockstar-programmer">https://www.hanselman.com/blog/the-myth-of-the-rockstar-programmer</a></p></li>
+</ul>
+<p>and there are also quantitative studies suggesting they do not exist:</p>
+<ul class="simple">
+<li><p>“A pervasive belief in the field of software engineering is that some programmers are much, much better than others (the times-10, or x10, programmer), and that the skills, abilities, and talents of these programmers exert an outsized influence on that organization’s success or failure. In the field of baseball research (sabermetrics), researchers who challenged widely held—but erroneous—notions were able to exploit market inefficiencies to their advantage, a development vividly described in Moneyball by Michael Lewis. Similarly, astute software managers can benefit by challenging commonly accepted wisdom. In this blog post, I examine the veracity and relevance of the widely held notion of the x10 programmer. Using data from a study we conducted at the SEI, I found evidence that challenges the idea that some programmers are inherently far more skilled or productive than others. Our study concluded that the truth is more nuanced. First, I found that most of the differences resulted from a few very low performances, rather than exceptional high performance. Second, there are very few programmers at the extremes. Third, the same programmers were seldom best or worst. While average performance differs between programmers, only half the variation in program-development effort can be attributed to inherent programmer skill; the other half is within the individual developer’s day-to-day variation. That is, the programmers differ from themselves as much as they differ from other members of the group. The many studies that seem to show a x10 performance range conflate differences between programmers with normal programmer day-to-day variation.” <a class="reference external" href="https://insights.sei.cmu.edu/blog/programmer-moneyball-challenging-the-myth-of-individual-programmer-productivity">https://insights.sei.cmu.edu/blog/programmer-moneyball-challenging-the-myth-of-individual-programmer-productivity</a></p></li>
+</ul>
+<p>An example in the field of music, with actual rock stars, is the following:</p>
+<ul class="simple">
+<li><p>“High-profile musicians make all sorts of wild demands about their backstage set-ups at concerts: Kanye West reportedly requires a barber’s chair. Mariah Carey insists on two vases of white roses. Rock band Van Halen had one of the most oddly specific requests of all: a bowl of M&amp;M candies, with all the brown ones removed. For years, it was seen as complete folly — the band was making a ridiculous demand of concert organizers simply because they could get away with it.” <a class="reference external" href="https://www.insider.com/van-halen-brown-m-ms-contract-2016-9">https://www.insider.com/van-halen-brown-m-ms-contract-2016-9</a></p></li>
+</ul>
+<p>Joe Waechter suggests to avoid a “star programmer” as having one often leads to reliance on a single individual, which makes it disasterous when they leave, it also prevents the exploration of different perspectives and diversity of both people and thought, and the individual can often be over confident and unwilling to work with other members in your work group.</p>
 </div>
 <div class="section" id="programming-teamwork-and-the-buddy-system">
 <h2><strong>Programming Teamwork and the Buddy System</strong><a class="headerlink" href="#programming-teamwork-and-the-buddy-system" title="Permalink to this headline">¶</a></h2>
+<p>Team programming is essential, especially in software engineering, as is discussed in the following link and excerpt:</p>
+<ul class="simple">
+<li><p>“In software engineering, team programming is a project management strategy for coordinating task distribution in computer software development projects,  which involves the assignment of two or more computer programmers to work collaboratively on an individual sub-task within a larger programming project.  In general, the manner in which this term is used today refers to methods currently in vogue within the software development  industry where multiple individuals work simultaneously on the same activity; in these systems, programmers are often grouped in pairs at the same computer workstation, one observing the other working on the software and alternating roles at time intervals.” <a class="reference external" href="https://en.wikipedia.org/wiki/Team_programming">https://en.wikipedia.org/wiki/Team_programming</a></p></li>
+</ul>
+<p>A popular form of teamwork is the buddy system, in which two programmers sit at the desk, one actually writing the code while the other checks it, corrects it, and offerse suggestions.</p>
 </div>
 </div>
 
@@ -197,7 +219,7 @@
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="SphinxDocs.html" class="btn btn-neutral float-right" title="Sphinx Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="JupyterNotes/phys481_week01_cat_shuffle-notes.html" class="btn btn-neutral float-left" title="Shuffling Arnold’s Cat" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="JupyterNotes/phys481_week02a_spamlet_entropy-notes.html" class="btn btn-neutral float-left" title="Bernoulli, entropy and spamlet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

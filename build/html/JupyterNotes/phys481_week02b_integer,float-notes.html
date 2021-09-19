@@ -1,0 +1,1395 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Numbers: integers, fixed point and floating point &mdash; Phys481SphinxNotes 1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Rockstar Programming and Teamwork" href="../RockStar.html" />
+    <link rel="prev" title="Bernoulli, entropy and spamlet" href="phys481_week02a_spamlet_entropy-notes.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Phys481SphinxNotes
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../LectureNotes.html"><strong>Phys 481 Lecture Notes</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tasks.html"><strong>Daily Tasks</strong></a></li>
+</ul>
+<p class="caption"><span class="caption-text">Jupyter Notebooks:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="phys481_week00_example_report_template.html">Example notebook report template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week01_cat_shuffle-notes.html">Shuffling Arnold’s Cat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week02a_spamlet_entropy-notes.html">Bernoulli, entropy and spamlet</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Numbers: integers, fixed point and floating point</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#phys481_week02b_integer,float-notes">phys481_week02b_integer,float-notes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Numeric-Types-—-int,-float,-complex">Numeric Types — int, float, complex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#This-should-never-happen?">This should never happen?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Integers-and-floating-point-values">Integers and floating point values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Format-strings">Format strings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Built-in-functions">Built-in functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Unsigned-integers">Unsigned integers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Signed-integers">Signed integers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Arbitrary-mapping">Arbitrary mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Real-numbers:-fixed-point">Real numbers: fixed point</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#IEEE-754-floating-point-to-the-rescue">IEEE 754 floating point to the rescue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#loss-of-precision">loss of precision</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Resolution-and-eps">Resolution and eps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#casting-and-viewing">casting and viewing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#numpy-is-helpful">numpy is helpful</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-integers">python integers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mpmath">mpmath</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">D2L Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../RockStar.html"><strong>Rockstar Programming and Teamwork</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SphinxDocs.html"><strong>Sphinx Documentation</strong></a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Phys481SphinxNotes</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+<div class="git-ribbon">
+  <a href="http://github.com/SwissDataScienceCenter" rel="me">Join us on GitHub</a>
+</div>
+
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Numbers: integers, fixed point and floating point</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/JupyterNotes/phys481_week02b_integer,float-notes.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<div class="section" id="Numbers:-integers,-fixed-point-and-floating-point">
+<h1>Numbers: integers, fixed point and floating point<a class="headerlink" href="#Numbers:-integers,-fixed-point-and-floating-point" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="phys481_week02b_integer,float-notes">
+<h2>phys481_week02b_integer,float-notes<a class="headerlink" href="#phys481_week02b_integer,float-notes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Introduction">
+<h3>Introduction<a class="headerlink" href="#Introduction" title="Permalink to this headline">¶</a></h3>
+<p>Digital computers use binary representation to store integers and real numbers. This can result in some important differences between ideal mathematics and computational results. A good understanding of numerical representation is important for avoiding unpleasant surprises.</p>
+</div>
+<div class="section" id="Numeric-Types-—-int,-float,-complex">
+<h3>Numeric Types — int, float, complex<a class="headerlink" href="#Numeric-Types-—-int,-float,-complex" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex">https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex</a></p>
+<p>The python core has three distinct numeric types: integers, floating point numbers, and complex numbers. In addition, Booleans are a subtype of integers. Integers have unlimited precision.</p>
+<p>Floating point numbers are usually implemented using double in C; information about the precision and internal representation of floating point numbers for the machine on which your program is running is available in sys.float_info.</p>
+<p>Complex numbers have a real and imaginary part, which are each a floating point number. To extract these parts from a complex number z, use z.real and z.imag. (The standard library includes the additional numeric types fractions.Fraction, for rationals, and decimal.Decimal, for floating-point numbers with user-definable precision.)</p>
+</div>
+<div class="section" id="This-should-never-happen?">
+<h3>This should never happen?<a class="headerlink" href="#This-should-never-happen?" title="Permalink to this headline">¶</a></h3>
+<p>You might think that the following equations are both trivially obvious and equivalent</p>
+<div class="math notranslate nohighlight">
+\[( 1 + x ) - x = 1\]</div>
+<div class="math notranslate nohighlight">
+\[( 1 + x ) - 1 = x\]</div>
+<p>However, when using floating point math it is easy to find values of <span class="math notranslate nohighlight">\(x\)</span> for which these are not true.</p>
+<p>One consequence of this is that we should never test for floating point equality eg.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if (a==b): # don&#39;t do this with floats
+</pre></div>
+</div>
+<p>It is usually a better idea to consider the magnitude of the difference</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if np.abs(a-b) &lt;= 1e-6   #  single precision
+if np.abs(a-b) &lt;= 1e-15  #  double precision
+</pre></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Check whether simple math identities are</span>
+<span class="c1"># actually valid for given floating point values</span>
+<span class="c1">#</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">AlwaysTrue1</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">value</span><span class="p">)</span> <span class="o">-</span> <span class="n">value</span> <span class="o">==</span> <span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">AlwaysTrue2</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">value</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">value</span>
+
+
+<span class="nb">print</span><span class="p">(</span> <span class="n">AlwaysTrue1</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">AlwaysTrue2</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True True
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">valuelist</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.0011</span><span class="p">,</span> <span class="mf">1.0e-4</span><span class="p">,</span> <span class="mf">9.11e-31</span><span class="p">,</span> <span class="mf">3.1415</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mf">6.02e23</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">valuelist</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="n">AlwaysTrue1</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">   &#39;</span><span class="p">,</span> <span class="n">AlwaysTrue2</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> &#39;</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">+</span><span class="mi">18</span><span class="o">*</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">12</span><span class="p">],</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> &#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{:39.30f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True        True          0                      0.000000000000000000000000000000
+True        True          1                      1.000000000000000000000000000000
+True        True          0.0                    0.000000000000000000000000000000
+True        True          1.0                    1.000000000000000000000000000000
+True        True          2.0                    2.000000000000000000000000000000
+True        True          0.5                    0.500000000000000000000000000000
+True        False         0.2                    0.200000000000000011102230246252
+True        False         0.1                    0.100000000000000005551115123126
+True        False         0.01                   0.010000000000000000208166817117
+False       False         0.001                  0.001000000000000000020816681712
+True        False         0.0011                 0.001100000000000000066266436782
+True        False         0.0001                 0.000100000000000000004792173602
+True        False         9.11e-31               0.000000000000000000000000000001
+False       False         3.1415                 3.141500000000000181188397618826
+False       False         1.4142135623           1.414213562373095145474621858739
+False       True          6.02e+23        601999999999999995805696.000000000000000000000000000000
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Integers-and-floating-point-values">
+<h3>Integers and floating point values<a class="headerlink" href="#Integers-and-floating-point-values" title="Permalink to this headline">¶</a></h3>
+<p>You should all be familiar with the base-10 representation of integers</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+123 =&amp; 100 + 20 + 3 \\[2ex]
+ {} =&amp; 1 \times 10^2 + 2 \times 10^1 + 3 \times 10^0 \\
+\end{aligned}\end{split}\]</div>
+<p>Hopefully you also have some experience working with base-2 (binary) representation</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+123 &amp;= 64 + 32 + 16 + 8 + 2 + 1 \\[2ex]
+    &amp;= 1 \times 2^7 + 1 \times 2^6 + 1 \times 2^5 + 1 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 \\[2ex]
+    &amp;= 0b1111011 \\
+\end{aligned}\end{split}\]</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">assert</span><span class="p">(</span> <span class="mb">0b1111011</span> <span class="o">==</span> <span class="mi">123</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>There are several core functions that can convert to integer (base 10), octal (base 8), and hexadecimal (base 16).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span> <span class="nb">int</span><span class="p">(</span><span class="mi">123</span><span class="p">),</span> <span class="s1">&#39;    </span><span class="se">\t</span><span class="s1"> decimal&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="nb">bin</span><span class="p">(</span><span class="mi">123</span><span class="p">),</span> <span class="s1">&#39; </span><span class="se">\t</span><span class="s1"> binary&#39;</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="nb">oct</span><span class="p">(</span><span class="mi">123</span><span class="p">),</span> <span class="s1">&#39;   </span><span class="se">\t</span><span class="s1"> octal &#39;</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="nb">hex</span><span class="p">(</span><span class="mi">123</span><span class="p">),</span> <span class="s1">&#39;   </span><span class="se">\t</span><span class="s1"> hexadecimal&#39;</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+123              decimal
+0b1111011        binary
+0o173            octal
+0x7b             hexadecimal
+</pre></div></div>
+</div>
+<p>Converting back to decimal is also straightforward</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span> <span class="mb">0b1111011</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="mo">0o173</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="mh">0x7b</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+123
+123
+123
+</pre></div></div>
+</div>
+<p>Although python is perfectly happy to mix all of these together in one expression, humans are likely to get confused. Avoid base mixing if possible.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">-</span><span class="mi">123</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="mb">0b1111011</span> <span class="o">-</span> <span class="p">(</span> <span class="mi">5</span> <span class="o">*</span> <span class="mh">0x7b</span> <span class="p">)</span> <span class="o">/</span> <span class="mo">0o173</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+118.0
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Format-strings">
+<h3>Format strings<a class="headerlink" href="#Format-strings" title="Permalink to this headline">¶</a></h3>
+<p>Another way to convert between different bases is with the <code class="docutils literal notranslate"><span class="pre">format</span></code> function. This requires a format-string and one or more values. By default, each occurence of “{}” in the format-string is replaced with the corresponding value ie.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;{}&#39;.format(1)  -&gt; &#39;1&#39;
+</pre></div>
+</div>
+<p>More complex formatting can also be produced. For example “{:09}” will reserve 9 characters for the value and add zeros on the left to fill any blank space.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;An integer _</span><span class="si">{}</span><span class="s1">_&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;A 9-digit integer _</span><span class="si">{:9}</span><span class="s1">_&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;Zero padding _</span><span class="si">{:09}</span><span class="s1">_&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;1:</span><span class="si">{}</span><span class="s1">, 2:</span><span class="si">{}</span><span class="s1">, 3:</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;fish&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+123
+An integer _123_
+A 9-digit integer _      123_
+Zero padding _000000123_
+1:1, 2:fish, 3:0.0
+</pre></div></div>
+</div>
+<p>Base conversion can be achieved by using the “{:#}” code. The default is “{:#d}” for decimal, “{:#b}” for binary, “o” for octal and “x” for hexadecimal.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">fstring</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:#12d}</span><span class="s1"> decimal</span><span class="se">\n</span><span class="si">{:#12b}</span><span class="s1"> binary</span><span class="se">\n</span><span class="si">{:#12o}</span><span class="s1"> octal</span><span class="se">\n</span><span class="si">{:#12x}</span><span class="s1"> hexadecimal</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">fstring</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="mi">123</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="mi">123</span> <span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+         123 decimal
+   0b1111011 binary
+       0o173 octal
+        0x7b hexadecimal
+
+</pre></div></div>
+</div>
+<div class="section" id="Built-in-functions">
+<h4>Built-in functions<a class="headerlink" href="#Built-in-functions" title="Permalink to this headline">¶</a></h4>
+<p>Note: you should get familiar with this table of functions which are always available in core python:</p>
+<p><a class="reference external" href="https://docs.python.org/3/library/functions.html">https://docs.python.org/3/library/functions.html</a></p>
+</div>
+<div class="section" id="Unsigned-integers">
+<h4>Unsigned integers<a class="headerlink" href="#Unsigned-integers" title="Permalink to this headline">¶</a></h4>
+<p>Computer memory is always a limited resource, so it is worth thinking about ways to use it efficiently. Consider some variable that will always be limited to an integer value between 0 and 3 (inclusive). The four possibilities (<span class="math notranslate nohighlight">\(0, 1, 2, 3\)</span>) can be stored using just two bits</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>00  -&gt;  0
+01  -&gt;  1
+10  -&gt;  2
+11  -&gt;  3
+</pre></div>
+</div>
+<p>In practice, it is generally easiest to work with multiples of 8 bits (also known as bytes). A single unsigned byte could contain any number from 0 to 255 <span class="math notranslate nohighlight">\((2^8 -1)\)</span>. Two unsigned bytes can represent any integer in the range 0-65535 <span class="math notranslate nohighlight">\((2^{16}-1)\)</span>. Four unsigned bytes will cover the range from 0 to 4294967295 <span class="math notranslate nohighlight">\((2^{64}-1)\)</span>.</p>
+</div>
+<div class="section" id="Signed-integers">
+<h4>Signed integers<a class="headerlink" href="#Signed-integers" title="Permalink to this headline">¶</a></h4>
+<p>Now consider a set of seven integers from -3 and +3. We need to add a third “sign bit” which indicates whether the number is positive (0) or negative (1).</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>000  -&gt;  +0
+001  -&gt;  +1
+010  -&gt;  +2
+011  -&gt;  +3
+
+111  -&gt;  -3
+110  -&gt;  -2
+101  -&gt;  -1
+100  -&gt;  -0
+</pre></div>
+</div>
+<p>The last item is arguably redundant since <span class="math notranslate nohighlight">\(+0 = -0\)</span>. We could instead use ‘0b100’ to store some other value eg. <span class="math notranslate nohighlight">\(-4\)</span> or infinity.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">numpy.iinfo</span></code> function provides information about the range of numbers which can be represented when using different types of integers.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># this fragment of Python code uses the &quot;numpy.iinfo&quot; function to print</span>
+<span class="c1"># the min/max values which can be represented by different integer types.</span>
+<span class="c1">#</span>
+<span class="c1"># Notes:</span>
+<span class="c1">#  1) print(&#39;\n&#39;)  # the string &#39;\n&#39; produces a &quot;newline&quot; or carriage return</span>
+<span class="c1">#  2) getattr is a way of asking Python objects what they can do</span>
+
+
+<span class="c1"># Make a dictionary where each entry contains a list of different integer types</span>
+<span class="c1">#</span>
+<span class="c1"># Add a number at the front of each entry name so that we can control the</span>
+<span class="c1"># sort order.  We can use &quot;name[1:]&quot; to skip the first letter for printing.</span>
+<span class="c1">#</span>
+<span class="n">itypes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;0unsigned&#39;</span><span class="p">:[</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint64</span><span class="p">],</span>
+          <span class="s1">&#39;1signed&#39;</span><span class="p">:[</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span>
+          <span class="s1">&#39;2synonyms&#39;</span><span class="p">:[</span><span class="n">np</span><span class="o">.</span><span class="n">byte</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">long</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">longlong</span><span class="p">]</span> <span class="p">}</span>
+
+<span class="k">for</span> <span class="n">tname</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span> <span class="n">itypes</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">tname</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="k">for</span> <span class="n">itype</span> <span class="ow">in</span> <span class="n">itypes</span><span class="p">[</span><span class="n">tname</span><span class="p">]:</span>
+        <span class="n">iinfo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span> <span class="n">itype</span> <span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">iinfo</span><span class="o">.</span><span class="n">dtype</span> <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span> <span class="n">name</span><span class="p">,</span> <span class="n">iinfo</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">iinfo</span><span class="o">.</span><span class="n">max</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+ unsigned
+uint8 0 255
+uint16 0 65535
+uint32 0 4294967295
+uint64 0 18446744073709551615
+
+ signed
+int8 -128 127
+int16 -32768 32767
+int32 -2147483648 2147483647
+int64 -9223372036854775808 9223372036854775807
+
+ synonyms
+int8 -128 127
+int32 -2147483648 2147483647
+int32 -2147483648 2147483647
+int64 -9223372036854775808 9223372036854775807
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+&lt;ipython-input-9-e64d79a63e26&gt;:18: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
+  &#39;2synonyms&#39;:[np.byte, np.int, np.long, np.longlong] }
+&lt;ipython-input-9-e64d79a63e26&gt;:18: DeprecationWarning: `np.long` is a deprecated alias for `np.compat.long`. To silence this warning, use `np.compat.long` by itself. In the likely event your code does not need to work on Python 2 you can use the builtin `int` for which `np.compat.long` is itself an alias. Doing this will not modify any behaviour and is safe. When replacing `np.long`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
+  &#39;2synonyms&#39;:[np.byte, np.int, np.long, np.longlong] }
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Arbitrary-mapping">
+<h4>Arbitrary mapping<a class="headerlink" href="#Arbitrary-mapping" title="Permalink to this headline">¶</a></h4>
+<p>More generally, we can think about a mapping between integers and arbitrary sets of values. For example, we might consider only even values</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>00  -&gt;  0
+01  -&gt;  2
+10  -&gt;  4
+11  -&gt;  6
+</pre></div>
+</div>
+<p>or every hundredth value</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>00  -&gt;  0
+01  -&gt;  100
+10  -&gt;  200
+11  -&gt;  300
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Real-numbers:-fixed-point">
+<h3>Real numbers: fixed point<a class="headerlink" href="#Real-numbers:-fixed-point" title="Permalink to this headline">¶</a></h3>
+<p>Most physical quantities and calculations require the use of <em>real</em> numbers, so we need to think about how these might be represented on digital computers.</p>
+<p>Given one byte of memory</p>
+<div class="math notranslate nohighlight">
+\[n = 0,\, 1,\, 2,\, \ldots, 253,\, 254,\, 255\]</div>
+<p>we can map the sequence of 256 integers to a sequence of 256 real numbers with one significant figure after the decimal place</p>
+<div class="math notranslate nohighlight">
+\[x = \frac{n}{10} = 0.0,\, 0.1,\, 0.2,\, \ldots, 25.3,\, 25.4,\, 25.5\]</div>
+<p>or a shorter sequence with <span class="math notranslate nohighlight">\(10\times\)</span> higher precision</p>
+<div class="math notranslate nohighlight">
+\[x = \frac{n}{100} = 0.00,\, 0.01,\, 0.02,\, \ldots, 2.53,\, 2.54,\, 2.55\]</div>
+<p>There is an unavoidable trade-off between <em>range</em> and <em>resolution</em>. If we increase the number of digits after the decimal place, then the maximum possible value will decrease.</p>
+<p>Another limitation is that we have to pick a single scaling factor (eg. <span class="math notranslate nohighlight">\(10\)</span> or <span class="math notranslate nohighlight">\(100\)</span>) which produces a <em>fixed</em> number of decimal places and a fixed upper limit. This will be a problem when dealing with physical systems that involve both very small and very large quantities (eg. electrons and planets).</p>
+</div>
+<div class="section" id="IEEE-754-floating-point-to-the-rescue">
+<h3>IEEE 754 floating point to the rescue<a class="headerlink" href="#IEEE-754-floating-point-to-the-rescue" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/IEEE_754">https://en.wikipedia.org/wiki/IEEE_754</a></p>
+<p>Wikipedia has an excellent summary of floating point representation and is well worth reviewing. The basic idea is to split the available bits into two groups: a mantissa and an exponent. For example, we could write the base-10 value of <span class="math notranslate nohighlight">\(50\)</span> as a pair of values eg. (5,1) or (50,0) or (0.5,2)</p>
+<div class="math notranslate nohighlight">
+\[50.0 \times 10^0  \qquad (50,0)\]</div>
+<div class="math notranslate nohighlight">
+\[5.0 \times 10^1  \qquad(5,1)\]</div>
+<div class="math notranslate nohighlight">
+\[0.5 \times 10^2  \qquad(0.5,2)\]</div>
+<p>Single precision floating point values are stored in 32 bits which are allocated as follows</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1. sign bit: 1
+2. exponent width: 8
+3: mantissa: 23 (+1 implicit)
+</pre></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">float2binary</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">bits</span><span class="o">=</span><span class="mi">32</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provide binary string represention of single precision float.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+    <span class="n">fstring</span> <span class="o">=</span> <span class="s1">&#39;{:0&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;b}&#39;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">fstring</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">signbit</span><span class="p">,</span> <span class="n">expbits</span><span class="p">,</span> <span class="n">sigbits</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">9</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">9</span><span class="p">:]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;+&#39;</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">signbit</span><span class="p">)],</span> <span class="s1">&#39;1.&#39;</span><span class="o">+</span><span class="n">sigbits</span><span class="p">,</span> <span class="s1">&#39;2^&#39;</span><span class="p">,</span> <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;0b&#39;</span><span class="o">+</span><span class="n">expbits</span><span class="p">)</span><span class="o">-</span><span class="mi">127</span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&#39;+&#39;, &#39;1.01000000000000000000000&#39;, &#39;2^&#39;, 2)
+(&#39;-&#39;, &#39;1.00000000000000000000000&#39;, &#39;2^&#39;, 0)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># multiplying by factors of 2 does not change</span>
+<span class="c1"># the mantissa, just the exponent</span>
+<span class="c1">#</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&#39;+&#39;, &#39;1.00000000000000000000000&#39;, &#39;2^&#39;, 0)
+(&#39;+&#39;, &#39;1.00000000000000000000000&#39;, &#39;2^&#39;, 1)
+(&#39;+&#39;, &#39;1.00000000000000000000000&#39;, &#39;2^&#39;, 2)
+(&#39;+&#39;, &#39;1.00000000000000000000000&#39;, &#39;2^&#39;, 3)
+(&#39;+&#39;, &#39;1.00000000000000000000000&#39;, &#39;2^&#39;, 4)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># these results may be surprising until</span>
+<span class="c1"># you remember that the mantissa is binary</span>
+<span class="c1">#</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&#39;+&#39;, &#39;1.00000000000000000000000&#39;, &#39;2^&#39;, 0)
+(&#39;+&#39;, &#39;1.00000000000000000000000&#39;, &#39;2^&#39;, 1)
+(&#39;+&#39;, &#39;1.10000000000000000000000&#39;, &#39;2^&#39;, 1)
+(&#39;+&#39;, &#39;1.00000000000000000000000&#39;, &#39;2^&#39;, 2)
+(&#39;+&#39;, &#39;1.01000000000000000000000&#39;, &#39;2^&#39;, 2)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mf">2.1</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mf">2.2</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&#39;+&#39;, &#39;1.10011001100110011001101&#39;, &#39;2^&#39;, -4)
+(&#39;+&#39;, &#39;1.00001100110011001100110&#39;, &#39;2^&#39;, 1)
+(&#39;+&#39;, &#39;1.00011001100110011001101&#39;, &#39;2^&#39;, 1)
+</pre></div></div>
+</div>
+<div class="section" id="loss-of-precision">
+<h4>loss of precision<a class="headerlink" href="#loss-of-precision" title="Permalink to this headline">¶</a></h4>
+<p>Consider a sequence <span class="math notranslate nohighlight">\(1+\epsilon\)</span> where <span class="math notranslate nohighlight">\(\epsilon\)</span> approaches zero.</p>
+<p>As <span class="math notranslate nohighlight">\(\epsilon\)</span> becomes smaller, the corresponding digits in the binary representation move to the right.</p>
+<p>When <span class="math notranslate nohighlight">\(\epsilon = 1E-7\)</span> we are using the last digit of the mantissa. This means that there is no way to store any smaller value, and</p>
+<div class="math notranslate nohighlight">
+\[1 + \epsilon = 1 \qquad \epsilon &lt; 10^{-7}\]</div>
+<div class="math notranslate nohighlight">
+\[1 + \epsilon \neq 1 \qquad \epsilon &gt; 10^{-7}\]</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mf">1.00001</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mf">1.000001</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mf">1.0000001</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mf">1.00000001</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">float2binary</span><span class="p">(</span><span class="mf">1.00000000</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&#39;+&#39;, &#39;1.00000000000000001010100&#39;, &#39;2^&#39;, 0)
+(&#39;+&#39;, &#39;1.00000000000000000001000&#39;, &#39;2^&#39;, 0)
+(&#39;+&#39;, &#39;1.00000000000000000000001&#39;, &#39;2^&#39;, 0)
+(&#39;+&#39;, &#39;1.00000000000000000000000&#39;, &#39;2^&#39;, 0)
+(&#39;+&#39;, &#39;1.00000000000000000000000&#39;, &#39;2^&#39;, 0)
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Resolution-and-eps">
+<h3>Resolution and eps<a class="headerlink" href="#Resolution-and-eps" title="Permalink to this headline">¶</a></h3>
+<p>We can get a feeling for the size of floating point representation errors as follows: start with some floating point value <span class="math notranslate nohighlight">\(x\)</span>, convert it to binary, change the last (binary) digit, and convert back to decimal.</p>
+<p>For single precision (32-bit) we will find that the fractional change will be on the order of 1e-6, while double precision (64-bit) will change by a factor of roughly 1e-15.</p>
+<p>Or, take several real numbers with relative differences less than 1e-6 and store them as single precision floating point. Some results will be indistinguishable because many real numbers will map to the same floating point representation.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">fval</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">bval</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:032b}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fval</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">))</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">fval</span><span class="p">,</span> <span class="n">bval</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;0b&#39;</span><span class="o">+</span><span class="n">bval</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1.0 00111111100000000000000000000000 1.0
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">nval</span> <span class="o">=</span> <span class="n">bval</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;1&#39;</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">fval</span><span class="p">,</span> <span class="n">nval</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;0b&#39;</span><span class="o">+</span><span class="n">nval</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1.0 00111111100000000000000000000001 1.0000001
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">fval</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0000001192092896</span><span class="p">,</span> <span class="mf">1.00000010</span><span class="p">,</span> <span class="mf">1.00000012</span><span class="p">,</span> <span class="mf">1.00000009</span><span class="p">]:</span>
+    <span class="n">bval</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:032b}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fval</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">))</span> <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;0b&#39;</span><span class="o">+</span><span class="n">bval</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">bval</span><span class="p">,</span> <span class="n">fval</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1.0 00111111100000000000000000000000 1.0
+1.0000001 00111111100000000000000000000001 1.0000001192092896
+1.0000001 00111111100000000000000000000001 1.0000001
+1.0000001 00111111100000000000000000000001 1.00000012
+1.0000001 00111111100000000000000000000001 1.00000009
+</pre></div></div>
+</div>
+<p>A useful summary of floating point properties are provided by <code class="docutils literal notranslate"><span class="pre">numpy.finfo</span></code> as shown below.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span> <span class="nb">print</span><span class="p">(</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;numpy.float16&#39;&gt; Machine parameters for float16
+---------------------------------------------------------------
+precision =   3   resolution = 1.00040e-03
+machep =    -10   eps =        9.76562e-04
+negep =     -11   epsneg =     4.88281e-04
+minexp =    -14   tiny =       6.10352e-05
+maxexp =     16   max =        6.55040e+04
+nexp =        5   min =        -max
+---------------------------------------------------------------
+
+&lt;class &#39;numpy.float32&#39;&gt; Machine parameters for float32
+---------------------------------------------------------------
+precision =   6   resolution = 1.0000000e-06
+machep =    -23   eps =        1.1920929e-07
+negep =     -24   epsneg =     5.9604645e-08
+minexp =   -126   tiny =       1.1754944e-38
+maxexp =    128   max =        3.4028235e+38
+nexp =        8   min =        -max
+---------------------------------------------------------------
+
+&lt;class &#39;numpy.float64&#39;&gt; Machine parameters for float64
+---------------------------------------------------------------
+precision =  15   resolution = 1.0000000000000001e-15
+machep =    -52   eps =        2.2204460492503131e-16
+negep =     -53   epsneg =     1.1102230246251565e-16
+minexp =  -1022   tiny =       2.2250738585072014e-308
+maxexp =   1024   max =        1.7976931348623157e+308
+nexp =       11   min =        -max
+---------------------------------------------------------------
+
+</pre></div></div>
+</div>
+<div class="section" id="casting-and-viewing">
+<h4>casting and viewing<a class="headerlink" href="#casting-and-viewing" title="Permalink to this headline">¶</a></h4>
+<p>What does it mean to convert from one variable type to another? Usually we want to “cast” values so that the new representation contains the same information in a new form. For example, when adding two variables of different types we may “promote” integers to floating point values.</p>
+<p>However, in some cases it may be useful to “view” the underlying binary data in a different way.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">type</span><span class="p">(</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">2.3</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+float
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">(</span><span class="mf">1.23</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">1.23</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array(1, dtype=uint32)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">1.23</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array(1067282596, dtype=uint32)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+<span class="s1">&#39;</span><span class="si">{:032b}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1065353216
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;00111111100000000000000000000000&#39;
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="numpy-is-helpful">
+<h3>numpy is helpful<a class="headerlink" href="#numpy-is-helpful" title="Permalink to this headline">¶</a></h3>
+<p>If we carry out some mathematical operation with mixed types, then numpy (and Python) will try very hard to “do the right thing”. In this case, it will see that we’re combining unsigned and signed integers. Since the result is negative, numpy will make sure that the result is a signed integer. It will also try to avoid problems by setting aside more than enough space (ie. 8 bytes).</p>
+<p>Still, we should try to keep track of things so that we’re not surprised when numpy suddenly decides that it needs twice as much memory.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+-100 &lt;class &#39;numpy.int64&#39;&gt;
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="python-integers">
+<h3>python integers<a class="headerlink" href="#python-integers" title="Permalink to this headline">¶</a></h3>
+<p>In the python core integers have unlimited precision</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">value</span> <span class="o">=</span> <span class="mi">123456789</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">value</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">value</span><span class="o">+</span><span class="mi">9876543219876543210</span><span class="p">,</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="o">+</span><span class="mi">9876543219876543210</span><span class="p">,</span> <span class="n">value</span><span class="o">*</span><span class="mi">9876543219876543210</span><span class="p">,</span> <span class="n">value</span><span class="o">/</span><span class="mi">10</span><span class="p">,</span> <span class="n">value</span><span class="o">/</span><span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">value</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+123456789 123456790 123456788 9876543219999999999
+123456789 9876543219999999999 1219326312345679001126352690 12345678.9 11223344.454545455 8.100000073710001e-09
+123456789 28679718602997181072337614380936720482949
+</pre></div></div>
+</div>
+<div class="section" id="mpmath">
+<h4>mpmath<a class="headerlink" href="#mpmath" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference external" href="https://mpmath.org/">https://mpmath.org/</a></p>
+<p>mpmath is a free (BSD licensed) Python library for real and complex floating-point arithmetic with arbitrary precision.</p>
+<p>As shown below, numpy and mpmath outputs are identical over a range of input values, but for very large arguments numpy the result is smaller than can be stored in a 64-bit float (2.2250738585072014e-308)</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">mpmath</span> <span class="k">as</span> <span class="nn">mp</span>
+<span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">500</span><span class="p">,</span> <span class="o">-</span><span class="mi">50000</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;</span><span class="si">{:20.15g}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">),</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">mp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+ 0.00673794699908547     0.00673794699908547
+1.92874984796392e-22     1.92874984796392e-22
+7.12457640674129e-218    7.12457640674129e-218
+                   0     1.88757769782051e-21715
+</pre></div></div>
+</div>
+<p>Arbitrary precision requires more memory and CPU.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;memory according to __sizeof__&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mi">9876543210</span> <span class="p">)</span><span class="o">.</span><span class="n">__sizeof__</span><span class="p">()</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">mp</span><span class="o">.</span><span class="n">mpf</span><span class="p">(</span><span class="mi">987654321</span><span class="p">)</span><span class="o">.</span><span class="n">__sizeof__</span><span class="p">()</span> <span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> large argument: mpmath is 6x slower&#39;</span> <span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> np.exp( -9876543210 )
+<span class="o">%</span><span class="k">timeit</span> mp.exp( -9876543210 ) #-np.arange(999,1999) )
+
+<span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> small argument: mpmath is 14x slower&#39;</span> <span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> np.exp( -1 )
+<span class="o">%</span><span class="k">timeit</span> mp.exp( -1 ) #-np.arange(999,1999) )
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+memory according to __sizeof__
+32
+40
+
+ large argument: mpmath is 6x slower
+891 ns ± 7.77 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+5.64 µs ± 65 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+
+ small argument
+674 ns ± 6.44 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+4.91 µs ± 35.2 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../RockStar.html" class="btn btn-neutral float-right" title="Rockstar Programming and Teamwork" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="phys481_week02a_spamlet_entropy-notes.html" class="btn btn-neutral float-left" title="Bernoulli, entropy and spamlet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Elijah Thompson.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
