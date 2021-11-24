@@ -1,0 +1,1315 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Laplace equation - matrix methods &mdash; Phys481SphinxNotes 1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Fourier transforms and audio" href="phys481_week09b_fourier_audio-notes.html" />
+    <link rel="prev" title="Physical constants and units" href="phys481_week08b_physical_units_constants-notes.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Phys481SphinxNotes
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../LectureNotes.html"><strong>Phys 481 Lecture Notes</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tasks.html"><strong>Daily Tasks</strong></a></li>
+</ul>
+<p class="caption"><span class="caption-text">Jupyter Notebooks:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="phys481_week00_example_report_template.html">Example notebook report template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week01_cat_shuffle-notes.html">Shuffling Arnold’s Cat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week02a_spamlet_entropy-notes.html">Bernoulli, entropy and spamlet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week02b_integer%2Cfloat-notes.html">Numbers: integers, fixed point and floating point</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week03a_computing_past_present_future.html">What are we doing here?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week03a_automata_life-notes.html">Phys481 notes - Automata and Life</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week04b_pseudorandom-notes.html">Pseudo-random number generators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week04b_automata_entropy-notes.html">PHYS 481 - Automata entropy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week08_laplace_equation-notes.html">Laplace equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week08b_physical_units_constants-notes.html">Physical constants and units</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Laplace equation - matrix methods</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Introduction">Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Theory">Theory</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#1D-rectangular">1D rectangular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Laplace-2D">Laplace 2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Matrix-methods">Matrix methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Theory-vs. numerics-:-speed">Theory vs. numerics : speed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Theory-vs. numerics-:-accuracy">Theory vs. numerics : accuracy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Special-cases">Special cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Sparse-Linear-Systems">Sparse Linear Systems</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Scipy-Sparse-Matricies">Scipy Sparse Matricies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week09b_fourier_audio-notes.html">Fourier transforms and audio</a></li>
+</ul>
+<p class="caption"><span class="caption-text">D2L Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../RockStar.html"><strong>Rockstar Programming and Teamwork</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SphinxDocs.html"><strong>Sphinx Documentation</strong></a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Phys481SphinxNotes</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+<div class="git-ribbon">
+  <a href="http://github.com/SwissDataScienceCenter" rel="me">Join us on GitHub</a>
+</div>
+
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Laplace equation - matrix methods</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/JupyterNotes/phys481_week09a_laplace_linear_algebra-notes.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<div class="section" id="Laplace-equation---matrix-methods">
+<h1>Laplace equation - matrix methods<a class="headerlink" href="#Laplace-equation---matrix-methods" title="Permalink to this headline">¶</a></h1>
+<p>Physics 481 Fall 2021 Week 09a</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="section" id="Introduction">
+<h2>Introduction<a class="headerlink" href="#Introduction" title="Permalink to this headline">¶</a></h2>
+<p>Numerical solutions of Laplace’s equation can be expressed as a set of linear equations. This allows the use of matrix methods and depends on an understanding of issues such as inversion stability and sparse matrices.</p>
+<div class="section" id="Theory">
+<h3>Theory<a class="headerlink" href="#Theory" title="Permalink to this headline">¶</a></h3>
+<p>The electrostatic potential <span class="math notranslate nohighlight">\(V\)</span> due to some charge <span class="math notranslate nohighlight">\(\rho\)</span> must satisfy Poisson’s equation</p>
+<div class="math notranslate nohighlight">
+\[\nabla^2 V = \rho\]</div>
+<p>For a charge-free region (<span class="math notranslate nohighlight">\(\rho=0\)</span>) this reduces to Laplace’s equation</p>
+<div class="math notranslate nohighlight">
+\[\nabla^2 V = 0\]</div>
+<p>which can be written in Cartesian coordinates</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} +  \frac{\partial^2 V}{\partial z^2} = 0\]</div>
+</div>
+</div>
+<div class="section" id="1D-rectangular">
+<h2>1D rectangular<a class="headerlink" href="#1D-rectangular" title="Permalink to this headline">¶</a></h2>
+<p>If <span class="math notranslate nohighlight">\(V\)</span> depends on only one variable, <span class="math notranslate nohighlight">\(x\)</span>, then Laplace’s equation in Cartesian coordinates becomes</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial^2 V}{\partial x^2} = 0\]</div>
+<p>The general solution is obtained by integrating twice</p>
+<div class="math notranslate nohighlight">
+\[V(x) = m x + b\]</div>
+<p>If we only consider discrete locations</p>
+<div class="math notranslate nohighlight">
+\[x_i = i \Delta x\]</div>
+<p>then the centered second difference is</p>
+<div class="math notranslate nohighlight">
+\[ \frac{\partial^2 V}{\partial x^2}
+\approx  \left . \frac{\partial V}{\partial x} \right |_{x_{i+1}} -  \left . \frac{\partial V}{\partial x} \right |_{x_i}
+\approx
+\frac{V_{i+1}-V_{i}}{x_{i+1}-x_{i}} - \frac{V_{i}-V_{i-1}}{x_{i}-x_{i-1}}
+\approx
+\frac{V_{i+1} - 2V_i + V_{i-1}}{\Delta x^2} = 0\]</div>
+<p>From this the potential at any location</p>
+<div class="math notranslate nohighlight">
+\[V_i = \frac{V_{i-1} + V_{i+1}}{2}\]</div>
+<p>can be determined by calculating the average of the two nearest neighbors. This suggests that an iterative approach (relaxation methods) might be used to solve for the potential profile.</p>
+</div>
+<div class="section" id="Laplace-2D">
+<h2>Laplace 2D<a class="headerlink" href="#Laplace-2D" title="Permalink to this headline">¶</a></h2>
+<p>In two dimensions, Laplace’s equation in Cartesian coordinates reduces to</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 0\]</div>
+<p>We can replace the continous spatial dimensions by a lattice with finite spacing</p>
+<div class="math notranslate nohighlight">
+\[x_i = i \Delta x\]</div>
+<div class="math notranslate nohighlight">
+\[y_j = j \Delta y\]</div>
+<p>to see that the potential at each point is given by the average at the four closest adjoining sites <em>if</em> <span class="math notranslate nohighlight">\(\Delta x = \Delta y\)</span></p>
+<div class="math notranslate nohighlight">
+\[V(x_i, y_j) = V_{i,j} = \frac{V_{i-1,j} + V_{i+1,j} + V_{i,j-1} + V_{i,j+1}}{4}\]</div>
+<p>For unequally spaced grids things are slightly more complicated</p>
+<div class="math notranslate nohighlight">
+\[V_{i,j} = \frac{ \left ( V_{i-1,j} + V_{i+1,j} \right ) \Delta y^2 + \left ( V_{i,j+1} + V_{i,j-1} \right ) \Delta x^2 }{2(\Delta x^2 + \Delta y^2 )}\]</div>
+<p>It is tempting to try and avoid dealing with the details of grid spacing by making a choice of grid dimensions that conveniently aligns with the physical boundaries.</p>
+<p>However, it is arguably preferrable to write code that can deal with arbitrary grid sizes and spacings.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">scipy.sparse</span> <span class="k">as</span> <span class="nn">sparse</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">spsolve</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Matrix-methods">
+<h2>Matrix methods<a class="headerlink" href="#Matrix-methods" title="Permalink to this headline">¶</a></h2>
+<p>Relationships between the grid points can be written in a very compact way with matrix algebra</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{A} \mathbf{x} = \mathbf{y}\]</div>
+<p>For example, a 1-dimensional system with 5 grid points at locations</p>
+<div class="math notranslate nohighlight">
+\[x_0, \; x_1, \; \ldots \; x_4\]</div>
+<p>with arbitrary voltages</p>
+<div class="math notranslate nohighlight">
+\[V(x_0)=V_0, \; V(x_1)=V_1, \; \ldots \; V(x_4)=V_4\]</div>
+<p>and boundary conditions at <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(x_4\)</span> gives a coupled set of 5 linear equations</p>
+<div class="math notranslate nohighlight">
+\[V_0 = V_a\]</div>
+<div class="math notranslate nohighlight">
+\[V_0 -2 V_1 + V_2 = 0\]</div>
+<div class="math notranslate nohighlight">
+\[V_1 -2 V_2 + V_3 = 0\]</div>
+<div class="math notranslate nohighlight">
+\[V_2 -2 V_3 + V_4 = 0\]</div>
+<div class="math notranslate nohighlight">
+\[V_4 = V_b\]</div>
+<p>which can be expressed as a square matrix that contains the physics of Laplace’s equation and a column matrix containing the two boundary conditions</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+1 &amp; -2 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; -2 &amp; 1 &amp; 0  \\
+0 &amp; 0 &amp; 1 &amp; -2 &amp; 1 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \\
+\end{pmatrix}
+ \begin{pmatrix}
+ V_0 \\ V_1 \\ V_2 \\ V_3 \\ V_4
+ \end{pmatrix}
+=
+ \begin{pmatrix}
+ V_a \\ 0 \\ 0 \\ 0 \\ V_b
+ \end{pmatrix}\end{split}\]</div>
+<p>In general, this means that the voltages can be solved for using the matrix inverse</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{x} = \mathbf{A}^{-1} \mathbf{y}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{pmatrix}
+ V_0 \\ V_1 \\ V_2 \\ V_3 \\ V_4
+ \end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+1 &amp; -2 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; -2 &amp; 1 &amp; 0  \\
+0 &amp; 0 &amp; 1 &amp; -2 &amp; 1 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \\
+\end{pmatrix}^{-1}
+ \begin{pmatrix}
+ V_a \\ 0 \\ 0 \\ 0 \\ V_b
+ \end{pmatrix}\end{split}\]</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,:]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># column matrix of boundary conditions V(x=0)=0, V(x=1)=1</span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;Inverse: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Solution: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">y</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Inverse:
+ [[ 1.    0.    0.    0.    0.  ]
+ [ 0.75 -0.75 -0.5  -0.25  0.25]
+ [ 0.5  -0.5  -1.   -0.5   0.5 ]
+ [ 0.25 -0.25 -0.5  -0.75  0.75]
+ [ 0.    0.    0.    0.    1.  ]]
+
+Solution:  [0.   0.25 0.5  0.75 1.  ]
+</pre></div></div>
+</div>
+<p>This can be applied at any grid resolution to produce a <code class="docutils literal notranslate"><span class="pre">tridiagonal</span></code> matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{bmatrix}
+  a_{1} &amp; c_1 &amp;  &amp; &amp; \\
+  b_1 &amp; a_{2} &amp; c_2 &amp; &amp; &amp; \\
+  &amp; b_2 &amp; a_{3} &amp; c_3 &amp; \\
+  &amp;  &amp; \ddots &amp; \ddots &amp; \ddots &amp;\\
+  &amp; &amp; &amp;  \ddots  &amp; a_{n-1} &amp; c_{n-1} \\
+  &amp; &amp; &amp; &amp; b_{n-1} &amp; a_n
+\end{bmatrix}\end{split}\]</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ngrid</span><span class="o">=</span><span class="mi">99</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="n">ngrid</span><span class="p">,</span><span class="n">ngrid</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">A</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="k">for</span> <span class="n">indx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ngrid</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">A</span><span class="p">[</span><span class="n">indx</span><span class="p">,</span> <span class="n">indx</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="n">indx</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="n">A</span> <span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span> <span class="n">A</span> <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Tridiagonal matrix&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[ 1.  0.  0. ...  0.  0.  0.]
+ [ 1. -2.  1. ...  0.  0.  0.]
+ [ 0.  1. -2. ...  0.  0.  0.]
+ ...
+ [ 0.  0.  0. ... -2.  1.  0.]
+ [ 0.  0.  0. ...  1. -2.  1.]
+ [ 0.  0.  0. ...  0.  0.  1.]]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;Tridiagonal matrix&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week09a_laplace_linear_algebra-notes_12_2.png" src="../_images/JupyterNotes_phys481_week09a_laplace_linear_algebra-notes_12_2.png" />
+</div>
+</div>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm">https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm</a></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">laplace1d_matrix</span><span class="p">(</span><span class="n">ngrid</span><span class="o">=</span><span class="mi">99</span><span class="p">,</span> <span class="n">Va</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">Vb</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Solve 1-dimensional Laplace equation using matrix methods.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="n">ngrid</span><span class="p">,</span><span class="n">ngrid</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+    <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">A</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="k">for</span> <span class="n">indx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ngrid</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">A</span><span class="p">[</span><span class="n">indx</span><span class="p">,</span> <span class="n">indx</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="n">indx</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+
+    <span class="n">y</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="n">ngrid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span> <span class="p">)</span>
+    <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Va</span>
+    <span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Vb</span>
+
+    <span class="k">if</span> <span class="n">invert</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">v</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">laplace1d_matrix</span><span class="p">(</span><span class="n">ngrid</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">Va</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">Vb</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[0.  0.2 0.4 0.6 0.8 1. ]
+
+ [[ 1.  0.  0.  0.  0.  0.]
+ [ 1. -2.  1.  0.  0.  0.]
+ [ 0.  1. -2.  1.  0.  0.]
+ [ 0.  0.  1. -2.  1.  0.]
+ [ 0.  0.  0.  1. -2.  1.]
+ [ 0.  0.  0.  0.  0.  1.]]
+
+ [0. 0. 0. 0. 0. 1.]
+</pre></div></div>
+</div>
+<p>Condition number gives an indication of inversion stability. It is essentially a factor which multiplies input numerical noise to produce (usually much) more noise in the output.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># 1 is great, 10-1000 is fine, 1e9 is trouble</span>
+<span class="c1">#</span>
+<span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+10.994600319765407
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Equivalently, take a look at matrix inverse.</span>
+<span class="c1"># If there are a mixture of very small (1e-9) and very large (1e-9) values then</span>
+<span class="c1"># we should expect numerical problems.</span>
+<span class="c1">#</span>
+<span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[ 1. ,  0. ,  0. ,  0. ,  0. ,  0. ],
+       [ 0.8, -0.8, -0.6, -0.4, -0.2,  0.2],
+       [ 0.6, -0.6, -1.2, -0.8, -0.4,  0.4],
+       [ 0.4, -0.4, -0.8, -1.2, -0.6,  0.6],
+       [ 0.2, -0.2, -0.4, -0.6, -0.8,  0.8],
+       [ 0. ,  0. ,  0. ,  0. ,  0. ,  1. ]])
+</pre></div></div>
+</div>
+<p>For a set of linear equations <span class="math notranslate nohighlight">\(A x = b\)</span> we may write the solution in terms of a matrix inverse <span class="math notranslate nohighlight">\(x = A^{-1} b\)</span>. However, this is not always the best way to proceed numerically if we are just interested in the solution and don’t actually require the inverse.</p>
+<p>Instead, call a <code class="docutils literal notranslate"><span class="pre">solve</span></code> function which will usually give a result for <span class="math notranslate nohighlight">\(x\)</span> that is more computationally efficient and numerically stable.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">timeit</span> np.matmul( np.linalg.inv(A), v)
+<span class="o">%</span><span class="k">timeit</span> np.linalg.solve( A, v)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+7.18 µs ± 108 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+6.6 µs ± 69.5 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+</pre></div></div>
+</div>
+<div class="section" id="Theory-vs. numerics-:-speed">
+<h3>Theory vs. numerics : speed<a class="headerlink" href="#Theory-vs. numerics-:-speed" title="Permalink to this headline">¶</a></h3>
+<p>Computing time scales as <span class="math notranslate nohighlight">\(O(N^2)\)</span>, with matrix inversion taking roughly 50% to 100% longer than solving.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> numpy.linalg.solve ()&#39;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> laplace1d_matrix(9)
+<span class="o">%</span><span class="k">timeit</span> laplace1d_matrix(99)
+<span class="o">%</span><span class="k">timeit</span> laplace1d_matrix(199)
+<span class="o">%</span><span class="k">timeit</span> laplace1d_matrix(399)
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> Inversion is 1.5x to 2.0x times slower:&#39;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> laplace1d_matrix(9, invert=True)
+<span class="o">%</span><span class="k">timeit</span> laplace1d_matrix(99, invert=True)
+<span class="o">%</span><span class="k">timeit</span> laplace1d_matrix(199, invert=True)
+<span class="o">%</span><span class="k">timeit</span> laplace1d_matrix(399, invert=True)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+ numpy.linalg.solve ()
+20.1 µs ± 191 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+189 µs ± 1.59 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+461 µs ± 11.4 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+2 ms ± 56.4 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+
+ Inversion is 1.5x to 2.0x times slower:
+23.3 µs ± 170 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+249 µs ± 7.33 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+608 µs ± 11.4 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+3.4 ms ± 41.4 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Theory-vs. numerics-:-accuracy">
+<h3>Theory vs. numerics : accuracy<a class="headerlink" href="#Theory-vs. numerics-:-accuracy" title="Permalink to this headline">¶</a></h3>
+<p>There is a systematic discrepancy between theory and numerical results. For a <span class="math notranslate nohighlight">\(99 \times 99\)</span> grid the error is comparable to floating point truncation error (approx 1e-15). For a <span class="math notranslate nohighlight">\(999 \times 999\)</span> grid the discrepancy is larger (1e-13) and has a different profile.</p>
+<p>This shows that using bigger grids can actually be worse, with small errors accumulating up over a larger number of calculations.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">sca</span><span class="p">(</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+<span class="n">Vtheory</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">19</span><span class="p">)</span>
+<span class="n">Vsolve</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">laplace1d_matrix</span><span class="p">(</span><span class="mi">19</span><span class="p">)</span>
+<span class="n">Vinvert</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">laplace1d_matrix</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Vtheory</span><span class="p">,</span> <span class="n">Vsolve</span> <span class="o">-</span> <span class="n">Vtheory</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;solve&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Vtheory</span><span class="p">,</span> <span class="n">Vinvert</span> <span class="o">-</span> <span class="n">Vtheory</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;invert&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;n=19&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">sca</span><span class="p">(</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+<span class="n">Vtheory</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+<span class="n">Vsolve</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">laplace1d_matrix</span><span class="p">(</span><span class="mi">99</span><span class="p">)</span>
+<span class="n">Vinvert</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">laplace1d_matrix</span><span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Vtheory</span><span class="p">,</span> <span class="n">Vsolve</span> <span class="o">-</span> <span class="n">Vtheory</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;solve&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Vtheory</span><span class="p">,</span> <span class="n">Vinvert</span> <span class="o">-</span> <span class="n">Vtheory</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;invert&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;n=99&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">sca</span><span class="p">(</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span>
+<span class="n">Vtheory</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">999</span><span class="p">)</span>
+<span class="n">Vsolve</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">laplace1d_matrix</span><span class="p">(</span><span class="mi">999</span><span class="p">)</span>
+<span class="n">Vinvert</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="o">=</span> <span class="n">laplace1d_matrix</span><span class="p">(</span><span class="mi">999</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Vtheory</span><span class="p">,</span> <span class="n">Vsolve</span> <span class="o">-</span> <span class="n">Vtheory</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span> <span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;solve&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Vtheory</span><span class="p">,</span> <span class="n">Vinvert</span> <span class="o">-</span> <span class="n">Vtheory</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span> <span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;invert&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;n=999&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">sca</span><span class="p">(</span> <span class="n">axes</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="p">)</span>
+<span class="n">Vtheory</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">1999</span><span class="p">)</span>
+<span class="n">Vsolve</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">laplace1d_matrix</span><span class="p">(</span><span class="mi">1999</span><span class="p">)</span>
+<span class="n">Vinvert</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">laplace1d_matrix</span><span class="p">(</span><span class="mi">1999</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Vtheory</span><span class="p">,</span> <span class="n">Vsolve</span> <span class="o">-</span> <span class="n">Vtheory</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span> <span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;solve&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Vtheory</span><span class="p">,</span> <span class="n">Vinvert</span> <span class="o">-</span> <span class="n">Vtheory</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span> <span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;invert&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;n=1999&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;n=1999&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week09a_laplace_linear_algebra-notes_24_1.png" src="../_images/JupyterNotes_phys481_week09a_laplace_linear_algebra-notes_24_1.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Special-cases">
+<h2>Special cases<a class="headerlink" href="#Special-cases" title="Permalink to this headline">¶</a></h2>
+<p>Solving a general matrix equation requires <span class="math notranslate nohighlight">\(O(N^3)\)</span> operations and may involve numerical problems.</p>
+<p>If the matrix has some special property then it may be possible to take advantage of this to obtain more accurate results more quickly.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;solve&#39;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;_solve_toeplitz&#39;,
+ &#39;_solvers&#39;,
+ &#39;cho_solve&#39;,
+ &#39;cho_solve_banded&#39;,
+ &#39;lu_solve&#39;,
+ &#39;solve&#39;,
+ &#39;solve_banded&#39;,
+ &#39;solve_circulant&#39;,
+ &#39;solve_continuous_are&#39;,
+ &#39;solve_continuous_lyapunov&#39;,
+ &#39;solve_discrete_are&#39;,
+ &#39;solve_discrete_lyapunov&#39;,
+ &#39;solve_lyapunov&#39;,
+ &#39;solve_sylvester&#39;,
+ &#39;solve_toeplitz&#39;,
+ &#39;solve_triangular&#39;,
+ &#39;solveh_banded&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># A tri-diagonal matrix has a simple banded structure.</span>
+
+<span class="n">banded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="n">banded</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">banded</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+<span class="n">banded</span><span class="p">[</span><span class="mi">0</span><span class="p">:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">banded</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">banded</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve_banded</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">banded</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">y</span> <span class="p">)</span> <span class="p">[::</span><span class="mi">9</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(100, 3) (100,)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([0.00990099, 0.0990099 , 0.18811881, 0.27722772, 0.36633663,
+       0.45544554, 0.54455446, 0.63366337, 0.72277228, 0.81188119,
+       0.9009901 , 0.99009901])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Using the special &quot;banded&quot; algorithm is 6x faster than the general case.</span>
+<span class="c1">#</span>
+
+<span class="o">%</span><span class="k">timeit</span> scipy.linalg.solve(A, y);
+<span class="o">%</span><span class="k">timeit</span> scipy.linalg.solve_banded((1,1), banded.T, y );
+
+<span class="c1">#7.4 µs ± 98.2 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)</span>
+<span class="c1">#110 µs ± 870 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+17.4 µs ± 98.2 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+110 µs ± 870 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+</pre></div></div>
+</div>
+<div class="section" id="Sparse-Linear-Systems">
+<h3>Sparse Linear Systems<a class="headerlink" href="#Sparse-Linear-Systems" title="Permalink to this headline">¶</a></h3>
+<p>Numerical Recipes p72 <a class="reference external" href="http://www.aip.de/groups/soe/local/numres/bookcpdf/c2-7.pdf">http://www.aip.de/groups/soe/local/numres/bookcpdf/c2-7.pdf</a></p>
+<p>A system of linear equations is called <em>sparse</em> if only a relatively small number of its matrix elements <span class="math notranslate nohighlight">\(a_{ij}\)</span> are nonzero. It is wasteful to use general methods of linear algebra on such problems, because most of the <span class="math notranslate nohighlight">\(O(N^3)\)</span> arithmetic operations devoted to solving the set of equations or inverting the matrix involve adding or multiplying by zeros. Furthermore, you might wish to work problems so large as to tax your available memory space, and it is wasteful to reserve storage
+for large numbers of zeros. Note that there are two distinct (and not always compatible) goals for any sparse matrix method: saving time and/or saving space.</p>
+<p>See also:</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Sparse_matrix">https://en.wikipedia.org/wiki/Sparse_matrix</a></p>
+<p><a class="reference external" href="https://www.sharcnet.ca/help/index.php/Solving_Systems_of_Sparse_Linear_Equations">https://www.sharcnet.ca/help/index.php/Solving_Systems_of_Sparse_Linear_Equations</a></p>
+<p><a class="reference external" href="http://hplgit.github.io/bumpy/doc/pub/lectures-basics-1.html#___sec28">http://hplgit.github.io/bumpy/doc/pub/lectures-basics-1.html#___sec28</a></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">scipy.sparse</span><span class="o">,</span> <span class="nn">scipy.sparse.linalg</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">99</span>
+<span class="n">lower</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">diag</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="p">;</span> <span class="n">diag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">diag</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1">#; print(diag)</span>
+<span class="n">upper</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1">#np.diag(lower, -1) + np.diag(diag,0) + np.diag(upper, +1)</span>
+<span class="n">sparseA</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">diags</span><span class="p">([</span><span class="n">lower</span><span class="p">,</span><span class="n">diag</span><span class="p">,</span><span class="n">upper</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">;</span> <span class="nb">print</span><span class="p">(</span> <span class="n">sparseA</span><span class="o">.</span><span class="n">__sizeof__</span><span class="p">()</span> <span class="p">)</span>
+
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="p">;</span> <span class="n">b</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">spsolve</span><span class="p">(</span> <span class="n">sparseA</span><span class="p">,</span> <span class="n">b</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+32
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([-0.00257732,  0.00257732,  0.00773196,  0.0128866 ,  0.01804124,
+        0.02319588,  0.02835052,  0.03350515,  0.03865979,  0.04381443,
+        0.04896907,  0.05412371,  0.05927835,  0.06443299,  0.06958763,
+        0.07474227,  0.07989691,  0.08505155,  0.09020619,  0.09536082,
+        0.10051546,  0.1056701 ,  0.11082474,  0.11597938,  0.12113402,
+        0.12628866,  0.1314433 ,  0.13659794,  0.14175258,  0.14690722,
+        0.15206186,  0.15721649,  0.16237113,  0.16752577,  0.17268041,
+        0.17783505,  0.18298969,  0.18814433,  0.19329897,  0.19845361,
+        0.20360825,  0.20876289,  0.21391753,  0.21907216,  0.2242268 ,
+        0.22938144,  0.23453608,  0.23969072,  0.24484536,  0.25      ,
+        0.25515464,  0.26030928,  0.26546392,  0.27061856,  0.2757732 ,
+        0.28092784,  0.28608247,  0.29123711,  0.29639175,  0.30154639,
+        0.30670103,  0.31185567,  0.31701031,  0.32216495,  0.32731959,
+        0.33247423,  0.33762887,  0.34278351,  0.34793814,  0.35309278,
+        0.35824742,  0.36340206,  0.3685567 ,  0.37371134,  0.37886598,
+        0.38402062,  0.38917526,  0.3943299 ,  0.39948454,  0.40463918,
+        0.40979381,  0.41494845,  0.42010309,  0.42525773,  0.43041237,
+        0.43556701,  0.44072165,  0.44587629,  0.45103093,  0.45618557,
+        0.46134021,  0.46649485,  0.47164948,  0.47680412,  0.48195876,
+        0.4871134 ,  0.49226804,  0.49742268,  0.50257732])
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Scipy-Sparse-Matricies">
+<h2>Scipy Sparse Matricies<a class="headerlink" href="#Scipy-Sparse-Matricies" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/sparse.html">https://docs.scipy.org/doc/scipy/reference/sparse.html</a></p>
+<p>Sparse matrix classes:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>bsr_matrix(arg1[, shape, dtype, copy, blocksize])  Block Sparse Row matrix
+
+coo_matrix(arg1[, shape, dtype, copy])  A sparse matrix in COOrdinate format
+
+csc_matrix(arg1[, shape, dtype, copy])  Compressed Sparse Column matrix
+
+csr_matrix(arg1[, shape, dtype, copy])  Compressed Sparse Row matrix
+
+dia_matrix(arg1[, shape, dtype, copy]) Sparse matrix with DIAgonal storage
+
+dok_matrix(arg1[, shape, dtype, copy]) Dictionary Of Keys based sparse matrix
+
+lil_matrix(arg1[, shape, dtype, copy])  Row-based list of lists sparse matrix
+
+spmatrix([maxprint]) provides a base class for all sparse matrices.
+</pre></div>
+</div>
+<p>For usage information, see</p>
+<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/sparse.html#usage-information">https://docs.scipy.org/doc/scipy/reference/sparse.html#usage-information</a></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># demonstrate how to convert a numpy ndarray to CSR format and back again</span>
+<span class="c1">#</span>
+<span class="n">v</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">laplace1d_matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="k">assert</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span> <span class="n">s</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="o">==</span> <span class="n">A</span> <span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># compare sparse and full matrix storage requirement</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">500</span><span class="p">,</span><span class="mi">1000</span><span class="p">]:</span>
+    <span class="n">v</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">laplace1d_matrix</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(),</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">size</span> <span class="p">)</span> <span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="o">*</span><span class="n">stack</span> <span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(3, 5, 9, 5)
+(5, 11, 25, 11)
+(10, 26, 100, 26)
+(20, 56, 400, 56)
+(100, 296, 10000, 296)
+(200, 596, 40000, 596)
+(500, 1496, 250000, 1496)
+(1000, 2996, 1000000, 2996)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">indx</span><span class="p">,</span><span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stack</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">stack</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stack</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">stack</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;sparse&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">indx</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">indx</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;# of elements&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;array width,length&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 0, &#39;array width,length&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week09a_laplace_linear_algebra-notes_34_1.png" src="../_images/JupyterNotes_phys481_week09a_laplace_linear_algebra-notes_34_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">v</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">laplace1d_matrix</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">spsolve</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">y</span><span class="p">)[::</span><span class="mi">9</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([0.        , 0.09090909, 0.18181818, 0.27272727, 0.36363636,
+       0.45454545, 0.54545455, 0.63636364, 0.72727273, 0.81818182,
+       0.90909091, 1.        ])
+</pre></div></div>
+</div>
+<p>Even for a not very large array (<span class="math notranslate nohighlight">\(N=100\)</span>) the sparse solver is almost twice as fast as the full matrix approach.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">timeit</span> scipy.linalg.solve(A, y)
+<span class="c1">#%timeit scipy.linalg.solve(A, y, assume_a=&#39;sym&#39;)</span>
+<span class="o">%</span><span class="k">timeit</span> sparse.linalg.spsolve(s, y)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+112 µs ± 1.31 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+148 µs ± 2 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+69.2 µs ± 709 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="mi">110</span><span class="o">/</span><span class="mf">17.4</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+6.321839080459771
+</pre></div></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="phys481_week09b_fourier_audio-notes.html" class="btn btn-neutral float-right" title="Fourier transforms and audio" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="phys481_week08b_physical_units_constants-notes.html" class="btn btn-neutral float-left" title="Physical constants and units" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Elijah Thompson.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

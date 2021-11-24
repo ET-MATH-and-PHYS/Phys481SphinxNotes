@@ -1,0 +1,1137 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Laplace equation &mdash; Phys481SphinxNotes 1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Physical constants and units" href="phys481_week08b_physical_units_constants-notes.html" />
+    <link rel="prev" title="PHYS 481 - Automata entropy" href="phys481_week04b_automata_entropy-notes.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Phys481SphinxNotes
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../LectureNotes.html"><strong>Phys 481 Lecture Notes</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tasks.html"><strong>Daily Tasks</strong></a></li>
+</ul>
+<p class="caption"><span class="caption-text">Jupyter Notebooks:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="phys481_week00_example_report_template.html">Example notebook report template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week01_cat_shuffle-notes.html">Shuffling Arnold’s Cat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week02a_spamlet_entropy-notes.html">Bernoulli, entropy and spamlet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week02b_integer%2Cfloat-notes.html">Numbers: integers, fixed point and floating point</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week03a_computing_past_present_future.html">What are we doing here?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week03a_automata_life-notes.html">Phys481 notes - Automata and Life</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week04b_pseudorandom-notes.html">Pseudo-random number generators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week04b_automata_entropy-notes.html">PHYS 481 - Automata entropy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Laplace equation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Physics-481-Fall-2021---Midterm-exam">Physics 481 Fall 2021 - Midterm exam</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Introduction">Introduction</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Electrostatics">Electrostatics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Laplace-1D">Laplace 1D</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Differential-to-difference-eqations">Differential to difference eqations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Numerical-Recipe">Numerical Recipe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Task-1.1:">Task 1.1:</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Laplace-2D">Laplace 2D</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Griffiths-example-3.4:">Griffiths example 3.4:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Task-2.1:">Task 2.1:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Task-3.1:">Task 3.1:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Task-3.2:">Task 3.2:</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Supplemental-material">Supplemental material</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Finite-differences">Finite differences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Matrix-methods">Matrix methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Sparse-Linear-Systems">Sparse Linear Systems</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week08b_physical_units_constants-notes.html">Physical constants and units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week09a_laplace_linear_algebra-notes.html">Laplace equation - matrix methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week09b_fourier_audio-notes.html">Fourier transforms and audio</a></li>
+</ul>
+<p class="caption"><span class="caption-text">D2L Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../RockStar.html"><strong>Rockstar Programming and Teamwork</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SphinxDocs.html"><strong>Sphinx Documentation</strong></a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Phys481SphinxNotes</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+<div class="git-ribbon">
+  <a href="http://github.com/SwissDataScienceCenter" rel="me">Join us on GitHub</a>
+</div>
+
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Laplace equation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/JupyterNotes/phys481_week08_laplace_equation-notes.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<div class="section" id="Laplace-equation">
+<h1>Laplace equation<a class="headerlink" href="#Laplace-equation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Physics-481-Fall-2021---Midterm-exam">
+<h2>Physics 481 Fall 2021 - Midterm exam<a class="headerlink" href="#Physics-481-Fall-2021---Midterm-exam" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Introduction">
+<h3>Introduction<a class="headerlink" href="#Introduction" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Laplace%27s_equation">https://en.wikipedia.org/wiki/Laplace%27s_equation</a></p>
+<p>In mathematics, Laplace’s equation is a second-order partial differential equation named after Pierre-Simon Laplace who first studied its properties. This is often written as:</p>
+<div class="math notranslate nohighlight">
+\[\nabla^{2}\varphi = 0\]</div>
+<p>where <span class="math notranslate nohighlight">\(\nabla^2\)</span> is the Laplace operator (see below) and <span class="math notranslate nohighlight">\(\varphi\)</span> is a scalar function.</p>
+<p>Laplace’s equation is one of the simplest examples of elliptic partial differential equations. The general theory of solutions to Laplace’s equation is known as potential theory. Solutions of Laplace’s equation are the harmonic functions, which are important in many fields of science, notably the fields of electromagnetism, astronomy, and fluid dynamics, because they can be used to accurately describe the behavior of electric, gravitational, and fluid potentials. In the study of heat conduction,
+the Laplace equation is the steady-state heat equation.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Electrostatics">
+<h2>Electrostatics<a class="headerlink" href="#Electrostatics" title="Permalink to this headline">¶</a></h2>
+<p>(eg. Chapter 3 “Introduction to Electrodynamics” by D. J. Griffiths)</p>
+<p>The primary objective of electrostatics is to find the electric field produced by a given charge distribution. In principle, this can be accomplished by evaluating Coulomb’s law for some finite number <span class="math notranslate nohighlight">\(N\)</span> of charges <span class="math notranslate nohighlight">\(q_n\)</span></p>
+<div class="math notranslate nohighlight">
+\[\vec E( \vec r) = \frac{1}{4\pi\epsilon_0} \sum_N q_n \frac{ \hat R}{R^2}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\vec r\)</span> is the field location, <span class="math notranslate nohighlight">\(\vec r'\)</span> is the charge location, and</p>
+<div class="math notranslate nohighlight">
+\[\vec R = \vec r - \vec r'\]</div>
+<p>For a very large number of very small charges the sum can be replaced by an integral</p>
+<div class="math notranslate nohighlight">
+\[\vec E( \vec r) =  \frac{1}{4\pi\epsilon_0} \int \frac{\hat R}{R^2} \rho(\vec r') d\tau'\]</div>
+<p>of a continuous charge distribution that may vary as a function of position <span class="math notranslate nohighlight">\(r'\)</span></p>
+<div class="math notranslate nohighlight">
+\[\rho(\vec r')\]</div>
+<p>Unfortunately, vector integrals of this type can be difficult to calculate for all but the simplest charge distributions. Occasionally we can get around this by using Gauss’s law and exploiting symmetry, but often the best strategy is to first calculate the potential, <span class="math notranslate nohighlight">\(V\)</span>, as defined by the somewhat more tractable scalar equation</p>
+<div class="math notranslate nohighlight">
+\[V( \vec r) =  \frac{1}{4\pi\epsilon_0} \int \frac{1}{R} \rho(\vec r') d\tau\]</div>
+<p>Still, even this single integral is often too tough to handle analytically. Moreover, in problems involving conductors the charge distribution <span class="math notranslate nohighlight">\(\rho\)</span> itself may not be known in advance. Since charge is free to move around, the only thing we can control directly is the total charge (or perhaps the potential of each conductor).</p>
+<p>In such cases, it can be useful to recast the problem in differential form, using Poisson’s equation</p>
+<div class="math notranslate nohighlight">
+\[\nabla^2 V = -\frac{\rho}{\epsilon_0}\]</div>
+<p>We are often interested in finding the potential in a region where <span class="math notranslate nohighlight">\(\rho=0\)</span>. For example, a capacitor with charges stored on conducting plates may create an electric field (aka potential gradient) in a charge-free region between the plates. In this case, Poisson’s equation reduces to Laplace’s equation</p>
+<div class="math notranslate nohighlight">
+\[\nabla^2 V = 0\]</div>
+<p>which is</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} +  \frac{\partial^2 V}{\partial z^2} = 0\]</div>
+<p>in Cartesian coordinates. Corresponding equations for other coordinate systems can be found in eg.</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Laplace_operator#Coordinate_expressions">https://en.wikipedia.org/wiki/Laplace_operator#Coordinate_expressions</a></p>
+<div class="section" id="Laplace-1D">
+<h3>Laplace 1D<a class="headerlink" href="#Laplace-1D" title="Permalink to this headline">¶</a></h3>
+<p>Consider a 1-dimensional system where <span class="math notranslate nohighlight">\(V(x)\)</span> depends on only one variable, <span class="math notranslate nohighlight">\(x\)</span>. Then Laplace’s equation becomes</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial^2 }{\partial x^2} V(x)= 0\]</div>
+<p>Integrate once</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial}{\partial x} V(x)= a\]</div>
+<p>and again to get a general solution</p>
+<div class="math notranslate nohighlight">
+\[V(x) = a x + b\]</div>
+<p>where <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> are constants which must satisfy the boundary conditions.</p>
+</div>
+</div>
+<div class="section" id="Differential-to-difference-eqations">
+<h2>Differential to difference eqations<a class="headerlink" href="#Differential-to-difference-eqations" title="Permalink to this headline">¶</a></h2>
+<p>If we only consider discrete locations</p>
+<div class="math notranslate nohighlight">
+\[x_i = i \Delta x\]</div>
+<p>then we can approximate the first derivative with centered differences</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial V}{\partial x}  \approx \frac{V(x_{i+1}) - V(x_{i-1})}{x_{i+1} - x_{i-1}} \approx \frac{V_{i+1} - V_{i-1}}{2 \Delta x}\]</div>
+<p>and the second derivative as</p>
+<div class="math notranslate nohighlight">
+\[ \frac{\partial^2 V}{\partial x^2}  \approx  \left . \frac{\partial V}{\partial x} \right |_{x_{i+1}} -  \left . \frac{\partial V}{\partial x} \right |_{x_i}
+\approx
+\frac{V_{i+1} - 2V_i + V_{i-1}}{\Delta x^2}\]</div>
+<p>Laplace’s equation on 1-d grid can then be written as</p>
+<div class="math notranslate nohighlight">
+\[V_i = \frac{V_{i-1} + V_{i+1}}{2}\]</div>
+<p>so that the potential at any given location should be equal to the average of the nearest neighbors. This suggests that we might be able to use an iterative approach to solve for the potential profile.</p>
+</div>
+<div class="section" id="Numerical-Recipe">
+<h2>Numerical Recipe<a class="headerlink" href="#Numerical-Recipe" title="Permalink to this headline">¶</a></h2>
+<p>To start: create an array to contain the potential values at some number <span class="math notranslate nohighlight">\(N\)</span> of points. Then set the first and last elements to match the boundary conditions. Next, “sweep” through the array and replace every interior (non-boundary) value with the average of the two neighbors. After some number of repeated sweeps the numerical solution should converge towards the physically correct value.</p>
+<p>The two figures below shows some results from this approach. After about 5000 iterations the numerical solution differs from the expected value by less than 1 millivolt.</p>
+<p>It is worth looking at how the solution behaves for the first few steps, with information about the non-zero potential slowly diffusing away from the boundaries. The relaxation method only communicates with neighboring points, so a large grid can take a long time to settle down to equilibrium. This can be addressed using <em>multigrid</em> methods which use a combination of coarse and fine grids to make fast solutions with low accuracy and then refine them to achieve higher accuracy.</p>
+<p>ie. “An Analysis and Implementation of Multigrid Poisson Solvers With Verified Linear Complexity” <a class="reference external" href="https://www.ipol.im/pub/art/2018/228/article.pdf">https://www.ipol.im/pub/art/2018/228/article.pdf</a></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">plot_relaxation</span><span class="p">(</span><span class="n">nsteps</span><span class="o">=</span><span class="mi">9999</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; solve 1-d laplace equation and show plots</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span> <span class="k">if</span> <span class="n">axes</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">axes</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>  <span class="c1"># evenly spaced locations along a line</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">)</span>       <span class="c1"># potential at x locations</span>
+
+    <span class="c1"># set lower/upper boundary conditions at x=0, 1 to 0, 1 volt</span>
+    <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span>
+
+    <span class="c1"># replace all internal points with average of neighbors</span>
+    <span class="c1">#</span>
+    <span class="c1">## loopy equivalent:</span>
+    <span class="c1">#</span>
+    <span class="c1">#  oldv = v.copy()</span>
+    <span class="c1">#  for i in range(1, len(x)-1):</span>
+    <span class="c1">#      v[i] = ( oldv[i-1] + oldv[i+1] ) / 2.0</span>
+    <span class="c1">#</span>
+    <span class="k">for</span> <span class="n">indx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsteps</span><span class="p">):</span>
+        <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+
+    <span class="c1"># make occasional plots</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">indx</span> <span class="o">%</span> <span class="p">(</span><span class="n">nsteps</span><span class="o">//</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">indx</span><span class="p">))</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;location (x)&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;potential (V)&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Relaxation solution&#39;</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>  <span class="c1"># expected value</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">plot_relaxation</span><span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plot_relaxation</span><span class="p">(</span><span class="mi">9999</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week08_laplace_equation-notes_8_0.png" src="../_images/JupyterNotes_phys481_week08_laplace_equation-notes_8_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">nsteps</span> <span class="o">=</span> <span class="mi">9999</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span>
+<span class="k">for</span> <span class="n">indx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsteps</span><span class="p">):</span>
+    <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="p">)</span> <span class="o">/</span><span class="mf">2.0</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">indx</span> <span class="o">&gt;</span> <span class="mi">3000</span> <span class="ow">and</span> <span class="n">indx</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">indx</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;location (x)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;potential (V)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Relaxation solution error&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;Relaxation solution error&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week08_laplace_equation-notes_9_1.png" src="../_images/JupyterNotes_phys481_week08_laplace_equation-notes_9_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Task-1.1:">
+<h2>Task 1.1:<a class="headerlink" href="#Task-1.1:" title="Permalink to this headline">¶</a></h2>
+<p>Write python code to solve Laplace’s equation in 1-dimension for V(x=0)=0 and V(x=1)=1. Compare numerical results with the analytic theoretical solution.</p>
+<div class="section" id="Laplace-2D">
+<h3>Laplace 2D<a class="headerlink" href="#Laplace-2D" title="Permalink to this headline">¶</a></h3>
+<p>In two dimensions, Laplace’s equation reduces to</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 0\]</div>
+<p>We can replace continous spatial dimensions by using a lattice with finite spacing</p>
+<div class="math notranslate nohighlight">
+\[x_i = i \Delta x\]</div>
+<div class="math notranslate nohighlight">
+\[y_j = j \Delta y\]</div>
+<p>and if <span class="math notranslate nohighlight">\(\Delta_x = \Delta_y\)</span> then the potential at each point is given by the average at the four closest adjoining sites</p>
+<div class="math notranslate nohighlight">
+\[V(x_i, y_j) = V_{i,j} = \frac{V_{i-1,j} + V_{i+1,j} + V_{i,j-1} + V_{i,j+1}}{4}\]</div>
+</div>
+</div>
+<div class="section" id="Griffiths-example-3.4:">
+<h2>Griffiths example 3.4:<a class="headerlink" href="#Griffiths-example-3.4:" title="Permalink to this headline">¶</a></h2>
+<p>Two infinitely long grounded metal plates lie parallel to the <span class="math notranslate nohighlight">\(x-z\)</span> plane, one at <span class="math notranslate nohighlight">\(y=0\)</span>, the other at <span class="math notranslate nohighlight">\(y=a=5~cm\)</span>. They are connected at <span class="math notranslate nohighlight">\(x=\pm b=\pm 4~cm\)</span> by narrower metal strips maintained at a constant potential <span class="math notranslate nohighlight">\(V_0=4~volts\)</span> to form a rectangular channel. A thin layer of insulation at each corner allows the sides to be maintained at different potentials.</p>
+<p>A solution to this boundary value problem can be obtained through separation of variables</p>
+<div class="math notranslate nohighlight">
+\[V(x,y) = \frac{4 V_0}{\pi} \sum_{n=1,3,5,...} \frac{1}{n} \frac{\cosh(n \pi x / a)}{\cosh (n \pi b / a)} \sin(n \pi y / a)\]</div>
+</div>
+<div class="section" id="Task-2.1:">
+<h2>Task 2.1:<a class="headerlink" href="#Task-2.1:" title="Permalink to this headline">¶</a></h2>
+<p>Obtain a numerical solution to Laplace’s equation in 2D for Griffiths example 3.4 and compare to the analytic result.</p>
+</div>
+<div class="section" id="Task-3.1:">
+<h2>Task 3.1:<a class="headerlink" href="#Task-3.1:" title="Permalink to this headline">¶</a></h2>
+<p>A coaxial cable has inner cylindrical conductor with radius of <span class="math notranslate nohighlight">\(r_a=1~mm\)</span> and outer conductor radius of <span class="math notranslate nohighlight">\(r_b=5~mm\)</span>. Assume that the outer conductor is grounded and the inner conductor is at potential <span class="math notranslate nohighlight">\(V_0=9~volts\)</span>.</p>
+<p>Obtain a numerical solution to Laplace’s equation in the region between the inner and outer conductors. Plot and discuss.</p>
+</div>
+<div class="section" id="Task-3.2:">
+<h2>Task 3.2:<a class="headerlink" href="#Task-3.2:" title="Permalink to this headline">¶</a></h2>
+<p>What is the potential midway between the inner and outer conductors (at <span class="math notranslate nohighlight">\(r=3~mm\)</span>)?</p>
+<div class="section" id="Supplemental-material">
+<h3>Supplemental material<a class="headerlink" href="#Supplemental-material" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="Finite-differences">
+<h2>Finite differences<a class="headerlink" href="#Finite-differences" title="Permalink to this headline">¶</a></h2>
+<p>A real-valued function <span class="math notranslate nohighlight">\(f(x)\)</span> can be approximated with a Taylor series near some point <span class="math notranslate nohighlight">\(x=a\)</span></p>
+<div class="math notranslate nohighlight">
+\[f(a) + \frac{f'(a)}{1!} (x-a) + \frac{f''(a)}{2!} (x-a)^2 + \frac{f'''(a)}{3!} (x-a)^3 + \ldots\]</div>
+<p>If we restrict our attention to a set of points equally spaced by <span class="math notranslate nohighlight">\(\Delta\)</span> this becomes</p>
+<div class="math notranslate nohighlight">
+\[f_{i+n} = f(x_i) + f'(x_i) n\Delta + \frac{f''(x_i)}{2} (n\Delta)^2 + \frac{f'''(x_i)}{6} (n\Delta)^3 + O(\Delta^4)\]</div>
+<p>For three adjacent points</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  f_{i+1} =&amp; \;f(x_i) + f'(x_i) \Delta + \frac{f''(x_i)}{2} \Delta^2 + \frac{f'''(x_i)}{6} \Delta^3 + O(\Delta^4) \\
+  f_i =&amp; \;f(x_i)
+  \\
+  f_{i-1} =&amp; \;f(x_i) - f'(x_i) \Delta + \frac{f''(x_i)}{2} \Delta^2 - \frac{f'''(x_i)}{6} \Delta^3 + O(\Delta^4)
+  \end{aligned}\end{split}\]</div>
+<p>so we can subtract two neighboring points</p>
+<div class="math notranslate nohighlight">
+\[f_{i+1} - f_i = f'(x_i) \Delta + \frac{f''(x_i)}{2} \Delta^2 + \frac{f'''(x_i)}{6} \Delta^3 + O(\Delta^4)\]</div>
+<p>to get an <em>forward difference</em> estimate of the first derivative</p>
+<div class="math notranslate nohighlight">
+\[\frac{f_{i+1} - f_i}{\Delta} = f'(x_i)  + \frac{f''(x_i)}{2} \Delta + \frac{f'''(x_i)}{6} \Delta^2 + O(\Delta^3) \approx f'(x_i) + O(\Delta)\]</div>
+<p>A similar approach gives a <em>backward difference</em> estimate of the slope</p>
+<div class="math notranslate nohighlight">
+\[f'(x_i)  \approx \frac{f_{i+1} - f_i}{\Delta} + O(\Delta)\]</div>
+<div class="math notranslate nohighlight">
+\[f'(x_i)  \approx \frac{f_{i} - f_{i-1}}{\Delta} + O(\Delta)\]</div>
+<p>By subtracting <span class="math notranslate nohighlight">\(f_{i-1}\)</span> from <span class="math notranslate nohighlight">\(f_{i+1}\)</span> we can cancel all of the even terms (i.e. <span class="math notranslate nohighlight">\(f\)</span>, <span class="math notranslate nohighlight">\(f''\)</span>)</p>
+<div class="math notranslate nohighlight">
+\[f_{i+1} - f_{i-1} = 2 f'(x_i) \Delta + 2 \frac{f'''(a)}{6} \Delta^3 + O(\Delta^5)\]</div>
+<p>and re-arrange to get an equation for the first <em>centered difference</em></p>
+<div class="math notranslate nohighlight">
+\[\boxed{f'(x_i) \approx \frac{f_{i+1} - f_{i-1}}{2 \Delta} + O(\Delta^2)}\]</div>
+<p>with error that is quadratic in <span class="math notranslate nohighlight">\(\Delta\)</span>.</p>
+<p>By adding <span class="math notranslate nohighlight">\(f_{i-1}\)</span> to <span class="math notranslate nohighlight">\(f_{i+1}\)</span> we can cancel all of the odd terms (i.e. <span class="math notranslate nohighlight">\(f'\)</span>, <span class="math notranslate nohighlight">\(f'''\)</span>)</p>
+<div class="math notranslate nohighlight">
+\[f_{i+1} + f_{i-1} = 2 f(x_i) + f''(x_i) \Delta^2 + O(\Delta^2)\]</div>
+<p>and obtain an expression for the centered second difference</p>
+<div class="math notranslate nohighlight">
+\[\boxed{f''(x_i) \approx  \frac{f_{i+1} -2f_i + f_{i-1}}{\Delta^2} + O(\Delta^2)}\]</div>
+<p>with error that also scales as <span class="math notranslate nohighlight">\(\Delta^2\)</span>. This means that reducing the step size by a factor of 10 will reduce the error by a factor of 100. Note, however that this will usually require <span class="math notranslate nohighlight">\(10\times\)</span> more memory and processor time.</p>
+</div>
+<div class="section" id="Matrix-methods">
+<h2>Matrix methods<a class="headerlink" href="#Matrix-methods" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">scipy.sparse</span> <span class="k">as</span> <span class="nn">sparse</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">spsolve</span>
+</pre></div>
+</div>
+</div>
+<p>Expressing the continuous Laplace equation in 1-dimension with <span class="math notranslate nohighlight">\(N\)</span> discrete points leads to a set of <span class="math notranslate nohighlight">\(N\)</span> coupled linear equations. These can be conveniently written using matrix notation. For <span class="math notranslate nohighlight">\(N=6\)</span> this involves this tridiagonal matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \left[ \begin{matrix}
+{1} &amp; {} &amp; {} &amp; {} &amp; {} &amp; {} \\
+{1} &amp; {-2} &amp; {1} &amp; {} &amp; {} &amp; {} \\
+{} &amp; {1} &amp; {-2} &amp; {1} &amp; {} &amp; {} \\
+{} &amp; {} &amp; {1} &amp; {-2} &amp; {1} &amp; {} \\
+{} &amp; {} &amp; {} &amp; {1} &amp; {-2} &amp; {1} \\
+{} &amp; {} &amp; {} &amp; {} &amp; {} &amp; {1}
+\end{matrix} \right]
+\left[ \begin{matrix}
+V_0 \\ V_1 \\ V_2 \\ V_3 \\ V_4 \\ V_5
+\end{matrix} \right]
+=
+\left[ \begin{matrix}
+V_a \\ 0 \\ 0 \\ 0 \\ 0  \\ V_b
+\end{matrix} \right]\end{split}\]</div>
+<p>and a column matrix containing the boundary conditions <span class="math notranslate nohighlight">\(V_a\)</span> and <span class="math notranslate nohighlight">\(V_b\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">laplace1D_matrices</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;generate matrixes for 1-d Laplace equation</span>
+
+<span class="sd">    **should probably use numpy.tri</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+    <span class="n">mat</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">mat</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+        <span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">vec</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="k">return</span> <span class="n">mat</span><span class="p">,</span><span class="n">vec</span>
+
+<span class="n">m</span><span class="p">,</span><span class="n">v</span> <span class="o">=</span> <span class="n">laplace1D_matrices</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[ 1.  0.  0.  0.  0.  0.]
+ [ 1. -2.  1.  0.  0.  0.]
+ [ 0.  1. -2.  1.  0.  0.]
+ [ 0.  0.  1. -2.  1.  0.]
+ [ 0.  0.  0.  1. -2.  1.]
+ [ 0.  0.  0.  0.  0.  1.]] [0. 0. 0. 0. 0. 1.]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Condition number gives indication of inversion stability</span>
+<span class="c1"># 1 is perfect, 10-1000 is fine, 1e9 is trouble</span>
+<span class="c1">#</span>
+<span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+10.994600319765407
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># take a look at inverse</span>
+<span class="c1">#</span>
+<span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[ 1. ,  0. ,  0. ,  0. ,  0. ,  0. ],
+       [ 0.8, -0.8, -0.6, -0.4, -0.2,  0.2],
+       [ 0.6, -0.6, -1.2, -0.8, -0.4,  0.4],
+       [ 0.4, -0.4, -0.8, -1.2, -0.6,  0.6],
+       [ 0.2, -0.2, -0.4, -0.6, -0.8,  0.8],
+       [ 0. ,  0. ,  0. ,  0. ,  0. ,  1. ]])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># solve for the potential on a 1-d grid</span>
+<span class="c1"># this should be linear between 0.0 and 1.0 volts.</span>
+<span class="c1">#</span>
+<span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([0. , 0.2, 0.4, 0.6, 0.8, 1. ])
+</pre></div></div>
+</div>
+<p>For a set of linear equations <span class="math notranslate nohighlight">\(A x = b\)</span> we may write the solution in terms of a matrix inverse <span class="math notranslate nohighlight">\(x = A^{-1} b\)</span>. However, this is not always the best way to proceed numerically if we are just interested in the solution and don’t actually require the inverse.</p>
+<p>Instead, call a <code class="docutils literal notranslate"><span class="pre">solve</span></code> function which will usually give a result for <span class="math notranslate nohighlight">\(x\)</span> that is more computationally efficient and numerically stable.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">timeit</span> np.matmul( np.linalg.inv(m), v)
+<span class="o">%</span><span class="k">timeit</span> np.linalg.solve( m, v)
+<span class="c1">#%timeit np.linalg.solve_banded((1,1), m, v)</span>
+<span class="c1">#?np.linalg.solve</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+7.01 µs ± 46.5 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+6.6 µs ± 84.8 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Sparse-Linear-Systems">
+<h2>Sparse Linear Systems<a class="headerlink" href="#Sparse-Linear-Systems" title="Permalink to this headline">¶</a></h2>
+<p>NR p72 <a class="reference external" href="http://www.aip.de/groups/soe/local/numres/bookcpdf/c2-7.pdf">http://www.aip.de/groups/soe/local/numres/bookcpdf/c2-7.pdf</a></p>
+<p>A system of linear equations is called <em>sparse</em> if only a relatively small number of its matrix elements <span class="math notranslate nohighlight">\(a_{ij}\)</span> are nonzero. It is wasteful to use general methods of linear algebra on such problems, because most of the <span class="math notranslate nohighlight">\(O(N^3)\)</span> arithmetic operations devoted to solving the set of equations or inverting the matrix involve adding or multiplying by zeros. Furthermore, you might wish to work problems so large as to tax your available memory space, and it is wasteful to reserve storage
+for large numbers of zeros. Note that there are two distinct (and not always compatible) goals for any sparse matrix method: saving time and/or saving space.</p>
+<p>See also:</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Sparse_matrix">https://en.wikipedia.org/wiki/Sparse_matrix</a></p>
+<p><a class="reference external" href="https://www.sharcnet.ca/help/index.php/Solving_Systems_of_Sparse_Linear_Equations">https://www.sharcnet.ca/help/index.php/Solving_Systems_of_Sparse_Linear_Equations</a></p>
+<p><a class="reference external" href="http://hplgit.github.io/bumpy/doc/pub/lectures-basics-1.html#___sec28">http://hplgit.github.io/bumpy/doc/pub/lectures-basics-1.html#___sec28</a></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># demonstrate how to convert a numpy ndarray to CSR format and back again</span>
+<span class="c1">#</span>
+<span class="n">m</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">laplace1D_matrices</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="k">assert</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span> <span class="n">s</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="o">==</span> <span class="n">m</span> <span class="p">)</span> <span class="p">)</span>
+
+<span class="n">s</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;4x4 sparse matrix of type &#39;&lt;class &#39;numpy.float64&#39;&gt;&#39;
+        with 8 stored elements in Compressed Sparse Row format&gt;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># compare sparse and full matrix storage requirements</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">500</span><span class="p">,</span><span class="mi">1000</span><span class="p">]:</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">laplace1D_matrices</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(3, 9, 5), (5, 25, 11), (10, 100, 26), (20, 400, 56), (100, 10000, 296), (200, 40000, 596), (500, 250000, 1496), (1000, 1000000, 2996)]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">indx</span><span class="p">,</span><span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stack</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">stack</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stack</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">stack</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;sparse&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">indx</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">indx</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;# of elements&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;array width,length&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 0, &#39;array width,length&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week08_laplace_equation-notes_32_1.png" src="../_images/JupyterNotes_phys481_week08_laplace_equation-notes_32_1.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">m</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">laplace1D_matrices</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">spsolve</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">)[::</span><span class="mi">9</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([0.        , 0.09090909, 0.18181818, 0.27272727, 0.36363636,
+       0.45454545, 0.54545455, 0.63636364, 0.72727273, 0.81818182,
+       0.90909091, 1.        ])
+</pre></div></div>
+</div>
+<p>Even for a not very large array (<span class="math notranslate nohighlight">\(N=100\)</span>) the sparse solver is almost three times as fast as the full matrix approach.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">timeit</span> scipy.linalg.solve(m, v)
+<span class="o">%</span><span class="k">timeit</span> sparse.linalg.spsolve(s, v)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+110 µs ± 3.29 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+71.7 µs ± 1.6 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;solve&#39;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;_solve_toeplitz&#39;,
+ &#39;_solvers&#39;,
+ &#39;cho_solve&#39;,
+ &#39;cho_solve_banded&#39;,
+ &#39;lu_solve&#39;,
+ &#39;solve&#39;,
+ &#39;solve_banded&#39;,
+ &#39;solve_circulant&#39;,
+ &#39;solve_continuous_are&#39;,
+ &#39;solve_continuous_lyapunov&#39;,
+ &#39;solve_discrete_are&#39;,
+ &#39;solve_discrete_lyapunov&#39;,
+ &#39;solve_lyapunov&#39;,
+ &#39;solve_sylvester&#39;,
+ &#39;solve_toeplitz&#39;,
+ &#39;solve_triangular&#39;,
+ &#39;solveh_banded&#39;]
+</pre></div></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="phys481_week08b_physical_units_constants-notes.html" class="btn btn-neutral float-right" title="Physical constants and units" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="phys481_week04b_automata_entropy-notes.html" class="btn btn-neutral float-left" title="PHYS 481 - Automata entropy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Elijah Thompson.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

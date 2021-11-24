@@ -1,0 +1,1225 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Pseudo-random number generators &mdash; Phys481SphinxNotes 1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Rockstar Programming and Teamwork" href="../RockStar.html" />
+    <link rel="prev" title="Phys481 notes - Automata and Life" href="phys481_week03a_automata_life-notes.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Phys481SphinxNotes
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../LectureNotes.html"><strong>Phys 481 Lecture Notes</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tasks.html"><strong>Daily Tasks</strong></a></li>
+</ul>
+<p class="caption"><span class="caption-text">Jupyter Notebooks:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="phys481_week00_example_report_template.html">Example notebook report template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week01_cat_shuffle-notes.html">Shuffling Arnold’s Cat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week02a_spamlet_entropy-notes.html">Bernoulli, entropy and spamlet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week02b_integer%2Cfloat-notes.html">Numbers: integers, fixed point and floating point</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week03a_computing_past_present_future.html">What are we doing here?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week03a_automata_life-notes.html">Phys481 notes - Automata and Life</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pseudo-random number generators</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Pseudo-random number generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#A-terrible-example">A terrible example</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Optional:-try-changing-the-PRNG-parameters-and-see-what-happens-to-the-hyperplanes.">Optional: try changing the PRNG parameters and see what happens to the hyperplanes.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Entropy-estimation">Entropy estimation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Limited-sample-limitations">Limited sample limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#randint-is-random">randint is random</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#randu-is-not">randu is not</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Bitwise-(optional)">Bitwise (optional)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Optional:-random-bits?">Optional: random bits?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Working-notes">Working notes</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">D2L Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../RockStar.html"><strong>Rockstar Programming and Teamwork</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SphinxDocs.html"><strong>Sphinx Documentation</strong></a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Phys481SphinxNotes</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+<div class="git-ribbon">
+  <a href="http://github.com/SwissDataScienceCenter" rel="me">Join us on GitHub</a>
+</div>
+
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Pseudo-random number generators</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/JupyterNotes/phys481_week04b_pseudorandom-notes.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<div class="section" id="Pseudo-random-number-generators">
+<h1>Pseudo-random number generators<a class="headerlink" href="#Pseudo-random-number-generators" title="Permalink to this headline">¶</a></h1>
+<p><img alt="4e91c5a338304fe4abe94c5f1fe1ffe3" src="http://dilbert.com/strip/2001-10-25" /> <img alt="2ddd41add71c471c9c27a1eb2922e2b9" src="http://assets.amuniversal.com/321a39e06d6401301d80001dd8b71c47" /> <img alt="ddef8710e6e54dc9a5c307d1e3dd327b" src="https://imgs.xkcd.com/comics/random_number.png" /></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Pseudo-random number generators<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>A computer is a deterministic system that executes a series of instructions (program) in a completely predictable fashion. In the absence of some external source of real randomnesssuch as a thermal “noise” diode (eg. <a class="reference external" href="https://onerng.info/">https://onerng.info/</a>) we have to settle for a <em>pseudo-random</em> number generator that uses a deterministic algorithm to produce a sequence of apparently random values. All PNRGs consist of some function <span class="math notranslate nohighlight">\(f\)</span> that operates on some number <span class="math notranslate nohighlight">\(x_i\)</span> to produce a new value
+<span class="math notranslate nohighlight">\(x_{i+1}\)</span></p>
+<div class="math notranslate nohighlight">
+\[x_{i+1} = f(x_i;a_1,a_2,\ldots a_n)\]</div>
+<p>where <span class="math notranslate nohighlight">\(a_n\)</span> are internal parameters specific to each implementation.</p>
+<p>A useful class of PRNGs are based on multiplicative linear congruential generators</p>
+<div class="math notranslate nohighlight">
+\[x_{i+1} = \left( a x_i + b \right) \;mod\, m\]</div>
+<p>which use fast integer multiplication and modulo arithmetic to produce numbers in the range from 0 to <span class="math notranslate nohighlight">\(m-1\)</span>.</p>
+<p>For example</p>
+<div class="math notranslate nohighlight">
+\[x_{i+1} = 6 x_i \;mod\, 13\]</div>
+<p>starting with a seed of <span class="math notranslate nohighlight">\(1\)</span> produces the sequence</p>
+<div class="math notranslate nohighlight">
+\[\ldots 1,6,10,8,9,2,12,7,3,5,4,11,1 \ldots\]</div>
+<p>while starting with a seed of <span class="math notranslate nohighlight">\(2\)</span> produces the sequence</p>
+<div class="math notranslate nohighlight">
+\[\ldots 2,12,7,3,5,4,11,1,6,10,8,9,2 \ldots\]</div>
+<p>Ideally, the result will be a circular list of some permutation of the integers between <span class="math notranslate nohighlight">\(1\)</span> and <span class="math notranslate nohighlight">\(m-1\)</span>.</p>
+<p>The choice for multiplicative factor and modulus is critical, as most values produce non-random sequences. One good pair of parameters found by Park and Miller</p>
+<div class="math notranslate nohighlight">
+\[x_{i+1} = 7^5 x_i \;mod\, (2^{31} - 1) = 16807 x_i \;mod\, 2147483647\]</div>
+<p>produces a complete sequence of 32 bit random numbers. In other words, any given starting value will produce a sequence where every other value occurs (only) once before the starting value occurs again.</p>
+<p><em>Note:</em> state-of-the-art PRNGs may be based on more sophisticated algorithms, but they all produce some kind of circular permuted list. This is equivalent to drawing cards from a shuffled deck, where the next card is unpredictable but not random.</p>
+<p>[<a class="reference external" href="https://en.wikipedia.org/wiki/Mersenne_Twister">https://en.wikipedia.org/wiki/Mersenne_Twister</a>]</p>
+<p>The numpy random framework currently uses a Mersenne Twister pseudo-random number generator. It has a very long period of <span class="math notranslate nohighlight">\(2^{19937} - 1\)</span>. The internal state is complex, but can be obtained as follows.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">123</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="o">.</span><span class="n">get_state</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&#39;MT19937&#39;, array([       123, 3885958024,  930007257,  840982176,  801699108,
+        1232403257,  337646878, 1472684765, 3650469076, 3624112092,
+         612309509, 1026879748, 3254401696, 3482279260, 1042328969,
+        2323761180,  975045094,  304403919,  194847165, 1412920484,
+        3016774189, 2155123616, 1919807744, 4267744892, 4201217843,
+        4211072521, 1057747980,   27636951, 4194854895, 2355252281,
+        4147160677,  604519517, 2182649297, 2561017696, 2669829068,
+        2521921129, 1198521179, 4096218279, 3763087578, 3923197636,
+         502612907,  279393696,   84592714, 1953931101, 2576948088,
+        3245482319, 1592577834, 4235771686,  267466441, 2885365374,
+        3680351006, 3533516708, 4162137111, 3648854041, 1626762360,
+         613715188, 3098947708, 3678834671, 3310359638,  499942084,
+        1996913552, 4205205874,  127255251, 2065549438, 2458194267,
+         171407710, 2976395352,  175193541, 2233388029,  676000480,
+         632009382, 2850181573, 1417593547, 3083269115, 2984084103,
+        1692445636, 3606262277, 3655463595, 1670947990,  795786978,
+        2332443002, 2630421673, 4022764233, 2698359813, 2983773719,
+        1931109278, 1444046097, 1355247527, 2935546582, 3714118141,
+        4273104784, 3470100570,  648375417, 3382676762, 1445203003,
+         341433665, 2544047109, 2571085348,  420537184, 2767721795,
+        3657903113, 1202436695, 2379385428, 2960300629, 3727717307,
+        1628643329, 1756078186, 2877066658, 2941157516, 2561062515,
+         444560387,  426991774,  361475270, 2163941519, 2807713043,
+        2706735400, 2835443718,  849303049, 1680261891, 1857356353,
+        2606638008,  525902555, 2770105313, 1299395594, 1167748051,
+        2757618775, 1859828487, 1871445981, 3173822028,  940213063,
+        1196935813, 1520405143,  875951026,  982607807, 1444685281,
+        2457850343, 2365873377, 1185095960, 2663477351, 3594151268,
+        4280230191, 3359417065, 2676064480,  440323001, 2480628109,
+        3148612860, 1685841608,  249732832, 4270755572, 3582039816,
+        1531083501, 2172046259, 3837204077, 1010743295, 4046393141,
+        2301552361, 2910969427,  879562642,  291129144, 3141734839,
+        2648889865, 1266477560,  323850463,  708476830,  481421306,
+        1462456391, 1274421828, 3159716576, 2220836306, 3735215033,
+        2012035852, 1586315724,  780970893, 3525911630, 1757644815,
+        2572561461,  103407971, 3319326656, 3169831841,  873108226,
+         233181822, 1159510635, 1962821256, 4124059076, 1539794747,
+         914343067, 2765915361, 1951590730, 1218195027,  379988247,
+        2938930641, 2633218046, 2978050860, 3707244519, 2375764406,
+        3970001095, 1243298328, 4051979682,  572836427, 1423111006,
+         386980931, 1767621176,  129180231, 3405088206, 2618523565,
+        1422854104,   63978091, 2908180486, 4250973796,  697702004,
+        1197928598, 2323561318, 3322180424, 1283563628, 3975782615,
+        3948537979, 4079546416, 3977711608,  897819105, 3887548320,
+         974815019, 3098488788,  881944140, 1764755675, 1789274338,
+        3785661808, 4032408129, 1330347757, 3089719296, 1153561519,
+        4256121484,  111987282,  984593730, 4230010355,  620877978,
+        2061164461, 1203850184, 2672851002, 3567085318,  190730984,
+         451731064,  399113801, 1002792127, 2365847374, 2499558896,
+        2387145583, 3506986999, 2203283515, 2491992181, 2088748780,
+        3965276539, 3860749651, 1461363084, 2228302494, 2363651210,
+        1433191079, 1117627006, 2845840412, 3418226392, 1800781930,
+        2746953275,  337952386, 2852174928,  894447457,  698653517,
+        1076394858, 2113008961, 3782542155,  149148788,  767616721,
+        3294096003, 3970827663, 3094617420, 2661306071, 1665275931,
+         682585429, 3356205213,  836562283, 2300899149, 3201086018,
+        2984678488, 2614276763, 2850248823, 2017166404,   52895061,
+        3597930662, 3375750967, 1092609187, 1532880650, 1107168120,
+        1504528607, 3278802617, 2752895622,  405527353,  204341155,
+         761862006, 2487118006, 2945688621, 2573594293, 3438812766,
+        3064905949, 4064440360, 1466582309, 1877576803, 1374868954,
+        2252182424, 3950946036, 1964183462, 1165397271, 4242567395,
+        1997826454, 2125494474, 1573997647,   59431423, 1047165397,
+        3423080260,  776734527, 3130561560, 1244289408, 3408026148,
+        1910337955, 3785066539, 3612483850, 2589186768, 1458419742,
+        2687188096, 3556668048, 4105756742, 3134744961, 2926427384,
+         776165868, 1361430375, 3076997770, 3490711797, 2983800924,
+        1612997733, 1456545988,  745430026, 1393666884,   92504204,
+         545301648, 3938582053, 1788189780, 1073949664,  316848669,
+         467137482, 1882212876, 2634624380, 1147757074,  362077660,
+         259671338,  644269297,  881306997, 1871580554,  186104889,
+        1168557280,  139401001, 2293765522, 3407516470, 3166073424,
+        3479633346, 1303734158, 3857081301,   36498137, 3713387017,
+        4198371679,  994776762, 2866774737, 2666957231, 1722607538,
+        3826988561, 2703882381,  729585887,  403744880, 1137075622,
+         624786266, 4021999098, 1996991926,  100628909, 1705220028,
+        2280260621, 1273537128,  781272555,  724064822, 3735846606,
+         495238498,  879110956,  396203487, 3547953535,  324291441,
+        2025340443, 3835849673, 1246339642,  175871440,  513698970,
+        3436528717, 3084104274, 1898064669, 3914399642, 4008491500,
+        3698279387, 2115788233, 3755542906, 3305209680,  100640851,
+        3442922836, 3626941417,  677797609, 2643272837, 2766973404,
+          89707568, 3001641099,  650547369, 3495986506, 1315416171,
+        3136040305, 3852827391, 3590218509,  767661096, 2462113131,
+        1987284241,  763640053, 2723714895,  352774152, 3055408336,
+         979851907,  399233625, 3278544840,  723627971,  497988764,
+        4107845434, 3731354668, 3791224635, 3339463369, 1849228644,
+        2245658508, 2582772410, 3064751181, 1708841953, 3525550359,
+        3503178396, 2841665908, 3647511368, 2758633810,  230055500,
+        2776490425, 3096716165,  103171330, 2736082314, 1016946793,
+         294534191, 2224809806,  593358528, 3222532997, 2782645156,
+        2839359557, 3387624651,  755700913, 4031308959, 3747458903,
+        2115379696,  813457122, 2684773112, 3125991537, 1202319919,
+        1072245751, 1732675909, 4012215719, 2182719368, 3683513671,
+        4229900714, 2503336580, 1847989942, 2855266060,   15640672,
+         820236219, 3324578211, 3887558141, 3207419156, 1258641805,
+        4175184412, 4045516572,  114995229, 3377594964,  352091447,
+         119592856, 1753049310, 1219672290,  631860855, 3241625052,
+        3427527141, 2808700841,  846349155, 2832831228,  980610596,
+        1136998947,  937042778, 3044089459, 2684517767,   13284460,
+        1232796816, 3802546218, 1896629027, 1471262817,   52295640,
+         727540273, 1891301455,  986166977, 2095015201,  354486173,
+        1952843759,  637632741, 4006963545, 1225374851,  105313100,
+         692431615, 3522686879, 3813672593, 1209318304, 2516464012,
+        2024836366, 1217245172, 2663615155, 3207951072, 2260682550,
+        1761471889, 2403388382, 2494376923,  330854317, 2235737682,
+        2323410850, 3358895155,  574464260, 2492968105, 2817238157,
+         787576194, 3417567330,  675856734, 3317799472, 1548493626,
+          58817379, 3503467308, 2734863017, 3361407638, 2925315049,
+        4007596248, 2013518729, 3401148107, 1654560524, 1690472262,
+        3193997353, 2720120350,  147914548, 1030981037, 3034076267,
+        3110371480, 1773086958, 1636568952, 3906526699, 3718821559,
+        2890033972,  940455039, 3140202317, 1479963486,  751984047,
+        2800394048, 2627283264, 3092224833, 3562282663, 3490831597,
+         415861280, 3914244315, 2785087348, 1139491275, 3062632688,
+        2297574329, 4082793991, 2453659093, 2781583125,  852421974,
+        2382408498, 1345338421,  145462986, 2531957241,  819139919,
+         584561012, 4147910926, 3749239148, 2635280919, 2029191574,
+        2195354081, 1750494174, 1894508619, 1583890819, 2898160796,
+        2945673897,  938187467,   89634668, 2696424434, 1807534087,
+        2293244598,  318506845, 3437932299, 2574932099, 3727226433,
+         633371751, 3260364289, 2543018793, 2271552855, 1832204778,
+        1265344281, 3544293083, 4006430108,  211259680, 2354471942,
+          95919099, 2881937263, 1258454378, 2131148961, 2132779403,
+        3082000350, 2367924281, 1102443701, 3987333491], dtype=uint32), 624, 0, 0.0)
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="A-terrible-example">
+<h2>A terrible example<a class="headerlink" href="#A-terrible-example" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/RANDU">https://en.wikipedia.org/wiki/RANDU</a></p>
+<p>RANDU is a linear congruential pseudorandom number generator of the Park–Miller type, which has been used since the 1960s. It is defined by the recurrence:</p>
+<div class="math notranslate nohighlight">
+\[V_{j+1} = 65539\cdot V_j\, \bmod\, 2^{31}\]</div>
+<p>with the initial seed number <span class="math notranslate nohighlight">\(V_0\)</span> as an odd number. It generates pseudorandom integers <span class="math notranslate nohighlight">\(V_{j}\)</span> which are uniformly distributed in the interval <span class="math notranslate nohighlight">\([1, 2^{31} -1]\)</span>, but in practical applications are often mapped into pseudorandom rationals <span class="math notranslate nohighlight">\(X_j\)</span> in the interval (0, 1), by the formula:</p>
+<div class="math notranslate nohighlight">
+\[X_j = \frac{V_{j}}{2^{31}}\]</div>
+<p>IBM’s RANDU is widely considered to be one of the most ill-conceived random number generators ever designed.</p>
+<p>The reason for choosing these particular values is that with a 32-bit-integer word size, the arithmetic of mod <span class="math notranslate nohighlight">\(2^{31}\)</span> and 65539 (i.e., <span class="math notranslate nohighlight">\(2^{16}+3\)</span>) calculations could be done very quickly by using special computer hardware features.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">prng_randu</span><span class="p">(</span> <span class="n">nsamples</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">multval</span><span class="o">=</span><span class="mi">65539</span><span class="p">,</span> <span class="n">modval</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">31</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+    <span class="n">sequence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="n">nsamples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span> <span class="p">)</span>
+    <span class="n">sequence</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">seed</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nsamples</span><span class="p">):</span>
+        <span class="n">sequence</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">multval</span><span class="o">*</span><span class="n">sequence</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">%</span> <span class="n">modval</span>
+
+    <span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
+        <span class="n">sequence</span> <span class="o">=</span> <span class="n">sequence</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">(</span><span class="n">modval</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sequence</span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="n">prng_randu</span><span class="p">(</span><span class="mi">9</span> <span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[        13     852007    5111925   23003487   92013597  345050199
+ 1242178821   52653839 2021215533]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+C:\Users\bjackel\Miniconda3\lib\site-packages\ipykernel_launcher.py:7: RuntimeWarning: overflow encountered in long_scalars
+  import sys
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">#V = [13] ; modt=2**31  ;  nn=500000</span>
+<span class="c1">#for i in range(nn-1): V.append( 65539*V[-1] % modt )</span>
+<span class="c1">#x = np.array(V) / 2.0**31</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">prng_randu</span><span class="p">(</span><span class="mi">500000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">999</span><span class="p">])</span>
+<span class="n">display</span><span class="p">(</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Does this look random?&#39;</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+C:\Users\bjackel\Miniconda3\lib\site-packages\ipykernel_launcher.py:7: RuntimeWarning: overflow encountered in long_scalars
+  import sys
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;Does this look random?&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week04b_pseudorandom-notes_8_2.png" src="../_images/JupyterNotes_phys481_week04b_pseudorandom-notes_8_2.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># If successive numbers were not actually independent then we might</span>
+<span class="c1"># expect to see some patterns emerging when we plot one sample as</span>
+<span class="c1"># x and the next sample as y.</span>
+<span class="c1">#</span>
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6000</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;2-dimensional lag plot&#39;</span><span class="p">)</span>
+<span class="c1">#</span>
+<span class="c1"># Humans are very good at detecting patterns, even when there</span>
+<span class="c1"># isn&#39;t actually anything there.  However, I would say that</span>
+<span class="c1"># there is structure in this plot.  A quantitative analysis</span>
+<span class="c1"># might be done using the joint probability.</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;2-dimensional lag plot&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week04b_pseudorandom-notes_9_1.png" src="../_images/JupyterNotes_phys481_week04b_pseudorandom-notes_9_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Tried plotting more points, but that didn&#39;t help.</span>
+<span class="c1">#</span>
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;2-dimensional lag plot&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;2-dimensional lag plot&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week04b_pseudorandom-notes_10_1.png" src="../_images/JupyterNotes_phys481_week04b_pseudorandom-notes_10_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+
+<span class="n">nn</span> <span class="o">=</span> <span class="mi">500000</span>
+<span class="c1">#xx, yy, zz = x[0:6000].reshape(3,-1)</span>
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">zz</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">nn</span><span class="o">-</span><span class="mi">3</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">nn</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="n">nn</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">,</span><span class="n">zz</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;hyperplanes&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 0.92, &#39;hyperplanes&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week04b_pseudorandom-notes_11_1.png" src="../_images/JupyterNotes_phys481_week04b_pseudorandom-notes_11_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">xx</span><span class="p">[</span><span class="n">zz</span><span class="o">&gt;</span><span class="mf">0.9</span><span class="p">],</span> <span class="n">yy</span><span class="p">[</span><span class="n">zz</span><span class="o">&gt;</span><span class="mf">0.9</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;slice for z&gt;0.9&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;slice for z&gt;0.9&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week04b_pseudorandom-notes_12_1.png" src="../_images/JupyterNotes_phys481_week04b_pseudorandom-notes_12_1.png" />
+</div>
+</div>
+<p>Extending this approach to three dimensions turns out to be very informative. Rather than being uniformly distributed around the volume, it turns out that all of the points occur on a relatively small number of planes. This will drastically reduce the randomness, as knowing one value will let us make predictions about the next ones in the sequence.</p>
+<div class="section" id="Optional:-try-changing-the-PRNG-parameters-and-see-what-happens-to-the-hyperplanes.">
+<h3>Optional: try changing the PRNG parameters and see what happens to the hyperplanes.<a class="headerlink" href="#Optional:-try-changing-the-PRNG-parameters-and-see-what-happens-to-the-hyperplanes." title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="Entropy-estimation">
+<h2>Entropy estimation<a class="headerlink" href="#Entropy-estimation" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">#%matplotlib notebook</span>
+<span class="c1">#import matplotlib.pyplot as plt</span>
+<span class="c1">#import numpy as np</span>
+
+<span class="k">def</span> <span class="nf">symbol_entropy</span><span class="p">(</span><span class="n">datalist</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Estimate the Shannon entropy for a sequence of symbols.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">hist</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">datalist</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hist</span><span class="p">:</span>
+            <span class="n">hist</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">hist</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="n">hist</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">hist</span><span class="p">])</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">counts</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">prob</span><span class="p">[</span> <span class="n">prob</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">]</span> <span class="c1">#; print(prob)</span>
+    <span class="n">entropy</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">prob</span><span class="p">)</span> <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">entropy</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Limited-sample-limitations">
+<h3>Limited sample limitations<a class="headerlink" href="#Limited-sample-limitations" title="Permalink to this headline">¶</a></h3>
+<p>We can use <code class="docutils literal notranslate"><span class="pre">numpy.random.randint</span></code> to generate a sequence of <span class="math notranslate nohighlight">\(N\)</span> random integers between 0 and <span class="math notranslate nohighlight">\(2^d\)</span>. From this we can construct a histogram, estimate the probability distribution, and calculate the entropy.</p>
+<p>If we actually do this for <span class="math notranslate nohighlight">\(d=31\)</span> and <span class="math notranslate nohighlight">\(N=1,000,000\)</span> then we may be surprised to obtain an entropy of just under 20 bits rather than 31. This occurs because we are not adequately sampling the complete set of outcomes. If <span class="math notranslate nohighlight">\(N&lt;&lt;2^d\)</span> then most of the histogram bins will have zero counts, approximately <span class="math notranslate nohighlight">\(N\)</span> will have one count, and a very few will have two or more. This is effectively the same as a uniform distribution with <span class="math notranslate nohighlight">\(N\)</span> bins</p>
+<div class="math notranslate nohighlight">
+\[2^{19.93} = 1,000,000\]</div>
+<p>which will have an entropy of almost 20 bits.</p>
+<p>The obvious solution to this problem is to increase the number of samples until we can ensure good statistics in all bins. However, this may be difficult for very large <span class="math notranslate nohighlight">\(d\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">31</span><span class="p">,</span>
+                      <span class="n">size</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">entropy</span> <span class="o">=</span> <span class="n">symbol_entropy</span><span class="p">(</span> <span class="n">V</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">entropy</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="n">entropy</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+19.93107256932421 999656.2580912601
+</pre></div></div>
+</div>
+<p>An alternative strategy is to break large numbers down into smaller components. For example, we might have doubts about the sampling of rare words in Spamlet, but should be relatively confident in the distribution of letters.</p>
+<p>The fundamental elements of binary numbers are bits, but we will leave them for optional questions.</p>
+<p>Here we will explore the randomness of a 32-bit integer sequence by breaking each value down into four 8-bit “bytes”. If the 32-bit sequence is completely random, then each of the four byte sequences should also be random.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">int32_to_bytes</span><span class="p">(</span> <span class="n">value</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Break down a 32-bit integer into four 8-bit bytes&#39;&#39;&#39;</span>
+    <span class="n">dt1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">((</span><span class="s1">&#39;i4&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="s1">&#39;bytes&#39;</span><span class="p">,</span><span class="s1">&#39;u1&#39;</span><span class="p">,</span><span class="mi">4</span><span class="p">)]))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">dt1</span><span class="p">)[</span><span class="s1">&#39;bytes&#39;</span><span class="p">]</span>
+
+<span class="n">sequence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">1024</span><span class="p">])</span>
+<span class="n">elements</span> <span class="o">=</span> <span class="n">int32_to_bytes</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="n">sequence</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">elements</span><span class="p">[</span><span class="n">i</span><span class="p">,:])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0        [0 0 0 0]
+1        [1 0 0 0]
+2        [2 0 0 0]
+255      [255   0   0   0]
+256      [0 1 0 0]
+1024     [0 4 0 0]
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="randint-is-random">
+<h3>randint is random<a class="headerlink" href="#randint-is-random" title="Permalink to this headline">¶</a></h3>
+<p>Test the numpy <code class="docutils literal notranslate"><span class="pre">randint</span></code> function on bytes and get the expected value of 31-bits of entropy per 31-bit “word”.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span>
+    <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">31</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+<span class="n">b4</span> <span class="o">=</span> <span class="n">int32_to_bytes</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]:</span>
+    <span class="n">sent</span> <span class="o">=</span> <span class="n">symbol_entropy</span><span class="p">(</span> <span class="n">b4</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+7.99982208691967
+7.999790397528789
+7.999810822553031
+6.999873626101349
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="randu-is-not">
+<h3>randu is not<a class="headerlink" href="#randu-is-not" title="Permalink to this headline">¶</a></h3>
+<p>The classic <code class="docutils literal notranslate"><span class="pre">randu</span></code> function gives approximately 20-bits of entropy per 31-bit word when analyzed this way. Note: this should be considered as a best-case upper-bound. It is entirely possible that some other way of analyzing the output of <code class="docutils literal notranslate"><span class="pre">randu</span></code> might give an even lower number.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">V</span> <span class="o">=</span> <span class="n">prng_randu</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">)</span>
+<span class="n">b4</span> <span class="o">=</span> <span class="n">int32_to_bytes</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]:</span>
+    <span class="n">sent</span> <span class="o">=</span> <span class="n">symbol_entropy</span><span class="p">(</span> <span class="n">b4</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+C:\Users\bjackel\Miniconda3\lib\site-packages\ipykernel_launcher.py:7: RuntimeWarning: overflow encountered in long_scalars
+  import sys
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+4.981398088860908
+4.981047614907483
+4.971310752625228
+4.796529804923541
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># q) what happens if we look at differences between sucessive samples?</span>
+<span class="c1">#</span>
+<span class="c1"># a) the 3rd bytes are slightly less random and</span>
+<span class="c1">#    the 4th bytes are significantly more random</span>
+<span class="c1">#</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">prng_randu</span><span class="p">(</span><span class="mi">500000</span><span class="p">)</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">b4</span> <span class="o">=</span> <span class="n">int32_to_bytes</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="c1">#b4 = b4[1:,:] - b4[0:-1,:]</span>
+<span class="c1">#b4 = b4[:,1:] - b4[:,0:-1]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">b4</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="n">sent</span> <span class="o">=</span> <span class="n">symbol_entropy</span><span class="p">(</span> <span class="n">b4</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+C:\Users\bjackel\Miniconda3\lib\site-packages\ipykernel_launcher.py:7: RuntimeWarning: overflow encountered in long_scalars
+  import sys
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+4.975778208633038
+4.981437431456746
+4.596261054661544
+5.463596406933021
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Bitwise-(optional)">
+<h2>Bitwise (optional)<a class="headerlink" href="#Bitwise-(optional)" title="Permalink to this headline">¶</a></h2>
+<p>The paper by Park &amp; Miller mentions a classic PRNG that was commonly used by UNIX operating systems, and claims that “the low bits of the numbers generated are not very random”. We can test this claim by defining a function as given in equation 14.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">unix_rand</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="n">unix_rand</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">unix_rand</span><span class="o">.</span><span class="n">seed</span> <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">seed</span>
+    <span class="k">if</span> <span class="n">unix_rand</span><span class="o">.</span><span class="n">seed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">unix_rand</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">multval</span><span class="p">,</span> <span class="n">addval</span><span class="p">,</span> <span class="n">maxval</span> <span class="o">=</span> <span class="mi">1103515245</span><span class="p">,</span> <span class="mi">12345</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">31</span>
+    <span class="n">unix_rand</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="p">(</span><span class="n">multval</span> <span class="o">*</span> <span class="n">unix_rand</span><span class="o">.</span><span class="n">seed</span> <span class="o">+</span> <span class="n">addval</span><span class="p">)</span> <span class="o">%</span> <span class="n">maxval</span>
+
+    <span class="k">return</span> <span class="n">unix_rand</span><span class="o">.</span><span class="n">seed</span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="n">unix_rand</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">unix_rand</span><span class="p">()</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">unix_rand</span><span class="p">()</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+12345
+1406932606
+654583775
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Optional:-random-bits?">
+<h2>Optional: random bits?<a class="headerlink" href="#Optional:-random-bits?" title="Permalink to this headline">¶</a></h2>
+<p>Write a function that takes an integer sequence and determines whether a specific bit is set for each value ie.</p>
+<p>function call:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>isbitset( sequence=[0,2,1,4,7], setbit=1 )
+</pre></div>
+</div>
+<p>result:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[False, True, False, False, True]
+</pre></div>
+</div>
+<p>Use this function to examine the output from the unix_rand generator. Then examine the output from the numpy.random generator. Compare and discuss.</p>
+</div>
+<div class="section" id="Working-notes">
+<h2>Working notes<a class="headerlink" href="#Working-notes" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># generate a short sequence of pseudo-random numbers</span>
+<span class="c1">#</span>
+<span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="n">unix_rand</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">z</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unix_rand</span><span class="p">()</span> <span class="p">)</span>
+
+<span class="c1"># turn the list into a numpy array</span>
+<span class="c1">#</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">setbit</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">bitmask</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">setbit</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;setbit=&#39;</span><span class="p">,</span> <span class="n">setbit</span><span class="p">,</span> <span class="s1">&#39;bitmask=&#39;</span><span class="p">,</span> <span class="n">bitmask</span><span class="p">)</span>
+
+<span class="c1"># look at the sequence</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">z</span> <span class="p">)</span>
+
+<span class="c1"># &quot;mask&quot; the bit with a binary &quot;and&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">z</span> <span class="o">&amp;</span> <span class="n">bitmask</span> <span class="p">)</span>
+
+<span class="c1"># is the bit set?  (True or False)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">z</span> <span class="o">&amp;</span> <span class="n">bitmask</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># is the bit set?  (1 or 0)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>  <span class="p">(</span><span class="n">z</span> <span class="o">&amp;</span> <span class="n">bitmask</span><span class="p">)</span> <span class="o">//</span> <span class="n">bitmask</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+setbit= 4 bitmask= 16
+
+ [     12345 1406932606  654583775 1449466924  229283573 1109335178]
+
+ [16 16 16  0 16  0]
+
+ [ True  True  True False  True False]
+
+ [1 1 1 0 1 0]
+</pre></div></div>
+</div>
+<p><img alt="bb97c153fd414df5bd2bee4cda12c84e" src="http://ircamera.as.arizona.edu/NatSci102/NatSci102/images/sloanbutterfly.jpg" /></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../RockStar.html" class="btn btn-neutral float-right" title="Rockstar Programming and Teamwork" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="phys481_week03a_automata_life-notes.html" class="btn btn-neutral float-left" title="Phys481 notes - Automata and Life" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Elijah Thompson.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

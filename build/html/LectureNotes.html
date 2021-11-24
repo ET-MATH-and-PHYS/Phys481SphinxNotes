@@ -100,6 +100,20 @@
 <li class="toctree-l2"><a class="reference internal" href="#sphinx-setup-september-9th"><strong>Sphinx Setup (September 9th)</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#shannon-entropy-and-spamlet-assignment-september-14th"><strong>Shannon Entropy and Spamlet Assignment (September 14th)</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#numbers-in-python-september-16th"><strong>Numbers in Python (September 16th)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#computing-past-present-and-future-september-21st"><strong>Computing Past Present and Future (September 21st)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#report-writing-september-23rd"><strong>Report Writing (September 23rd)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#automata-and-life-september-28th"><strong>Automata and Life (September 28th)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pseudo-random-numbers-october-5th"><strong>Pseudo-Random Numbers (October 5th)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#automata-entropy-october-7th"><strong>Automata Entropy (October 7th)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#boltzmann-distribution-and-dipoles-october-12th"><strong>Boltzmann Distribution and Dipoles (October 12th)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#metropolis-algorithm-october-14th"><strong>Metropolis Algorithm (October 14th)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ising-model-october-19th"><strong>Ising Model (October 19th)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ising-model-continued-october-21th"><strong>Ising Model Continued (October 21th)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#laplace-s-equations-october-26th"><strong>Laplace’s Equations (October 26th)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#physical-units-october-28th"><strong>Physical Units (October 28th)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#laplace-s-equations-matrix-methods-nov-2nd"><strong>Laplace’s Equations - Matrix Methods (Nov 2nd)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fourier-transforms-and-audio-waves-nov-4th"><strong>Fourier Transforms and Audio Waves (Nov 4th)</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pde-wave-equation-nov-16th"><strong>PDE Wave Equation (Nov 16th)</strong></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Tasks.html"><strong>Daily Tasks</strong></a></li>
@@ -109,6 +123,17 @@
 <li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week00_example_report_template.html">Example notebook report template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week01_cat_shuffle-notes.html">Shuffling Arnold’s Cat</a></li>
 <li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week02a_spamlet_entropy-notes.html">Bernoulli, entropy and spamlet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week02b_integer%2Cfloat-notes.html">Numbers: integers, fixed point and floating point</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week03a_computing_past_present_future.html">What are we doing here?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week03a_automata_life-notes.html">Phys481 notes - Automata and Life</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week04b_pseudorandom-notes.html">Pseudo-random number generators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week04b_automata_entropy-notes.html">PHYS 481 - Automata entropy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week06_ising_model-notes.html">Ising model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week08_laplace_equation-notes.html">Laplace equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week08b_physical_units_constants-notes.html">Physical constants and units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week09a_laplace_linear_algebra-notes.html">Laplace equation - matrix methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week09b_fourier_audio-notes.html">Fourier transforms and audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JupyterNotes/phys481_week10_pde_wave_equation-notes.html">PDE: wave equation</a></li>
 </ul>
 <p class="caption"><span class="caption-text">D2L Contents:</span></p>
 <ul>
@@ -221,6 +246,173 @@
 <p>Due to issues of rounding and computer representation of floating point numbers, equality should never be used to compare floating points and instaed the magnitude of the difference should be compared against some tolerance; for example <span class="math notranslate nohighlight">\(1E-6\)</span> (single precision) or <span class="math notranslate nohighlight">\(1E-15\)</span> (double precision).</p>
 <p>For conversions to different bases in python, we have the functions int(), bin(), oct(), and hex(). We can also use the format() function to change between bases, in particular using “{:#}” before other formatting terms. For example, {:#d} gives decimal, {:#b} gives binary, {:#o} gives octal, and {:#x} is hexidecimal.</p>
 <p>For integer representation, a byte consists of 8 bits, and <span class="math notranslate nohighlight">\(n\)</span> bytes can contain any number from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(2^{8\cdot n}\)</span>. To denote the sign we add a sign bit out from, with <span class="math notranslate nohighlight">\(0\)</span> indicating <span class="math notranslate nohighlight">\(+\)</span> and <span class="math notranslate nohighlight">\(1\)</span> for <span class="math notranslate nohighlight">\(-\)</span>. We can also use scientific notation, using some of the bits for the exponent, and some for the mantissa. Single precision floating points use 32 bits: 1 for the sign, 8 for the exponent, and 23 for the mantissa (+1 which is implicit).</p>
+</div>
+<div class="section" id="computing-past-present-and-future-september-21st">
+<h2><strong>Computing Past Present and Future (September 21st)</strong><a class="headerlink" href="#computing-past-present-and-future-september-21st" title="Permalink to this headline">¶</a></h2>
+<p>The history of computation was briefly touched on, including the effectiveness of mathematical models, famous computer errors, and computing progress along with the rate of growth.</p>
+</div>
+<div class="section" id="report-writing-september-23rd">
+<h2><strong>Report Writing (September 23rd)</strong><a class="headerlink" href="#report-writing-september-23rd" title="Permalink to this headline">¶</a></h2>
+<p>Requirements for assignments were discussed; importance of clear and effective documentation for functions, breaking up functions into smaller components, and writing proper introductions and conclusions.</p>
+</div>
+<div class="section" id="automata-and-life-september-28th">
+<h2><strong>Automata and Life (September 28th)</strong><a class="headerlink" href="#automata-and-life-september-28th" title="Permalink to this headline">¶</a></h2>
+<p>An automaton in terms of computers usually refers to a machine that performs a function according to a predetermined set of coded instructions, especially one capable of a range of programmed responses to different circumstances.</p>
+<p>In the discussion of state in physics, we often refer to the <strong>state</strong> of a system as a complete description of the system. In particular, a complete state for a system provides all the possible information that can be observed about the system.</p>
+<p>All physical theories ultimately are based on three kinds of fundamental postulates:</p>
+<ol class="arabic simple">
+<li><p>Postulates which define the way we describe a state of a system</p></li>
+<li><p>Postulates which specify what kind of information about observables, that is measurable properties of the system, is contained in the description of its state.</p></li>
+<li><p>Postulates which provide us with laws that govern the time evolution of the system and allows us to predict its future state given the current one.</p></li>
+</ol>
+</div>
+<div class="section" id="pseudo-random-numbers-october-5th">
+<h2><strong>Pseudo-Random Numbers (October 5th)</strong><a class="headerlink" href="#pseudo-random-numbers-october-5th" title="Permalink to this headline">¶</a></h2>
+<p>A computer is a deterministic system so it cannot produce a truly random result, and instead is limited to pseudo-random number generators which use a deterministic algorithm for producing a sequence of seemingly random numbers. In general a PRNG consists of a function <span class="math notranslate nohighlight">\(f\)</span> that operates on some number <span class="math notranslate nohighlight">\(x_i\)</span> to produce a new number <span class="math notranslate nohighlight">\(x_{i+1}\)</span></p>
+<div class="math notranslate nohighlight">
+\[x_{i+1} = f(x_i;a_1,a_2,...,a_n)\]</div>
+<p>where <span class="math notranslate nohighlight">\(a_n\)</span> are internal parameters specific to each implementation. A popular class of PRNGs are based on <em>multiplicative linear congruential generators</em> which are of the form</p>
+<div class="math notranslate nohighlight">
+\[x_{i+1} = (ax_i+b) \mod m\]</div>
+<p>In order to access the randomness of a PRNG it is important to analyze the generated numbers from multiple perspectives, such as graphically, plotting successive generated numbers on opposing axes in a 2d or 3d plot, and investigating hyperplanes. Looking at the entropy of the sequences of bits associated with generated numbers.</p>
+</div>
+<div class="section" id="automata-entropy-october-7th">
+<h2><strong>Automata Entropy (October 7th)</strong><a class="headerlink" href="#automata-entropy-october-7th" title="Permalink to this headline">¶</a></h2>
+<p>It is important to consider the events or symbols chosen in analyzing entropy calculations, as they can lead to vastly different results. For instance, in analyzing the randomness of the evolution of a cellular automata for a given rule one can look at the entropy of a single cell from generation to generation, one can look at the entropy of a single cell for pairs of generations, or even triples, and one can even look at the entropy associated to a collection of cells.</p>
+</div>
+<div class="section" id="boltzmann-distribution-and-dipoles-october-12th">
+<h2><strong>Boltzmann Distribution and Dipoles (October 12th)</strong><a class="headerlink" href="#boltzmann-distribution-and-dipoles-october-12th" title="Permalink to this headline">¶</a></h2>
+<p>For small systems in thermal equilibrium with some heat-bath at temperature T, the probability of the system being in a state <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> will follow a <em>Boltzmann distribution</em> which is of the form</p>
+<div class="math notranslate nohighlight">
+\[p(\mathbf{x}) \propto \exp\left(-\frac{E(\mathbf{x})}{k_BT}\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(k_B\)</span> is the Boltzmann constant and <span class="math notranslate nohighlight">\(E(\mathbf{x})\)</span> is the energy of the system for state <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. A partition function is used for normalization of the probabilities associated to the various states. For the Boltzmann distribution the partition function is</p>
+<div class="math notranslate nohighlight">
+\[Z(T;E_j) = \sum_{j=1}^n\exp\left(-\frac{E_j}{k_BT}\right)\]</div>
+<p>and it follows that for any <span class="math notranslate nohighlight">\(j\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[p_j = \frac{1}{Z}\exp\left(-\frac{E_j}{k_BT}\right)\]</div>
+<p>Further, it is conveniant in calculations to define <span class="math notranslate nohighlight">\(\beta = \frac{1}{k_BT}\)</span>.</p>
+<p>As a bit of python technology, the numpy.random.choice function is useful for obtaining an item from a list of symbols using another list which contains the probabilities for the various symbols.</p>
+</div>
+<div class="section" id="metropolis-algorithm-october-14th">
+<h2><strong>Metropolis Algorithm (October 14th)</strong><a class="headerlink" href="#metropolis-algorithm-october-14th" title="Permalink to this headline">¶</a></h2>
+<p>The Metropolis-Hastings algorithm is a method based on Markov chains which uses equilibrium conditions to prove that, in our case, if the system of interest is in a state with energy <span class="math notranslate nohighlight">\(E_0\)</span> and we flip the spin of a single random element so that the system now has energy <span class="math notranslate nohighlight">\(E_1\)</span>, the probability of the system accepting this change would be</p>
+<div class="math notranslate nohighlight">
+\[p = \min(1, \exp(-(E_1 - E_2)\beta))\]</div>
+<p>In this case, the system will always move from a high energy state to a low energy state, and if the system is in a low energy state there is some probability that it will flip to a high energy state. THis probability increases with an increase in the temperature of the system.</p>
+<p>When considering the energy of a system of magnetic dipoles in some external magnetic field, we must also take into consideration the small interactions between neighboring dipoles due to the magnetic fields generated by their respective magnetic moments. This can be done in a simple case for immediate neighbors with a week coupling</p>
+<div class="math notranslate nohighlight">
+\[E_i = -JS_{i-1}S_i - JS_{i+1}S_i\]</div>
+<p>where <span class="math notranslate nohighlight">\(J\)</span> is a coupling constant.</p>
+</div>
+<div class="section" id="ising-model-october-19th">
+<h2><strong>Ising Model (October 19th)</strong><a class="headerlink" href="#ising-model-october-19th" title="Permalink to this headline">¶</a></h2>
+<p>In an Ising model we arrange dipoles in a square lattice, with periodic boundary conditions, such that each entry in the lattic contains the spin of the associated dipole. To a good approximation, when considering spin coupling between dipoles we need only consider the four adjacent dipoles. The energy of such a system without an external magnetic field is given by the Hamiltonian</p>
+<div class="math notranslate nohighlight">
+\[H = -J\sum_{i=1}^m\sum_{j=1}^n\sigma_{i,j}\left[\sigma_{i-1,j}+\sigma_{i+1,j}+\sigma_{i,j-1}+\sigma_{i,j+1}\right]\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma_i\)</span> and <span class="math notranslate nohighlight">\(\sigma_j\)</span> are states, and we are considering an <span class="math notranslate nohighlight">\(m\times n\)</span> lattice of states, with periodic boundary conditions.</p>
+<p>For systems such as the one we are considering, there is a special temperature <span class="math notranslate nohighlight">\(T_c\)</span> called the <em>critical</em> or <em>Curie temperature</em>, and at this temperature many thermodynamic phenomena occur, such as heat capacity having a peak. For the 2D Ising model it has been shown analytically that <span class="math notranslate nohighlight">\(T_c\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[T_c = \frac{2}{\ln(1+\sqrt{2})}\]</div>
+<p>Next, the <em>magnetization</em> for our system is the sum over all spins. Non-zero magnetizations generate magnetic fields. Often we are looking at the absolute value of the magnetization. Now, <span class="math notranslate nohighlight">\(T_c\)</span> is also the temperature for which the magnetization goes to zero, and in general the system undergoes a phase transition. In particular, this is a second order or continuous transition which is for the transition between ferromagnetic and paramagnetic phases.</p>
+</div>
+<div class="section" id="ising-model-continued-october-21th">
+<h2><strong>Ising Model Continued (October 21th)</strong><a class="headerlink" href="#ising-model-continued-october-21th" title="Permalink to this headline">¶</a></h2>
+<p>When working with arrays of multiple dimensions, and in particular when going between programming languages, depending on the language operations may be done by rows or by columns, causing calculations to be slightly different. Thus, in testing it is advised to test with rectangular, non-square arrays to make sure the results you want occur, and that you are indexing the correct way. In particular, when graphing it’s easier to see what is being done.</p>
+</div>
+<div class="section" id="laplace-s-equations-october-26th">
+<h2><strong>Laplace’s Equations (October 26th)</strong><a class="headerlink" href="#laplace-s-equations-october-26th" title="Permalink to this headline">¶</a></h2>
+<p>Laplace’s equation is a differential equation of the form</p>
+<div class="math notranslate nohighlight">
+\[\nabla^2\varphi = \frac{\partial^2\varphi}{\partial x^2} + \frac{\partial^2\varphi}{\partial y^2} + \frac{\partial^2\varphi}{\partial z^2} = 0\]</div>
+<p>where <span class="math notranslate nohighlight">\(\nabla^2\)</span> is the Laplace operator. It is an example of an elliptic PDE. Differential equations of this form appear often in the field of electrostatics as boundary value problems for electric potentials. In order to solve such an equation numerically one can use the method of finite differences which uses the Taylor expansion of a function <span class="math notranslate nohighlight">\(f(x)\)</span> at a point <span class="math notranslate nohighlight">\(a\)</span> to approximate its derivatives:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{n=0}^{\infty}\frac{f^{(n)}(a)}{n!}(x-a)^n = f(a) + \frac{f'(a)}{1!}(x-a) + \frac{f''(a)}{2!}(x-a)^2+\frac{f'''(a)}{3!}(x-a)^3 + ...\]</div>
+<p>Restricting to points evenly spaced by <span class="math notranslate nohighlight">\(\Delta\)</span> we can obtain the form</p>
+<div class="math notranslate nohighlight">
+\[f(x_{i+n}) = f(x_i) + f'(x_i)n\Delta + \frac{f''(x_i)}{2}(n\Delta)^2 + \frac{f'''(x_i)}{6}(n\Delta)^3+O(\Delta^4)\]</div>
+<p>For adjacent points this becomes</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}f(x_{i+1}) &amp;= f(x_i) + f'(x_i)\Delta + \frac{f''(x_i)}{2}\Delta^2 + \frac{f'''(x_i)}{6}\Delta^3+O(\Delta^4)  \\
+f(x_i) &amp;= f(x_i) \\
+f(x_{i-1}) &amp;= f(x_i) - f'(x_i)\Delta + \frac{f''(x_i)}{2}\Delta^2 - \frac{f'''(x_i)}{6}\Delta^3+O(\Delta^4)\end{split}\]</div>
+<p>so subtracting two such neighbors gives</p>
+<div class="math notranslate nohighlight">
+\[f(x_{i+1}) - f(x_i) = f'(x_i)\Delta + \frac{f''(x_i)}{2}\Delta^2 + \frac{f'''(x_i)}{6}\Delta^3+O(\Delta^4)\]</div>
+<p>From this we get our first estimate, the <em>forward difference estimate</em> of the first derivative:</p>
+<div class="math notranslate nohighlight">
+\[\frac{f(x_{i+1}) - f(x_i)}{\Delta} = f'(x_i) + \frac{f''(x_i)}{2}\Delta + \frac{f'''(x_i)}{6}\Delta^2+O(\Delta^3) \approx f'(x_i) + O(\Delta)\]</div>
+<p>and similarly we can obtain the <em>backward difference estimate</em>, which together are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}f'(x_i) &amp;\approx \frac{f(x_{i+1}) - f(x_i)}{\Delta} + O(\Delta) \\
+f'(x_i) &amp;\approx \frac{f(x_i) - f(x_{i-1})}{\Delta} + O(\Delta)\end{split}\]</div>
+<p>We can also obtain the <em>first centered difference estimate</em> in a similar fashion</p>
+<div class="math notranslate nohighlight">
+\[f'(x_i) \approx \frac{f(x_{i+1}) - f(x_{i-1})}{2\Delta} + O(\Delta^2)\]</div>
+<p>and the <em>second centered difference estimate</em></p>
+<div class="math notranslate nohighlight">
+\[f''(x_i) \approx \frac{f(x_{i+1}) - 2f(x_i) + f(x_{i-1})}{\Delta^2} + O(\Delta^2)\]</div>
+<p>One way to apply these estimates is to use the <em>relaxation method</em> which updates a grid of values iteratively using neighboring points and the finite differences method. However, this can take a long amount of time, and may not always yield the most accurate results.</p>
+</div>
+<div class="section" id="physical-units-october-28th">
+<h2><strong>Physical Units (October 28th)</strong><a class="headerlink" href="#physical-units-october-28th" title="Permalink to this headline">¶</a></h2>
+<p>The scipy.constants package should be used whenever one is using physical constants in one’s code. Also, when importanting it is recommended to only import the constants being used in the current project.</p>
+<p>Often it is important to keep track of units in calculations. One package, of many, which does this is PINT with its UnitRegistry object. This allows one to add units to numbers in calculations, by multiplying by the unit registry object .(the appropraite unit), or simply call it with a string for the unit placed in. One can then perform dimensional analysis as an error will be thrown if mismatched units are added. Conversions can also be done with the variable.to() method, with the unit you wish to convert to placed in brackets. Unum is another python unit library.</p>
+</div>
+<div class="section" id="laplace-s-equations-matrix-methods-nov-2nd">
+<h2><strong>Laplace’s Equations - Matrix Methods (Nov 2nd)</strong><a class="headerlink" href="#laplace-s-equations-matrix-methods-nov-2nd" title="Permalink to this headline">¶</a></h2>
+<p>Going back to the Laplace Equation, another method of applying the finite difference estimates is to use matrix applications, representing the 1 dimensional boundary value problem, for instance, as a system of equations with the finite difference equations applied to the Laplacian. This then takes the form of <span class="math notranslate nohighlight">\(\mathbf{A}\vec{x} = \vec{b}\)</span>, where <span class="math notranslate nohighlight">\(\vec{x}\)</span> is our desired array of potentials for our numerical solution, so the problem simplifies to solving the matrix equation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Note</strong>: In most applications it is much more efficient to solve a matrix equation rather than invert the matrix and multiply through the right hand side to get the solution. The result is also often more numerically stable. As grids get large the error in the numerical results can actually worsen as small errors accumulate over larger numbers of calculations. In this way solving is more stable than inverting, producing more accurate results even as grid sizes grow.</p>
+</div>
+<p>Often in applications the system of linear equations that one is dealing with is <em>sparse</em>, which is to say that only a small portion of the matrix’s entries are nonzero. Using specialized methods for these types of matrices can increase efficiency drastically, such as storing only the non-zero entries in memory. Specialized methods for storing and processing include Dictionary of Keys (DOK), List of Lists (LIL), Coordinate List (COO), Compressed Sparse Row (CSR or CRS), and Compressed Sparse Column (CSC or CCS).</p>
+<p>scipy.sparse is a useful package for sparse matrix methods. scipy’s linalg package also has a number of useful solving algorithms, as well as ones speciallized for sparse and banded matrices.</p>
+</div>
+<div class="section" id="fourier-transforms-and-audio-waves-nov-4th">
+<h2><strong>Fourier Transforms and Audio Waves (Nov 4th)</strong><a class="headerlink" href="#fourier-transforms-and-audio-waves-nov-4th" title="Permalink to this headline">¶</a></h2>
+<p>In decoding audio signals the Fourier transform can be incredibly useful as it converts the signal from the time domain to the frequency domain, in which you can analyze the power of various frequencies in hopes of isolating your desired signal from any present noise. Often in this process visualizing the audio can be very useful, which is easily done using a <em>spectrogram</em>. In theory, when converted to the frequency domain white noise should be uniformly distributed with a relatively low power, while the actual signal will be more concentrated with a higher power, although this mainly holds for simple signals.</p>
+<p>One way of removing/reducing the noise is passing over to the frequency domain, applying a low-pass filter on the frequencies if you believe your actual signal is concentrated in a region of low frequencies, and then taking the inverse fourier transform to recover a denoised signal. Similarly, one can apply a high-pass filter if one believes that the signal contains mostly high frequency audio.</p>
+<p>In numerical implementation, one often utilizes the <em>Fast Fourier Transform</em> for its speed and accuracy. It takes a sequence of numbers and returns a sequence of equal length after applying the transform. Note that both the input and output may be complex, but if the input is real the output will be symmetric about the vertical axis (0.0 frequency) with it equaling its complex conjugate.</p>
+</div>
+<div class="section" id="pde-wave-equation-nov-16th">
+<h2><strong>PDE Wave Equation (Nov 16th)</strong><a class="headerlink" href="#pde-wave-equation-nov-16th" title="Permalink to this headline">¶</a></h2>
+<p>The one dimensional wave equation is given by</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial^2u}{\partial t^2} = c^2\frac{\partial^2u}{\partial x^2},\;\;x \in (0,L),t \in (0,T]\]</div>
+<p>where <span class="math notranslate nohighlight">\(c\)</span> is a characteristic propagation speed. To fully specify this PDE we need two sets of initial conditions. Usually these take the form
+.. math:: u(x,0) = I(x),;; x in [0,L]</p>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial}{\partial t}u(x,0) = V(x),\;\;x \in [0,L]\]</div>
+<p>We may also specify spatial boundary conditions such as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}u(0,t) &amp;= 0,\;\;t \in (0,T] \\
+u(L,t) &amp;= 0, \;\; t \in (0,T]\end{split}\]</div>
+<p>We use the method of finite differences to discretize this problem and obtain numerical solutions. The centered second differences estimates give</p>
+<div class="math notranslate nohighlight">
+\[\frac{u_i^{n+1} - u_i^n + u_i^{n-1}}{\Delta t^2} = c^2\frac{u_{i+1}^n - 2u_i^n + u_{i-1}^n}{\Delta x^2}\]</div>
+<p>where <span class="math notranslate nohighlight">\(u_i^n = u(x_i,t_n)\)</span>. We can use this to write</p>
+<div class="math notranslate nohighlight">
+\[u_i^{n+1} = 2u_i^n - u_i^{n-1} + \frac{c^2\Delta t^2}{\Delta x^2}(u_{i+1}^n - 2u_i^n + u_{i-1}^n)\]</div>
+<p>let <span class="math notranslate nohighlight">\(C = \frac{c\Delta t}{\Delta x}\)</span>, and note that it is dimensionless. When <span class="math notranslate nohighlight">\(C &gt; 1\)</span> the largest effective numerical propagation speed is less than the physical speed, which can lead to inaccurate results. When the system is initially static <span class="math notranslate nohighlight">\(V = 0\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[V = \frac{u_i^{n+1} - u_i^{n-1}}{2\Delta t} = 0\]</div>
+<div class="math notranslate nohighlight">
+\[u_i^{n+1} = u_i^{n-1}\]</div>
+<p>so the first step doesn’t require information about <span class="math notranslate nohighlight">\(t &lt; 0\)</span></p>
+<div class="math notranslate nohighlight">
+\[u_i^1 = u_i^0 - \frac{1}{2}C^2(u_{i+1}^0 - 2u_i^0 + u_{i-1}^0)\]</div>
+<p>Solutions to the wave equation are conservative with energy at any given time being the sum of qaudratic terms:</p>
+<div class="math notranslate nohighlight">
+\[E(t) := \frac{1}{2}\int_0^L[u_t^2(x,t) + c^2u_x^2(x,t)]dx\]</div>
+<p>which correspond to the kinetic and potential energies respectively.</p>
+<p>Standing waves arise from an initial condition</p>
+<div class="math notranslate nohighlight">
+\[u(x,0) = A\sin\left(\frac{\pi}{L}mx\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(m\in\mathbb{Z}\)</span> and <span class="math notranslate nohighlight">\(A\)</span> is a freely chosen amplitude. The corresponding exact solution as a function of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(t\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[u_e(x,t) = A\sin\left(\frac{\pi}{L}mx\right)\cos\left(\frac{\pi}{L}mct\right)\]</div>
 <div class="figure align-right">
 <a class="reference internal image-reference" href="_images/Logo.png"><img alt="_images/Logo.png" src="_images/Logo.png" style="width: 87.3px; height: 90.0px;" /></a>
 </div>

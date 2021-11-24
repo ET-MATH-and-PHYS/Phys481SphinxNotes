@@ -1,0 +1,1267 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Phys481 notes - Automata and Life &mdash; Phys481SphinxNotes 1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Pseudo-random number generators" href="phys481_week04b_pseudorandom-notes.html" />
+    <link rel="prev" title="What are we doing here?" href="phys481_week03a_computing_past_present_future.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Phys481SphinxNotes
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../LectureNotes.html"><strong>Phys 481 Lecture Notes</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tasks.html"><strong>Daily Tasks</strong></a></li>
+</ul>
+<p class="caption"><span class="caption-text">Jupyter Notebooks:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="phys481_week00_example_report_template.html">Example notebook report template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week01_cat_shuffle-notes.html">Shuffling Arnold’s Cat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week02a_spamlet_entropy-notes.html">Bernoulli, entropy and spamlet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week02b_integer%2Cfloat-notes.html">Numbers: integers, fixed point and floating point</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week03a_computing_past_present_future.html">What are we doing here?</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Phys481 notes - Automata and Life</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#State-evolution-and-transition">State evolution and transition</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#One-bit">One bit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Part-1d:-Cellular-automata">Part 1d: Cellular automata</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#decimal-to-binary">decimal to binary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3-bit-lookup">3-bit lookup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#numpy-array-indexing">numpy array indexing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Example:-cellular-automata-single-step">Example: cellular automata single step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Example:-cellular-automata">Example: cellular automata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Part-2d:-The-game-of-life">Part 2d: The game of life</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#import-resources">import resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#__name__-==-__main__">__name__ == __main__</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="phys481_week04b_pseudorandom-notes.html">Pseudo-random number generators</a></li>
+</ul>
+<p class="caption"><span class="caption-text">D2L Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../RockStar.html"><strong>Rockstar Programming and Teamwork</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SphinxDocs.html"><strong>Sphinx Documentation</strong></a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Phys481SphinxNotes</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+<div class="git-ribbon">
+  <a href="http://github.com/SwissDataScienceCenter" rel="me">Join us on GitHub</a>
+</div>
+
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Phys481 notes - Automata and Life</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/JupyterNotes/phys481_week03a_automata_life-notes.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<div class="section" id="Phys481-notes---Automata-and-Life">
+<h1>Phys481 notes - Automata and Life<a class="headerlink" href="#Phys481-notes---Automata-and-Life" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>au·tom·a·ton
+noun
+plural noun: automata
+
+ +a moving mechanical device made in imitation of a human being.
+synonyms:   robot, android, cyborg, droid, bot
+&quot;assembly-line automatons&quot;
+
+ +a machine that performs a function according to a predetermined set of coded instructions,
+ especially one capable of a range of programmed responses to different circumstances.
+
+used in similes and comparisons to refer to a person who seems to act in a mechanical or unemotional way.
+</pre></div>
+</div>
+<div class="section" id="State-evolution-and-transition">
+<h2>State evolution and transition<a class="headerlink" href="#State-evolution-and-transition" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://physics.stackexchange.com/questions/223564/what-is-a-state-in-physics">https://physics.stackexchange.com/questions/223564/what-is-a-state-in-physics</a></p>
+<p>Informally speaking, a complete description of a physical system is referred to as its <code class="docutils literal notranslate"><span class="pre">state</span></code>. A complete state of a system provides all the possible information that can be observed about the system, i.e. everything that can be known about the system is contained in the specification of its state.</p>
+<p>Every physical theory is ultimately based on the three kinds of fundamental postulates:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>postulates which defines the way we describe a state of a system.
+
+postulates which specifies what kind of information about observables, i.e. measurable properties of the system, is contained in the description of its state.
+
+postulates which provides us with laws that govern the time evolution of the system and allows us to predict its future state given the current one.
+</pre></div>
+</div>
+<div class="section" id="One-bit">
+<h3>One bit<a class="headerlink" href="#One-bit" title="Permalink to this headline">¶</a></h3>
+<p>The simplest non-trivial system has a binary state which can be fully specified using a single bit. Assume that the state can always be correctly determined by applying some error-free measurement process. For a continuous time system the rate of change may have the form</p>
+<div class="math notranslate nohighlight">
+\[\frac{d\Phi}{dt} = D\left( \Phi, t \right)\]</div>
+<p>while a discrete time system may be described in terms of transitions from one state to the next</p>
+<div class="math notranslate nohighlight">
+\[\Phi_{i+1} = T\left( \Phi_i \right)\]</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># The least interesting rule: don&#39;t change.</span>
+<span class="c1"># A system in state &quot;0&quot; remains in state &quot;0&quot;,</span>
+<span class="c1"># and state &quot;1&quot; remains in state &quot;1&quot;</span>
+<span class="c1">#</span>
+<span class="c1"># 0 -&gt; 0</span>
+<span class="c1"># 1 -&gt; 1</span>
+
+<span class="c1"># One way to accomplish this is with a function</span>
+<span class="c1">#</span>
+<span class="k">def</span> <span class="nf">transition_0_1</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="c1"># An alternative approach is to define a dict and use it as a &quot;lookup table&quot;</span>
+<span class="c1"># to determine what new state we end up in.</span>
+<span class="c1">#</span>
+<span class="n">lookup</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;state 0 transitions to state&#39;</span><span class="p">,</span> <span class="n">lookup</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">state</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">indx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="n">state</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; -&gt; &#39;</span> <span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">lookup</span><span class="p">[</span><span class="n">state</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+state 0 transitions to state 0
+0 -&gt; 0 -&gt; 0 -&gt; 0 -&gt; 0 -&gt;
+</pre></div></div>
+</div>
+<p>A system with 2 possible initial states and 2 final states can exhibit 4 different kinds of behavior</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1)  no change: 0 -&gt; 0, 1 -&gt; 1
+2)  always on: 0 -&gt; 1, 1 -&gt; 1
+3)  always off: 0 -&gt; 0, 1 -&gt; 0
+4)  alternate: 0 -&gt; 1, 1 -&gt; 0
+</pre></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Print all possible binary transitions for both initial conditions.</span>
+<span class="c1">#</span>
+<span class="n">all_transitions</span> <span class="o">=</span> <span class="p">[</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span> <span class="p">]</span>
+
+<span class="k">for</span> <span class="n">lookup</span> <span class="ow">in</span> <span class="n">all_transitions</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">lookup</span> <span class="p">)</span>
+    <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">indx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span> <span class="n">state</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; -&gt; &#39;</span> <span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">lookup</span><span class="p">[</span><span class="n">state</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+ {0: 0, 1: 1}
+0 -&gt; 0 -&gt; 0 -&gt; 0 -&gt; 0 -&gt;
+1 -&gt; 1 -&gt; 1 -&gt; 1 -&gt; 1 -&gt;
+
+ {0: 0, 1: 0}
+0 -&gt; 0 -&gt; 0 -&gt; 0 -&gt; 0 -&gt;
+1 -&gt; 0 -&gt; 0 -&gt; 0 -&gt; 0 -&gt;
+
+ {0: 1, 1: 1}
+0 -&gt; 1 -&gt; 1 -&gt; 1 -&gt; 1 -&gt;
+1 -&gt; 1 -&gt; 1 -&gt; 1 -&gt; 1 -&gt;
+
+ {0: 1, 1: 0}
+0 -&gt; 1 -&gt; 0 -&gt; 1 -&gt; 0 -&gt;
+1 -&gt; 0 -&gt; 1 -&gt; 0 -&gt; 1 -&gt;
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Part-1d:-Cellular-automata">
+<h2>Part 1d: Cellular automata<a class="headerlink" href="#Part-1d:-Cellular-automata" title="Permalink to this headline">¶</a></h2>
+<p>Read at least the first link:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://en.wikipedia.org/wiki/Cellular_automaton
+
+http://natureofcode.com/book/chapter-7-cellular-automata
+
+https://plato.stanford.edu/entries/cellular-automata/index.html
+</pre></div>
+</div>
+<p>in order to understand how to construct, calculate, and classify basic 1-dimensional “Wolfram” automata.</p>
+<p>[Task #1.1] Write a program to generate a sequence for a 1-dimensional automaton with <span class="math notranslate nohighlight">\(N=64\)</span> grid cells and arbitrary rules eg.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ncells = 64
+state = np.zeros(ncells, dtype=np.int8 )
+state[ncells//2] = 1  # initialize one cell near the middle
+
+nsteps = 999
+for i in range(1,nsteps):
+    state = cellular_step( state, rule=18)
+</pre></div>
+</div>
+<p>[Task #1.2] Determine which 5 rules appear to be most random by estimating steady-state entropy after taking many (50+) “warm-up” or “burn-in” steps.</p>
+<p>[Task #1.3] Write a function to generate a pseudorandom sequence of 64-bit integers based on a cellular automaton using the highest entropy rule.</p>
+<p>Optional: read more about other examples and applications of cellular automata:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://en.wikipedia.org/wiki/Nagel%E2%80%93Schreckenberg_model
+
+http://mathworld.wolfram.com/WireWorld.html
+</pre></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="c1">#%matplotlib notebook</span>
+
+<span class="c1">#import seaborn as sns</span>
+<span class="c1">#sns.set(palette=&quot;bright&quot;)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="decimal-to-binary">
+<h3>decimal to binary<a class="headerlink" href="#decimal-to-binary" title="Permalink to this headline">¶</a></h3>
+<p>There are several different ways of converting a decimal integer into a binary representation. Perhaps the most obvious is “np.unpackbits” which returns a list of 0’s and 1’s. The “np.binary_repr” function returns a string, as does “str.format” and the built-in “bin” function (although more work may be required to ensure leading 0’s).</p>
+<p>In the unlikely event that this operation becomes a computational bottleneck, we should probably use the “bin” method.</p>
+<p>Note: converting a string to a list of individual characters can be done with something like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>blist = []*len(s)           # make a list of empty elements
+for i,b in enumerate(s):
+    blist[-i] = b
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>blist = []
+for b in s[::-1]:
+    blist.append(b)
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>blist = [b for b in s][::-1]
+</pre></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">rule_number</span> <span class="o">=</span> <span class="mi">110</span>
+<span class="n">dec2bin</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">unpackbits</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">dec2bin</span><span class="p">(</span><span class="n">rule_number</span><span class="p">)</span> <span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> [dec2bin(rule_number) for rule_number in range(256)]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[0 1 1 0 1 1 1 0]
+440 µs ± 1.21 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dec2bin</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">dec2bin</span><span class="p">(</span><span class="n">rule_number</span><span class="p">)</span> <span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> [dec2bin(rule_number) for rule_number in range(256)]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+01101110
+214 µs ± 469 ns per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dec2bin</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:08b}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">dec2bin</span><span class="p">(</span><span class="n">rule_number</span><span class="p">)</span> <span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> [dec2bin(rule_number) for rule_number in range(256)]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+01101110
+93.1 µs ± 856 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dec2bin</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span>  <span class="nb">bin</span><span class="p">(</span><span class="n">rule_number</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">dec2bin</span><span class="p">(</span><span class="n">rule_number</span><span class="p">)</span> <span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> [dec2bin(rule_number) for rule_number in range(256)]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0b1101110
+39.1 µs ± 118 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dec2bin</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span>  <span class="nb">bin</span><span class="p">(</span><span class="n">rule_number</span><span class="p">)[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">dec2bin</span><span class="p">(</span><span class="n">rule_number</span><span class="p">)</span> <span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> [dec2bin(rule_number) for rule_number in range(256)]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+01101110
+76.7 µs ± 157 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="3-bit-lookup">
+<h3>3-bit lookup<a class="headerlink" href="#3-bit-lookup" title="Permalink to this headline">¶</a></h3>
+<p>Working with 1-dimensional “Wolfram-type” CA requires that we use 3-bits (left,middle,right) to determine the outcome of applying a given rule.</p>
+<p>One way is to use a “dict” indexed by a tuple containing the three bits. Another would be to convert the tuple into an integer in the range 0-7 and use that to index a list. Perhaps the simplest and fastest approach is based on numpy array indexing, which is shown in more detail below.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">blist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unpackbits</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">rule_number</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="n">truple</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span>
+
+<span class="c1"># we can generate an index to go with each value of a loop</span>
+<span class="c1">#</span>
+<span class="n">lookup_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">indx</span><span class="p">,</span><span class="n">lmr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span><span class="n">truple</span><span class="p">):</span>
+    <span class="n">lookup_dict</span><span class="p">[</span><span class="n">lmr</span><span class="p">]</span> <span class="o">=</span> <span class="n">blist</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span>
+
+<span class="c1"># or use enumerate to do the same thing automatically</span>
+<span class="c1">#</span>
+<span class="n">lookup_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">indx</span><span class="p">,</span><span class="n">lmr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">truple</span><span class="p">):</span>
+    <span class="n">lookup_dict</span><span class="p">[</span><span class="n">lmr</span><span class="p">]</span> <span class="o">=</span> <span class="n">blist</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span>
+
+
+<span class="o">%</span><span class="k">timeit</span> x = [ lookup_dict[i] for i in truple]
+<span class="nb">print</span><span class="p">([</span> <span class="n">lookup_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">truple</span><span class="p">]</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+600 ns ± 2.18 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+[0, 1, 1, 0, 1, 1, 1, 0]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">blist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unpackbits</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">rule_number</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="n">lookup_list</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span>
+<span class="k">for</span> <span class="n">indx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+    <span class="n">lookup_list</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span> <span class="o">=</span> <span class="n">blist</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span>
+
+<span class="o">%</span><span class="k">timeit</span> [lookup_list[i] for i in range(8)]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+672 ns ± 6.56 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">blist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unpackbits</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">rule_number</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">lookup_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">blist</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span> <span class="p">)</span>
+<span class="n">indx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+<span class="o">%</span><span class="k">timeit</span> x = [blist[i] for i in indx]
+<span class="o">%</span><span class="k">timeit</span> x = [lookup_array[i] for i in indx]
+<span class="o">%</span><span class="k">timeit</span> x = lookup_array[indx]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1.91 µs ± 16.1 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+1.93 µs ± 14.3 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+801 ns ± 2.9 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="numpy-array-indexing">
+<h3>numpy array indexing<a class="headerlink" href="#numpy-array-indexing" title="Permalink to this headline">¶</a></h3>
+<p>We can select individual elements from a list</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>list( [1,2,3,3] ) [1]
+</pre></div>
+</div>
+<p>or a range of elements</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>list( [1,2,3,3] ) [1:3]
+</pre></div>
+</div>
+<p>Numpy arrays can be acessed in the same way. However, there are some other ways to select elements. Using a list or array of index values will result in a new array that is the same size as the index. Each element will be the corresponding element of the original array.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span> <span class="p">;</span> <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># print(x[0,2])</span>
+<span class="c1"># print(x[ [0,2] ])</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">))</span> <span class="p">;</span> <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1">#print(x[0,2])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span> <span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span> <span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+range(0, 9)
+0
+[0 1 2 3 4 5 6 7 8]
+0
+[0 2]
+[0 2 6 7]
+[0 2 0 4 0 6 0 8]
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Example:-cellular-automata-single-step">
+<h2>Example: cellular automata single step<a class="headerlink" href="#Example:-cellular-automata-single-step" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">cellular_step</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">rule_number</span><span class="o">=</span><span class="mi">110</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;You are welcome to use this code, but you must explain</span>
+<span class="sd">    how it works.  Otherwise you will need to write your own.</span>
+
+<span class="sd">    Debugging is twice as hard as writing the code in the first place.</span>
+<span class="sd">    Therefore, if you write the code as cleverly as possible, you are,</span>
+<span class="sd">    by definition, not smart enough to debug it.</span>
+<span class="sd">    https://www.linusakesson.net/programming/kernighans-lever/index.php</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lookup</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unpackbits</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">rule_number</span><span class="p">)</span> <span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">triple</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="n">value</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">lookup</span><span class="p">[</span><span class="n">triple</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Example:-cellular-automata">
+<h2>Example: cellular automata<a class="headerlink" href="#Example:-cellular-automata" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+<span class="n">value</span><span class="p">[</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span> <span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">nsteps</span> <span class="o">=</span> <span class="mi">360</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span> <span class="p">[</span><span class="n">nsteps</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsteps</span><span class="p">):</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">cellular_step</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">rule_number</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+    <span class="n">grid</span><span class="p">[</span><span class="n">n</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">value</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;cell number&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;step number&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;CA rule 110&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;CA rule 110&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week03a_automata_life-notes_23_1.png" src="../_images/JupyterNotes_phys481_week03a_automata_life-notes_23_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># the &#39;%prun&#39; magic ipython command runs a profiler to obtain run times</span>
+<span class="c1"># for a function and all of the functions it calls and so on.  Note that</span>
+<span class="c1"># unlike &#39;%timeit&#39; the main command is only called once.  Since results</span>
+<span class="c1"># may not be very accurate for very fast functions, it may be helpful to</span>
+<span class="c1"># apply to a loop of tens, or hundreds, or thousands of calls.</span>
+<span class="c1">#</span>
+<span class="n">nsteps</span> <span class="o">=</span> <span class="mi">9999</span>
+<span class="o">%</span><span class="k">prun</span> for n in range(nsteps): value = cellular_step(value, rule_number=60)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Part-2d:-The-game-of-life">
+<h2>Part 2d: The game of life<a class="headerlink" href="#Part-2d:-The-game-of-life" title="Permalink to this headline">¶</a></h2>
+<p>Read this Wikipedia page: <a class="reference external" href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life</a></p>
+<p>Read the python file in D2L: phys481_game-of-life.py and work your way through different implementations of the algorithm in stepper0, stepper1… and play around with the results.</p>
+<p>[Task #2.1] Examine the steady-state (long time) behaviour for an initial configuration with 1/2 the cells randomly turned on (<span class="math notranslate nohighlight">\(p=0.5\)</span>). Calculate mean &amp; standard deviation for at least 3 runs to estimate uncertainty.</p>
+<p>[Task #2.2] Examine the steady-state behaviour for a range of initial random densities from <span class="math notranslate nohighlight">\(p=0\)</span> to <span class="math notranslate nohighlight">\(p=1\)</span>.</p>
+</div>
+<div class="section" id="import-resources">
+<h2>import resources<a class="headerlink" href="#import-resources" title="Permalink to this headline">¶</a></h2>
+<p>The “import” command loads collections of code that are not part of the core python distribution. We have used this to obtain plotting tools from matplotlib.pyplot and numerical tools from numpy.</p>
+<p>For example, assume that the file “phys481_game_of_life.py” contains a bunch of useful python code. Calling the import command will execute all the code in that file exactly as if we ran it from a Jupyter cell. This can be used to define functions without displaying large amounts of code in the notebook and resulting documents.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">phys481_game_of_life</span> <span class="k">as</span> <span class="nn">lifelib</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">lifelib</span><span class="o">.</span><span class="n">stepper0</span> <span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">phys481_game_of_life</span> <span class="kn">import</span> <span class="n">stepper0</span> <span class="k">as</span> <span class="n">myteststepper</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">myteststepper</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+included by:  FrameInfo(frame=&lt;frame at 0x000001CA2BC96170, file &#39;&lt;frozen importlib._bootstrap&gt;&#39;, line 219, code _call_with_frames_removed&gt;, filename=&#39;&lt;frozen importlib._bootstrap&gt;&#39;, lineno=219, function=&#39;_call_with_frames_removed&#39;, code_context=None, index=None)
+&lt;function stepper0 at 0x000001CA2D60F4C0&gt;
+&lt;function stepper0 at 0x000001CA2D60F4C0&gt;
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="__name__-==-__main__">
+<h2>__name__ == __main__<a class="headerlink" href="#__name__-==-__main__" title="Permalink to this headline">¶</a></h2>
+<p>Calling “import” will automatically execute everything in a python file, even if we only want to import a single function. Sometimes this is inconvenient. For example, when writing and debugging a library we might want to run some tests or generate some plots to confirm that everything is working correctly. However, some other user may want to import our library without running our diagnostic code.</p>
+<p>One way to accomplish this might be to have some comments containing the test code. We could uncomment it whenever we want to check that everything is okay, then turn it back into a comment when we were done. This is a bit tedious and could cause problems if the code was imported while we were working on it.</p>
+<p>A better solution is to check whether the file is being run directly or as part of an import command. This can be done by looking at the __name__ system variable which will only be set to __main__ if the file is <em>not</em> being imported.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># The ipython %load magic command will import code and also show it in a notebook code cell.</span>
+<span class="c1">#</span>
+<span class="c1"># %load -s stepper0 phys481_game_of_life.py</span>
+<span class="k">def</span> <span class="nf">stepper0</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">nsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    One step in Conway&#39;s game of life with wrap-around edges.</span>
+
+<span class="sd">    Loop over all pixels in grid, and over all neighbors (very slow)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nx</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ny</span><span class="p">)</span>
+    <span class="n">newgrid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xx</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">yy</span><span class="p">:</span>
+
+            <span class="n">nnear</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># count number of neighbors</span>
+
+            <span class="k">for</span> <span class="n">dx</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">dy</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">dx</span><span class="o">!=</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">dy</span><span class="o">!=</span><span class="mi">0</span><span class="p">):</span>  <span class="c1"># don&#39;t include the cell itself</span>
+                        <span class="n">nnear</span> <span class="o">+=</span> <span class="n">grid</span><span class="p">[</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">dx</span><span class="p">)</span><span class="o">%</span><span class="k">nx</span>, (y+dy)%ny ]
+
+            <span class="c1"># dead cells with three live neighbours become live cells</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">nnear</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">newgrid</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span>
+
+            <span class="c1"># live cells with fewer than two or more than 3 live neighbors die</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">nnear</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">newgrid</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
+                <span class="k">if</span> <span class="n">nnear</span> <span class="o">&gt;</span><span class="mi">3</span> <span class="p">:</span>
+                    <span class="n">newgrid</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
+
+    <span class="k">return</span> <span class="n">newgrid</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span> <span class="vm">__name__</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+__main__
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">phys481_game_of_life</span> <span class="k">as</span> <span class="nn">mylife</span>
+<span class="c1">#from phys481_game_of_life import LifeGrid</span>
+
+<span class="n">test</span> <span class="o">=</span> <span class="n">mylife</span><span class="o">.</span><span class="n">LifeGrid</span><span class="p">()</span>
+<span class="n">test</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<span class="n">test</span><span class="o">.</span><span class="n">_animate_init</span><span class="p">()</span>
+<span class="c1">#for i in range(9):</span>
+<span class="c1">#    test._animate_step()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+C:\Users\bjackel\Dropbox\teach\physx81\phys481\jupyter\phys481_game_of_life.py:243: UserWarning: Matplotlib is currently using module://matplotlib_inline.backend_inline, which is a non-GUI backend, so cannot show the figure.
+  self.fig.show()
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;matplotlib.image.AxesImage at 0x1ca2d712220&gt;,)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week03a_automata_life-notes_31_2.png" src="../_images/JupyterNotes_phys481_week03a_automata_life-notes_31_2.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">dir</span><span class="p">(</span> <span class="n">test</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;__class__&#39;,
+ &#39;__delattr__&#39;,
+ &#39;__dict__&#39;,
+ &#39;__dir__&#39;,
+ &#39;__doc__&#39;,
+ &#39;__eq__&#39;,
+ &#39;__format__&#39;,
+ &#39;__ge__&#39;,
+ &#39;__getattribute__&#39;,
+ &#39;__gt__&#39;,
+ &#39;__hash__&#39;,
+ &#39;__init__&#39;,
+ &#39;__init_subclass__&#39;,
+ &#39;__le__&#39;,
+ &#39;__lt__&#39;,
+ &#39;__module__&#39;,
+ &#39;__ne__&#39;,
+ &#39;__new__&#39;,
+ &#39;__reduce__&#39;,
+ &#39;__reduce_ex__&#39;,
+ &#39;__repr__&#39;,
+ &#39;__setattr__&#39;,
+ &#39;__sizeof__&#39;,
+ &#39;__str__&#39;,
+ &#39;__subclasshook__&#39;,
+ &#39;__weakref__&#39;,
+ &#39;_animate_init&#39;,
+ &#39;_animate_step&#39;,
+ &#39;animate_HTML&#39;,
+ &#39;ax&#39;,
+ &#39;fig&#39;,
+ &#39;grid&#39;,
+ &#39;plt&#39;,
+ &#39;step&#39;,
+ &#39;stepnum&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span> <span class="n">test</span><span class="o">.</span><span class="n">grid</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.image.AxesImage at 0x1ca2d78b760&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week03a_automata_life-notes_33_1.png" src="../_images/JupyterNotes_phys481_week03a_automata_life-notes_33_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">test</span><span class="o">.</span><span class="n">step</span><span class="p">()</span> <span class="p">;</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">grid</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.image.AxesImage at 0x1ca2d7d7e20&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/JupyterNotes_phys481_week03a_automata_life-notes_34_1.png" src="../_images/JupyterNotes_phys481_week03a_automata_life-notes_34_1.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="phys481_week04b_pseudorandom-notes.html" class="btn btn-neutral float-right" title="Pseudo-random number generators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="phys481_week03a_computing_past_present_future.html" class="btn btn-neutral float-left" title="What are we doing here?" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Elijah Thompson.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
